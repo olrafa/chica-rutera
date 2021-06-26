@@ -6,6 +6,7 @@ import Point from 'ol/geom/Point';
 import Map from 'ol/Map';
 import { Vector as VectorSource } from 'ol/source';
 import './ActionComponent.css';
+import { ShowRoute } from './ShowRoute';
 
 type ActionComponentProps = {
   map: Map;
@@ -14,6 +15,7 @@ type ActionComponentProps = {
 
 export const ActionComponent = ({ map, pointLayer }: ActionComponentProps) => {
   const [wayPoints, setWaypoints] = useState<number[][]>([]);
+  const [routing, setRouting] = useState(null);
 
   useEffect(() => {
     map &&
@@ -28,11 +30,43 @@ export const ActionComponent = ({ map, pointLayer }: ActionComponentProps) => {
       });
   }, [map, pointLayer]);
 
-  useEffect(() => console.log(wayPoints), [wayPoints]);
-
   const calculateRoute = () => {
+    const requestPoints = createPointsForRequest();
+    const orsREquest = {
+      jobs: requestPoints,
+      vehicles: [
+        {
+          id: 1,
+          profile: 'driving-car',
+          start: requestPoints[0].location,
+          end: requestPoints[0].location,
+        },
+      ],
+      options: {
+        g: true,
+      },
+    };
+
+    const myHeaders = new Headers();
+    const orsKey = process.env.REACT_APP_ORS_KEY as string;
+    myHeaders.append('Authorization', orsKey);
+    myHeaders.append('Content-Type', 'application/json');
+
+    const requestOptions: RequestInit = {
+      method: 'POST',
+      headers: myHeaders,
+      body: JSON.stringify(orsREquest),
+      redirect: 'follow',
+    };
+
+    fetch('https://api.openrouteservice.org/optimization', requestOptions)
+      .then((response) => response.json())
+      .then((result) => setRouting(result))
+      .catch((error) => console.log('error', error));
+  };
+
+  const createPointsForRequest = () => {
     const points = pointLayer.getFeatures();
-    console.log(points);
 
     const wgs84points = points.map((p) => {
       const pointGeo = p.getGeometry();
@@ -50,48 +84,14 @@ export const ActionComponent = ({ map, pointLayer }: ActionComponentProps) => {
       }
     });
 
-    const validPoints = wgs84points.filter((p) => p);
-
-    const requestPoints = validPoints.map((p, i) => {
-      return {
-        id: i + 1,
-        location: p,
-      };
-    });
-
-    const orsREquest = {
-      jobs: requestPoints,
-      vehicles: [
-        {
-          id: 1,
-          profile: 'driving-car',
-          start: requestPoints[0].location,
-          end: requestPoints[0].location,
-        },
-      ],
-      options: {
-        g: true,
-      },
-    };
-
-    const myHeaders = new Headers();
-
-    const orsKey = process.env.REACT_APP_ORS_KEY as string;
-
-    myHeaders.append('Authorization', orsKey);
-    myHeaders.append('Content-Type', 'application/json');
-
-    const requestOptions: RequestInit = {
-      method: 'POST',
-      headers: myHeaders,
-      body: JSON.stringify(orsREquest),
-      redirect: 'follow',
-    };
-
-    fetch('https://api.openrouteservice.org/optimization', requestOptions)
-      .then((response) => response.json())
-      .then((result) => console.log(result))
-      .catch((error) => console.log('error', error));
+    return wgs84points
+      .filter((p) => p)
+      .map((p, i) => {
+        return {
+          id: i + 1,
+          location: p,
+        };
+      });
   };
 
   return (
@@ -101,6 +101,7 @@ export const ActionComponent = ({ map, pointLayer }: ActionComponentProps) => {
         <div key={i + 1}>{wp}</div>
       ))}
       <div onClick={calculateRoute}>Calculate Route</div>
+      {routing && <ShowRoute routing={routing} map={map}/>}
     </div>
   );
 };
