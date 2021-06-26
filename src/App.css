@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+.ol-map {
+  background-color: #222;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  height: 1px;
+  width: 100%;
+  position: absolute;
+}
