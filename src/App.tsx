@@ -1,14 +1,16 @@
 // react
 import React, { useEffect, useRef, useState } from 'react';
-import './App.css';
 
 // openlayers
 import TileLayer from 'ol/layer/Tile';
 import Map from 'ol/Map';
-import 'ol/ol.css';
 import { fromLonLat } from 'ol/proj';
 import OSM from 'ol/source/OSM';
 import View from 'ol/View';
+
+// css
+import 'ol/ol.css';
+import './App.css';
 
 import { ActionComponent } from './components/ActionComponent';
 
@@ -36,7 +38,7 @@ function App() {
   return (
     <div className="App">
       <div ref={mapElement} className="ol-map"></div>
-      {/* <ActionComponent map={map} /> */}
+      <ActionComponent map={map} />
     </div>
   );
 }
