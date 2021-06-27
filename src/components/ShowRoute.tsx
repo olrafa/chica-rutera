@@ -15,7 +15,6 @@ export const ShowRoute = ({ routing, map }: any) => {
       dataProjection: 'EPSG:4326',
       featureProjection: 'EPSG:3857',
     });
-    console.log(trace);
     return new Feature({
       type: 'route',
       geometry: trace,
@@ -28,7 +27,7 @@ export const ShowRoute = ({ routing, map }: any) => {
     style: new Style({
       stroke: new Stroke({
         width: 6,
-        color: '#5AF',
+        color: [85, 170, 255, 0.6],
       }),
     }),
   });
@@ -38,9 +37,7 @@ export const ShowRoute = ({ routing, map }: any) => {
   });
 
   map.addLayer(vector);
-  map.getView().fit(source.getExtent(), { padding: [50, 50, 50, 350] });
-
-  console.log(source.getFeatures());
+  map.getView().fit(source.getExtent(), { padding: [50, 50, 50, 200] });
 
   return <div>Route showing on map</div>;
 };

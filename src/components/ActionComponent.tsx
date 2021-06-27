@@ -101,7 +101,7 @@ export const ActionComponent = ({ map, pointLayer }: ActionComponentProps) => {
         <div key={i + 1}>{wp}</div>
       ))}
       <div onClick={calculateRoute}>Calculate Route</div>
-      {routing && <ShowRoute routing={routing} map={map}/>}
+      {routing && <ShowRoute routing={routing} map={map} />}
     </div>
   );
 };
