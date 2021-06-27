@@ -19,31 +19,52 @@ import { ActionComponent } from './components/ActionComponent';
 
 function App() {
   const [map, setMap] = useState<Map | null>(null);
-  const [pointLayer, setPointLayer] = useState<VectorSource | null>(null);
+  const [startLayer, setStartLayer] = useState<VectorSource | null>(null);
+  const [endLayer, setEndLayer] = useState<VectorSource | null>(null);
+  const [stopsLayer, setStopsLayer] = useState<VectorSource | null>(null);
 
   const mapElement = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (mapElement.current) {
-      const source = new VectorSource();
-
-      const vector = new VectorLayer({
-        source,
-        style: new Style({
-          image: new CircleStyle({
-            radius: 7,
-            fill: new Fill({ color: '#0AA' }),
-            stroke: new Stroke({
-              color: '#258',
-              width: 2,
-            }),
+  const createPointVector = (
+    source: VectorSource,
+    color: string,
+    zIndex: number
+  ) => {
+    return new VectorLayer({
+      source,
+      style: new Style({
+        image: new CircleStyle({
+          radius: 7,
+          fill: new Fill({ color }),
+          stroke: new Stroke({
+            color: '#258',
+            width: 2,
           }),
         }),
-        zIndex: 10
-      });
+      }),
+      zIndex,
+    });
+  };
+
+  useEffect(() => {
+    if (mapElement.current) {
+
+      const startSource = new VectorSource();
+      const endSource = new VectorSource();
+      const stopsSource = new VectorSource();
+      
+      const startVector = createPointVector(startSource, '#5FA', 12);
+      const endVector = createPointVector(endSource, '#F08', 11);
+      const stopsVector = createPointVector(stopsSource, '#0AA', 10);
+
       const initialMap = new Map({
         target: mapElement.current,
-        layers: [new TileLayer({ source: new OSM() }), vector],
+        layers: [
+          new TileLayer({ source: new OSM() }),
+          startVector,
+          endVector,
+          stopsVector,
+        ],
         view: new View({
           center: fromLonLat([-58.43, -34.63]),
           zoom: 12,
@@ -51,7 +72,9 @@ function App() {
         }),
       });
 
-      setPointLayer(source);
+      setStartLayer(startSource);
+      setEndLayer(endSource);
+      setStopsLayer(stopsSource);
       setMap(initialMap);
     }
   }, []);
@@ -59,8 +82,13 @@ function App() {
   return (
     <div className="App">
       <div ref={mapElement} className="ol-map"></div>
-      {map && pointLayer && (
-        <ActionComponent map={map} pointLayer={pointLayer} />
+      {map && stopsLayer && startLayer && endLayer && (
+        <ActionComponent
+          map={map}
+          startLayer={startLayer}
+          endLayer={endLayer}
+          stopsLayer={stopsLayer}
+        />
       )}
     </div>
   );

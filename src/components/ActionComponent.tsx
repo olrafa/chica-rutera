@@ -9,30 +9,50 @@ import { ShowRoute } from './ShowRoute';
 
 type ActionComponentProps = {
   map: Map;
-  pointLayer: VectorSource;
+  startLayer: VectorSource;
+  endLayer: VectorSource;
+  stopsLayer: VectorSource;
 };
 
-export const ActionComponent = ({ map, pointLayer }: ActionComponentProps) => {
+export const ActionComponent = ({
+  map,
+  startLayer,
+  endLayer,
+  stopsLayer,
+}: ActionComponentProps) => {
   const [start, setStart] = useState<number[] | undefined>(undefined);
   const [end, setEnd] = useState<number[] | undefined>(undefined);
   const [wayPoints, setWaypoints] = useState<number[][]>([]);
   const [routing, setRouting] = useState(null);
 
+  const createPoint = (coordinate: any) =>
+    new Feature({
+      type: 'geoMarker',
+      geometry: new Point(coordinate),
+    });
+
   useEffect(() => {
     map &&
       map.on('singleclick', ({ coordinate }: any) => {
-        setWaypoints((w) => [...w, [coordinate]]);
-        pointLayer.addFeature(
-          new Feature({
-            type: 'geoMarker',
-            geometry: new Point(coordinate),
-          })
-        );
+        if (!start) {
+          setStart(coordinate);
+          startLayer.addFeature(createPoint(coordinate));
+        } else if (!end) {
+          setEnd(coordinate);
+          endLayer.addFeature(createPoint(coordinate));
+        } else {
+          setWaypoints((w) => [...w, [coordinate]]);
+          stopsLayer.addFeature(createPoint(coordinate));
+        }
       });
-  }, [map, pointLayer]);
+  }, [end, endLayer, map, start, startLayer, stopsLayer]);
+
+  // useEffect(() => console.log(start), [start]);
+  // useEffect(() => console.log(end), [end]);
+  // useEffect(() => console.log(wayPoints), [wayPoints]);
 
   const optimize = async () => {
-    const route = await calculateRoute(pointLayer);
+    const route = await calculateRoute(startLayer, endLayer, stopsLayer);
     route && setRouting(route);
   };
 

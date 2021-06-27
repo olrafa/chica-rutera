@@ -3,22 +3,9 @@ import Geometry from 'ol/geom/Geometry';
 import Point from 'ol/geom/Point';
 import { Vector as VectorSource } from 'ol/source';
 
-const createPointsForRequest = (pointLayer: VectorSource) => {
+const createStopsPoints = (pointLayer: VectorSource) => {
   const points = pointLayer.getFeatures();
-
-  const wgs84points = points.map((p) => {
-    const pointGeo = p.getGeometry();
-    if (!pointGeo) {
-      return null;
-    } else {
-      const copiedGeo = pointGeo.clone();
-      const wgs84geo: Geometry = copiedGeo.transform('EPSG:3857', 'EPSG:4326');
-      const castGeo: Point = wgs84geo as Point;
-      const coordinates: Coordinate = castGeo.getCoordinates();
-      return coordinates;
-    }
-  });
-
+  const wgs84points = points.map((p) => getCoordinates(p));
   return wgs84points
     .filter((p) => p)
     .map((p, i) => {
@@ -29,16 +16,33 @@ const createPointsForRequest = (pointLayer: VectorSource) => {
     });
 };
 
-export const calculateRoute = async (pointLayer: VectorSource) => {
-  const requestPoints = createPointsForRequest(pointLayer);
+const getCoordinates = (point: any) => {
+  const pointGeo = point.getGeometry();
+  if (!pointGeo) {
+    return null;
+  } else {
+    const copiedGeo = pointGeo.clone();
+    const wgs84geo: Geometry = copiedGeo.transform('EPSG:3857', 'EPSG:4326');
+    const castGeo: Point = wgs84geo as Point;
+    const coordinates: Coordinate = castGeo.getCoordinates();
+    return coordinates;
+  }
+};
+
+export const calculateRoute = async (
+  startPoint: VectorSource,
+  endPoint: VectorSource,
+  stopsPoints: VectorSource
+) => {
+  const requestPoints = createStopsPoints(stopsPoints);
   const orsRequest = {
     jobs: requestPoints,
     vehicles: [
       {
         id: 1,
         profile: 'driving-car',
-        start: requestPoints[0].location,
-        end: requestPoints[0].location,
+        start: getCoordinates(startPoint.getFeatures()[0]),
+        end: getCoordinates(endPoint.getFeatures()[0]),
       },
     ],
     options: {
