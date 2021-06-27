@@ -53,7 +53,7 @@
 .ol-zoom {
   left: unset;
   top: unset;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(10px + 1vmin);
   right: 8px;
   top: 8px;
 }
