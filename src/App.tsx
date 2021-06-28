@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import TileLayer from 'ol/layer/Tile';
 import Map from 'ol/Map';
 import { fromLonLat } from 'ol/proj';
-import OSM from 'ol/source/OSM';
+import { OSM, XYZ } from 'ol/source';
 import View from 'ol/View';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
@@ -48,11 +48,10 @@ function App() {
 
   useEffect(() => {
     if (mapElement.current) {
-
       const startSource = new VectorSource();
       const endSource = new VectorSource();
       const stopsSource = new VectorSource();
-      
+
       const startVector = createPointVector(startSource, '#5FA', 12);
       const endVector = createPointVector(endSource, '#F08', 11);
       const stopsVector = createPointVector(stopsSource, '#0AA', 10);
@@ -60,7 +59,15 @@ function App() {
       const initialMap = new Map({
         target: mapElement.current,
         layers: [
-          new TileLayer({ source: new OSM() }),
+          new TileLayer({
+            source: new XYZ({
+              url: 'https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+              attributions:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+              attributionsCollapsible: false,
+              maxZoom: 19,
+            }),
+          }),
           startVector,
           endVector,
           stopsVector,
@@ -68,7 +75,7 @@ function App() {
         view: new View({
           center: fromLonLat([-58.43, -34.63]),
           zoom: 12,
-          maxZoom: 20,
+          maxZoom: 19,
         }),
       });
 
