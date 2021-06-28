@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import TileLayer from 'ol/layer/Tile';
 import Map from 'ol/Map';
 import { fromLonLat } from 'ol/proj';
-import { OSM, XYZ } from 'ol/source';
+import { XYZ } from 'ol/source';
 import View from 'ol/View';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';

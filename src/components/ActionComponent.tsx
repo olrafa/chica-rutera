@@ -6,6 +6,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { calculateRoute } from '../requests/route';
 import './ActionComponent.css';
 import { ShowRoute } from './ShowRoute';
+import { RoutePoints } from './RoutePoints';
 
 type ActionComponentProps = {
   map: Map;
@@ -31,6 +32,8 @@ export const ActionComponent = ({
     endPoint: undefined,
     stops: [],
   });
+
+  const { startPoint, endPoint, stops } = routeInfo;
 
   const [calculatedRoute, setCalculatedRoute] = useState(null);
 
@@ -75,14 +78,7 @@ export const ActionComponent = ({
   return (
     <div className="action-component">
       Create your best delivery route
-      <div>Start</div>
-      <div>End</div>
-      <div>
-        Route stops
-        {routeInfo.stops.map((s, i) => (
-          <div key={i + 1}>{s}</div>
-        ))}
-      </div>
+      <RoutePoints start={startPoint} end={endPoint} stops={stops} />
       <div onClick={optimize}>Calculate Route</div>
       {calculatedRoute && (
         <ShowRoute route={calculatedRoute} map={map} />

@@ -2,6 +2,8 @@ import { Coordinate } from 'ol/coordinate';
 import Geometry from 'ol/geom/Geometry';
 import Point from 'ol/geom/Point';
 import { Vector as VectorSource } from 'ol/source';
+import { orsUrl } from './orsUrl';
+
 
 const createStopsPoints = (pointLayer: VectorSource) => {
   const points = pointLayer.getFeatures();
@@ -62,9 +64,9 @@ export const calculateRoute = async (
     redirect: 'follow',
   };
 
-  const orsUrl = 'https://api.openrouteservice.org/optimization';
+  const optimizationUrl = orsUrl + 'optimization';
 
-  const orsRoute = await fetch(orsUrl, requestOptions);
+  const orsRoute = await fetch(optimizationUrl, requestOptions);
   const routeResult = await orsRoute.json();
   return routeResult;
 };
