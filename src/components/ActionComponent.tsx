@@ -2,7 +2,7 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import Map from 'ol/Map';
 import { Vector as VectorSource } from 'ol/source';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { calculateRoute } from '../requests/route';
 import './ActionComponent.css';
 import { ShowRoute } from './ShowRoute';
@@ -14,16 +14,25 @@ type ActionComponentProps = {
   stopsLayer: VectorSource;
 };
 
+type RouteInfo = {
+  startPoint: number[] | undefined;
+  endPoint: number[] | undefined;
+  stops: number[][];
+};
+
 export const ActionComponent = ({
   map,
   startLayer,
   endLayer,
   stopsLayer,
 }: ActionComponentProps) => {
-  const [start, setStart] = useState<number[] | undefined>(undefined);
-  const [end, setEnd] = useState<number[] | undefined>(undefined);
-  const [wayPoints, setWaypoints] = useState<number[][]>([]);
-  const [routing, setRouting] = useState(null);
+  const [routeInfo, setRouteInfo] = useState<RouteInfo>({
+    startPoint: undefined,
+    endPoint: undefined,
+    stops: [],
+  });
+
+  const [calculatedRoute, setCalculatedRoute] = useState(null);
 
   const createPoint = (coordinate: any) =>
     new Feature({
@@ -31,29 +40,36 @@ export const ActionComponent = ({
       geometry: new Point(coordinate),
     });
 
-  useEffect(() => {
-    map &&
-      map.on('singleclick', ({ coordinate }: any) => {
-        if (!start) {
-          setStart(coordinate);
-          startLayer.addFeature(createPoint(coordinate));
-        } else if (!end) {
-          setEnd(coordinate);
-          endLayer.addFeature(createPoint(coordinate));
-        } else {
-          setWaypoints((w) => [...w, [coordinate]]);
-          stopsLayer.addFeature(createPoint(coordinate));
-        }
-      });
-  }, [end, endLayer, map, start, startLayer, stopsLayer]);
+  const updateRequest = useCallback(
+    (e: any) => {
+      const { coordinate } = e;
+      if (!routeInfo.startPoint) {
+        startLayer.addFeature(createPoint(coordinate));
+        setRouteInfo({ ...routeInfo, startPoint: coordinate });
+      } else if (!routeInfo.endPoint) {
+        endLayer.addFeature(createPoint(coordinate));
+        setRouteInfo({ ...routeInfo, endPoint: coordinate });
+      } else {
+        stopsLayer.addFeature(createPoint(coordinate));
+        setRouteInfo({
+          ...routeInfo,
+          stops: [...routeInfo.stops, [coordinate]],
+        });
+      }
+    },
+    [endLayer, routeInfo, startLayer, stopsLayer]
+  );
 
-  // useEffect(() => console.log(start), [start]);
-  // useEffect(() => console.log(end), [end]);
-  // useEffect(() => console.log(wayPoints), [wayPoints]);
+  useEffect(() => {
+    map && map.on('singleclick', updateRequest);
+    return () => map.un('singleclick', updateRequest);
+  }, [map, updateRequest]);
+
+  useEffect(() => console.log(routeInfo));
 
   const optimize = async () => {
     const route = await calculateRoute(startLayer, endLayer, stopsLayer);
-    route && setRouting(route);
+    route && setCalculatedRoute(route);
   };
 
   return (
@@ -63,12 +79,14 @@ export const ActionComponent = ({
       <div>End</div>
       <div>
         Route stops
-        {wayPoints.map((wp, i) => (
-          <div key={i + 1}>{wp}</div>
+        {routeInfo.stops.map((s, i) => (
+          <div key={i + 1}>{s}</div>
         ))}
       </div>
       <div onClick={optimize}>Calculate Route</div>
-      {routing && <ShowRoute routing={routing} map={map} />}
+      {calculatedRoute && (
+        <ShowRoute calculatedRoute={calculatedRoute} map={map} />
+      )}
     </div>
   );
 };
