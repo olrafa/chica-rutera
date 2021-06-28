@@ -7,8 +7,8 @@ import { Vector as VectorSource } from 'ol/source';
 import Geometry from 'ol/geom/Geometry';
 import { Stroke, Style } from 'ol/style';
 
-export const ShowRoute = ({ routing, map }: any) => {
-  const { routes } = routing;
+export const ShowRoute = ({ route, map }: any) => {
+  const { routes } = route;
 
   const routeLines = routes.map(({ geometry }: any) => {
     const trace = new Polyline().readGeometry(geometry, {

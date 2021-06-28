@@ -85,7 +85,7 @@ export const ActionComponent = ({
       </div>
       <div onClick={optimize}>Calculate Route</div>
       {calculatedRoute && (
-        <ShowRoute calculatedRoute={calculatedRoute} map={map} />
+        <ShowRoute route={calculatedRoute} map={map} />
       )}
     </div>
   );
