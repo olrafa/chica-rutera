@@ -3,6 +3,7 @@ import Point from 'ol/geom/Point';
 import Map from 'ol/Map';
 import { Vector as VectorSource } from 'ol/source';
 import { fromLonLat } from 'ol/proj';
+import { createEmpty, extend, Extent } from 'ol/extent';
 import React, { useEffect, useState, useCallback } from 'react';
 import { calculateRoute } from '../requests/route';
 import './ActionComponent.css';
@@ -15,6 +16,7 @@ type ActionComponentProps = {
   startLayer: VectorSource;
   endLayer: VectorSource;
   stopsLayer: VectorSource;
+  routeLayer: VectorSource;
 };
 
 type RouteInfo = {
@@ -28,6 +30,7 @@ export const ActionComponent = ({
   startLayer,
   endLayer,
   stopsLayer,
+  routeLayer,
 }: ActionComponentProps) => {
   const [routeInfo, setRouteInfo] = useState<RouteInfo>({
     startPoint: undefined,
@@ -70,8 +73,6 @@ export const ActionComponent = ({
     return () => map.un('singleclick', addPointOnClick);
   }, [map, addPointOnClick]);
 
-  useEffect(() => console.log(routeInfo));
-
   const addStartFromSearch = (searchResult: any) => {
     const coordinate = getCoordinates(searchResult);
     startLayer.clear();
@@ -95,6 +96,18 @@ export const ActionComponent = ({
     });
   };
 
+  useEffect(() => {
+    if (map && (routeInfo.startPoint || routeInfo.endPoint)) {
+      let extent = createEmpty();
+      [startLayer, endLayer, stopsLayer].forEach(function (layer) {
+        layer.getFeatures.length && console.log(layer.getExtent());
+        const layerExtent = layer.getExtent();
+        extend(extent, layerExtent as Extent);
+      });
+      map.getView().fit(extent, { padding: Array(4).fill(150) });
+    }
+  }, [startLayer, endLayer, stopsLayer, map, routeInfo]);
+
   const getCoordinates = (searchResult: any) => {
     const { display_name, lon, lat } = searchResult;
     const lonLat = [lon, lat].map((c) => parseFloat(c));
@@ -102,6 +115,7 @@ export const ActionComponent = ({
   };
 
   const optimize = async () => {
+    routeLayer.clear();
     const route = await calculateRoute(startLayer, endLayer, stopsLayer);
     route && setCalculatedRoute(route);
   };
@@ -118,7 +132,9 @@ export const ActionComponent = ({
         addStopsFunction={addRoutePointFromSearch}
       />
       <div onClick={optimize}>Calculate Route</div>
-      {calculatedRoute && <ShowRoute route={calculatedRoute} map={map} />}
+      {calculatedRoute && (
+        <ShowRoute route={calculatedRoute} map={map} layer={routeLayer} />
+      )}
     </div>
   );
 };

@@ -77,9 +77,12 @@ export const formatAddress = (address: any) => {
       bridge ||
       tunnel ||
       waterway,
-    street: `${road} ${house_number || house_name}`,
+    street: `${road}${
+      house_number || house_name ? ` ${house_number || house_name}` : ''
+    }`,
     neighbourhood:
       neighbourhood ||
+      suburb ||
       allotments ||
       quarter ||
       hamlet ||
@@ -88,11 +91,10 @@ export const formatAddress = (address: any) => {
       city_district ||
       district ||
       borough ||
-      suburb ||
       subdivision,
     postcode,
-    city: municipality || city || town || village,
-    state: region || state || state_district || county,
+    city: city || town || municipality || village,
+    state: state || region || state_district || county,
     country: country || country_code,
   };
 

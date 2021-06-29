@@ -22,6 +22,7 @@ function App() {
   const [startLayer, setStartLayer] = useState<VectorSource | null>(null);
   const [endLayer, setEndLayer] = useState<VectorSource | null>(null);
   const [stopsLayer, setStopsLayer] = useState<VectorSource | null>(null);
+  const [routeLayer, setRouteLayer] = useState<VectorSource | null>(null);
 
   const mapElement = useRef<HTMLDivElement>(null);
 
@@ -56,6 +57,17 @@ function App() {
       const endVector = createPointVector(endSource, '#F08', 11);
       const stopsVector = createPointVector(stopsSource, '#0AA', 10);
 
+      const routeSource = new VectorSource();
+      const routeVector = new VectorLayer({
+        source: routeSource,
+        style: new Style({
+          stroke: new Stroke({
+            width: 6,
+            color: [85, 170, 255, 0.6],
+          }),
+        }),
+      });
+
       const initialMap = new Map({
         target: mapElement.current,
         layers: [
@@ -71,6 +83,7 @@ function App() {
           startVector,
           endVector,
           stopsVector,
+          routeVector,
         ],
         view: new View({
           center: fromLonLat([-58.43, -34.63]),
@@ -82,6 +95,7 @@ function App() {
       setStartLayer(startSource);
       setEndLayer(endSource);
       setStopsLayer(stopsSource);
+      setRouteLayer(routeSource);
       setMap(initialMap);
     }
   }, []);
@@ -89,12 +103,13 @@ function App() {
   return (
     <div className="App">
       <div ref={mapElement} className="ol-map"></div>
-      {map && stopsLayer && startLayer && endLayer && (
+      {map && stopsLayer && startLayer && endLayer && routeLayer && (
         <ActionComponent
           map={map}
           startLayer={startLayer}
           endLayer={endLayer}
           stopsLayer={stopsLayer}
+          routeLayer={routeLayer}
         />
       )}
     </div>

@@ -34,7 +34,7 @@ const getCoordinates = (point: any) => {
 export const calculateRoute = async (
   startPoint: VectorSource,
   endPoint: VectorSource,
-  stopsPoints: VectorSource
+  stopsPoints: VectorSource,
 ) => {
   const requestPoints = createStopsPoints(stopsPoints);
   const orsRequest = {
