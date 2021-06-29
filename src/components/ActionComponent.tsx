@@ -115,6 +115,7 @@ export const ActionComponent = ({
         stops={stops}
         updateStartFunction={addStartFromSearch}
         updateEndFunction={addEndFromSearch}
+        addStopsFunction={addRoutePointFromSearch}
       />
       <div onClick={optimize}>Calculate Route</div>
       {calculatedRoute && <ShowRoute route={calculatedRoute} map={map} />}

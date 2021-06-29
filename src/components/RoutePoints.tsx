@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { addressSearch } from '../requests/addressSearch';
+import { formatAddress } from '../requests/formatAddress';
 
 type RoutePointsProps = {
   start: number[] | undefined;
@@ -7,6 +8,7 @@ type RoutePointsProps = {
   stops: number[][];
   updateStartFunction: (location: any) => void;
   updateEndFunction: (location: any) => void;
+  addStopsFunction: (location: any) => void;
 };
 
 export const RoutePoints = ({
@@ -14,32 +16,52 @@ export const RoutePoints = ({
   end,
   stops,
   updateStartFunction,
-  updateEndFunction
+  updateEndFunction,
+  addStopsFunction,
 }: RoutePointsProps) => {
+  const [stopsList, setStopsList] = useState<string[]>([]);
 
   const handleKeyDownStart = async (e: { key: string; target: any }) => {
     if (e.key === 'Enter') {
-      addressSearch(e.target.value).then((r) => updateStartFunction(r));
+      addressSearch(e.target.value).then((r) => {
+        e.target.value = formatAddress(r.address);
+        updateStartFunction(r);
+      });
     }
   };
 
   const handleKeyDownEnd = async (e: { key: string; target: any }) => {
     if (e.key === 'Enter') {
-      addressSearch(e.target.value).then((r) => updateEndFunction(r));
+      addressSearch(e.target.value).then((r) => {
+        e.target.value = formatAddress(r.address);
+        updateEndFunction(r);
+      });
     }
   };
 
+  const handleKeyDownStop = async (e: { key: string; target: any }) => {
+    if (e.key === 'Enter') {
+      addressSearch(e.target.value).then((r) => {
+        e.target.value = '';
+        addStopsFunction(r);
+        setStopsList([...stopsList, formatAddress(r.address)]);
+      });
+    }
+  };
 
   return (
     <div>
       <div>Starting point:</div>
       <input type="text" onKeyDown={handleKeyDownStart} />
       <div>Ending point:</div>
-      <input type="text" onKeyDown={handleKeyDownEnd}/>
+      <input type="text" onKeyDown={handleKeyDownEnd} />
       <div>
-        Route stops
+        Add stops:
         <div>
-          {stops.map((s, i) => (
+          <input type="text" onKeyDown={handleKeyDownStop} />
+        </div>
+        <div>
+          {stopsList.map((s, i) => (
             <div key={i + 1}>{s}</div>
           ))}
         </div>
