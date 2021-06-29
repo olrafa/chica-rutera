@@ -43,7 +43,7 @@ export const ActionComponent = ({
       geometry: new Point(coordinate),
     });
 
-  const updateRequest = useCallback(
+  const addPointOnClick = useCallback(
     (e: any) => {
       const { coordinate } = e;
       if (!routeInfo.startPoint) {
@@ -64,9 +64,9 @@ export const ActionComponent = ({
   );
 
   useEffect(() => {
-    map && map.on('singleclick', updateRequest);
-    return () => map.un('singleclick', updateRequest);
-  }, [map, updateRequest]);
+    map && map.on('singleclick', addPointOnClick);
+    return () => map.un('singleclick', addPointOnClick);
+  }, [map, addPointOnClick]);
 
   useEffect(() => console.log(routeInfo));
 
