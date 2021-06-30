@@ -62,7 +62,7 @@ export const RoutePoints = ({
         </div>
         <div>
           {stopsList.map((s, i) => (
-            <div key={i + 1}>{s}</div>
+            <input type="text" key={i + 1} value={s} disabled={true} />
           ))}
         </div>
       </div>

@@ -97,7 +97,10 @@ export const ActionComponent = ({
   };
 
   useEffect(() => {
-    if (map && (routeInfo.startPoint || routeInfo.endPoint)) {
+    if (
+      map &&
+      (routeInfo.startPoint || routeInfo.endPoint || routeInfo.stops.length)
+    ) {
       let extent = createEmpty();
       [startLayer, endLayer, stopsLayer].forEach(function (layer) {
         layer.getFeatures.length && console.log(layer.getExtent());
@@ -109,7 +112,7 @@ export const ActionComponent = ({
   }, [startLayer, endLayer, stopsLayer, map, routeInfo]);
 
   const getCoordinates = (searchResult: any) => {
-    const { display_name, lon, lat } = searchResult;
+    const { lon, lat } = searchResult;
     const lonLat = [lon, lat].map((c) => parseFloat(c));
     return fromLonLat(lonLat) as Coordinate;
   };
