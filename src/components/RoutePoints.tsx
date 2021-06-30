@@ -21,44 +21,59 @@ export const RoutePoints = ({
 }: RoutePointsProps) => {
   const [stopsList, setStopsList] = useState<string[]>([]);
 
-  const handleKeyDownStart = async (e: { key: string; target: any }) => {
+  const handleAddressInput = async (
+    e: { key: string; target: any },
+    item: string
+  ) => {
     if (e.key === 'Enter') {
       addressSearch(e.target.value).then((r) => {
-        e.target.value = formatAddress(r.address);
-        updateStartFunction(r);
+        if (r) {
+          e.target.value = formatAddress(r.address);
+          updateState(r, item);
+        } else {
+          alert(
+            'No address found. Please check for typos and/or add details (city, region, country)'
+          );
+        }
       });
     }
   };
 
-  const handleKeyDownEnd = async (e: { key: string; target: any }) => {
-    if (e.key === 'Enter') {
-      addressSearch(e.target.value).then((r) => {
-        e.target.value = formatAddress(r.address);
-        updateEndFunction(r);
-      });
+  const updateState = (r: any, item: string) => {
+    if (item === 'start') {
+      updateStartFunction(r);
+    } else if (item === 'end') {
+      updateEndFunction(r);
+    } else if (item === 'stops') {
+      addStopsFunction(r);
+      setStopsList([...stopsList, formatAddress(r.address)]);
     }
   };
 
-  const handleKeyDownStop = async (e: { key: string; target: any }) => {
-    if (e.key === 'Enter') {
-      addressSearch(e.target.value).then((r) => {
-        e.target.value = '';
-        addStopsFunction(r);
-        setStopsList([...stopsList, formatAddress(r.address)]);
-      });
-    }
-  };
+  const placeHolderTxt = 'Search an address';
 
   return (
     <div>
       <div>Starting point:</div>
-      <input type="text" onKeyDown={handleKeyDownStart} />
+      <input
+        type="text"
+        onKeyDown={(e) => handleAddressInput(e, 'start')}
+        placeholder={placeHolderTxt}
+      />
       <div>Ending point:</div>
-      <input type="text" onKeyDown={handleKeyDownEnd} />
+      <input
+        type="text"
+        onKeyDown={(e) => handleAddressInput(e, 'end')}
+        placeholder={placeHolderTxt}
+      />
       <div>
         Add stops:
         <div>
-          <input type="text" onKeyDown={handleKeyDownStop} />
+          <input
+            type="text"
+            onKeyDown={(e) => handleAddressInput(e, 'stops')}
+            placeholder={placeHolderTxt}
+          />
         </div>
         <div>
           {stopsList.map((s, i) => (
