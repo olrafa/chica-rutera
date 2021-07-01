@@ -126,11 +126,12 @@ export const ActionComponent = ({
     route && setCalculatedRoute(route);
   };
 
-  useEffect(() => {
-    if (map && calculatedRoute) {
-      console.log(calculatedRoute, routeInfo.stops);
-    }
-  }, [calculatedRoute, map, routeInfo.stops]);
+  // useEffect(() => {
+  //   if (map && routeInfo.stops.length) {
+  //     stopsLayer.getFeatures().forEach((s, i) => s.setId(i + 73));
+  //     stopsLayer.getFeatures().forEach((s) => console.log(s));
+  //   }
+  // }, [map, routeInfo.stops, stopsLayer]);
 
   return (
     <div className="action-component">
@@ -145,9 +146,19 @@ export const ActionComponent = ({
         !!routeInfo.stops.length && (
           <div onClick={optimize}>Calculate Route</div>
         )}
-      {calculatedRoute && (
-        <ShowRoute route={calculatedRoute} map={map} layer={routeLayer} />
-      )}
+      {calculatedRoute &&
+        routeInfo.startPoint &&
+        routeInfo.endPoint &&
+        !!routeInfo.stops.length && (
+          <ShowRoute
+            route={calculatedRoute}
+            map={map}
+            lineLayer={routeLayer}
+            startPoint={routeInfo.startPoint}
+            endPoint={routeInfo.endPoint}
+            stops={routeInfo.stops}
+          />
+        )}
     </div>
   );
 };
