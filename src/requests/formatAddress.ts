@@ -37,6 +37,7 @@ export const formatAddress = (address: any) => {
     man_made,
     aerialway,
     boundary,
+    building,
     amenity,
     aeroway,
     club,
@@ -65,6 +66,7 @@ export const formatAddress = (address: any) => {
       man_made ||
       aerialway ||
       boundary ||
+      building ||
       amenity ||
       aeroway ||
       club ||
@@ -95,7 +97,7 @@ export const formatAddress = (address: any) => {
     postcode,
     city: city || town || municipality || village,
     state: state || region || state_district || county,
-    country: country || country_code
+    country: country || country_code,
   };
 
   console.log(addressObj);

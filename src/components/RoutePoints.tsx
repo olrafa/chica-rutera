@@ -28,7 +28,8 @@ export const RoutePoints = ({
     if (e.key === 'Enter') {
       addressSearch(e.target.value).then((r) => {
         if (r) {
-          e.target.value = formatAddress(r.address);
+          r.displayAddress = formatAddress(r.address);
+          e.target.value = item === 'stops' ? '' : r.displayAddress;
           updateState(r, item);
         } else {
           alert(
@@ -46,7 +47,7 @@ export const RoutePoints = ({
       updateEndFunction(r);
     } else if (item === 'stops') {
       addStopsFunction(r);
-      setStopsList([...stopsList, formatAddress(r.address)]);
+      setStopsList([...stopsList, r.displayAddress]);
     }
   };
 

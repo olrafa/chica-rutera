@@ -7,7 +7,7 @@ import { orsUrl } from './orsUrl';
 
 const createStopsPoints = (pointLayer: VectorSource) => {
   const points = pointLayer.getFeatures();
-  const wgs84points = points.map((p) => getCoordinates(p));
+  const wgs84points = points.map((p) => getWgs84Coordinates(p));
   return wgs84points
     .filter((p) => p)
     .map((p, i) => {
@@ -18,7 +18,7 @@ const createStopsPoints = (pointLayer: VectorSource) => {
     });
 };
 
-const getCoordinates = (point: any) => {
+const getWgs84Coordinates = (point: any) => {
   const pointGeo = point.getGeometry();
   if (!pointGeo) {
     return null;
@@ -43,8 +43,8 @@ export const calculateRoute = async (
       {
         id: 1,
         profile: 'driving-car',
-        start: getCoordinates(startPoint.getFeatures()[0]),
-        end: getCoordinates(endPoint.getFeatures()[0]),
+        start: getWgs84Coordinates(startPoint.getFeatures()[0]),
+        end: getWgs84Coordinates(endPoint.getFeatures()[0]),
       },
     ],
     options: {

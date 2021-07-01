@@ -42,10 +42,11 @@ export const ActionComponent = ({
 
   const [calculatedRoute, setCalculatedRoute] = useState(null);
 
-  const createPoint = (coordinate: any) =>
+  const createPoint = (coordinate: Coordinate, displayAddress?: string) =>
     new Feature({
       type: 'geoMarker',
       geometry: new Point(coordinate),
+      name: displayAddress
     });
 
   const addPointOnClick = useCallback(
@@ -73,23 +74,24 @@ export const ActionComponent = ({
     return () => map.un('singleclick', addPointOnClick);
   }, [map, addPointOnClick]);
 
-  const addStartFromSearch = (searchResult: any) => {
-    const coordinate = getCoordinates(searchResult);
+  const addStartFromSearch = ({ displayAddress, lon, lat }: any) => {
+    // const { displayAddress } = searchResult;
+    const coordinate = getCoordinates(lon, lat);
     startLayer.clear();
-    startLayer.addFeature(createPoint(coordinate));
+    startLayer.addFeature(createPoint(coordinate, displayAddress));
     setRouteInfo({ ...routeInfo, startPoint: coordinate });
   };
 
-  const addEndFromSearch = (searchResult: any) => {
-    const coordinate = getCoordinates(searchResult);
+  const addEndFromSearch = ({ displayAddress, lon, lat }: any) => {
+    const coordinate = getCoordinates(lon, lat);
     endLayer.clear();
-    endLayer.addFeature(createPoint(coordinate));
+    endLayer.addFeature(createPoint(coordinate,  displayAddress));
     setRouteInfo({ ...routeInfo, endPoint: coordinate });
   };
 
-  const addRoutePointFromSearch = (searchResult: any) => {
-    const coordinate = getCoordinates(searchResult);
-    stopsLayer.addFeature(createPoint(coordinate));
+  const addRoutePointFromSearch = ({ displayAddress, lon, lat }: any) => {
+    const coordinate = getCoordinates(lon, lat);
+    stopsLayer.addFeature(createPoint(coordinate, displayAddress));
     setRouteInfo({
       ...routeInfo,
       stops: [...routeInfo.stops, coordinate],
@@ -111,8 +113,7 @@ export const ActionComponent = ({
     }
   }, [startLayer, endLayer, stopsLayer, map, routeInfo]);
 
-  const getCoordinates = (searchResult: any) => {
-    const { lon, lat } = searchResult;
+  const getCoordinates = (lon: string, lat: string) => {
     const lonLat = [lon, lat].map((c) => parseFloat(c));
     return fromLonLat(lonLat) as Coordinate;
   };
