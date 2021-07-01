@@ -20,9 +20,9 @@ type ActionComponentProps = {
 };
 
 type RouteInfo = {
-  startPoint: Coordinate | undefined;
-  endPoint: Coordinate | undefined;
-  stops: Coordinate[];
+  startPoint: Feature | undefined;
+  endPoint: Feature | undefined;
+  stops: Feature[];
 };
 
 export const ActionComponent = ({
@@ -38,64 +38,71 @@ export const ActionComponent = ({
     stops: [],
   });
 
-  const { startPoint, endPoint, stops } = routeInfo;
-
   const [calculatedRoute, setCalculatedRoute] = useState(null);
 
   const createPoint = (coordinate: Coordinate, displayAddress?: string) =>
     new Feature({
       type: 'geoMarker',
       geometry: new Point(coordinate),
-      name: displayAddress
+      name: displayAddress,
     });
 
-  const addPointOnClick = useCallback(
-    (e: any) => {
-      const { coordinate } = e;
-      if (!routeInfo.startPoint) {
-        startLayer.addFeature(createPoint(coordinate));
-        setRouteInfo({ ...routeInfo, startPoint: coordinate });
-      } else if (!routeInfo.endPoint) {
-        endLayer.addFeature(createPoint(coordinate));
-        setRouteInfo({ ...routeInfo, endPoint: coordinate });
-      } else {
-        stopsLayer.addFeature(createPoint(coordinate));
-        setRouteInfo({
-          ...routeInfo,
-          stops: [...routeInfo.stops, [coordinate]],
-        });
-      }
-    },
-    [endLayer, routeInfo, startLayer, stopsLayer]
-  );
+  // const addPointOnClick = useCallback(
+  //   (e: any) => {
+  //     const { coordinate } = e;
+  //     if (!routeInfo.startPoint) {
+  //       startLayer.addFeature(createPoint(coordinate));
+  //       setRouteInfo({ ...routeInfo, startPoint: coordinate });
+  //     } else if (!routeInfo.endPoint) {
+  //       endLayer.addFeature(createPoint(coordinate));
+  //       setRouteInfo({ ...routeInfo, endPoint: coordinate });
+  //     } else {
+  //       stopsLayer.addFeature(createPoint(coordinate));
+  //       setRouteInfo({
+  //         ...routeInfo,
+  //         stops: [...routeInfo.stops, [coordinate]],
+  //       });
+  //     }
+  //   },
+  //   [endLayer, routeInfo, startLayer, stopsLayer]
+  // );
 
-  useEffect(() => {
-    map && map.on('singleclick', addPointOnClick);
-    return () => map.un('singleclick', addPointOnClick);
-  }, [map, addPointOnClick]);
+  // useEffect(() => {
+  //   map && map.on('singleclick', addPointOnClick);
+  //   return () => map.un('singleclick', addPointOnClick);
+  // }, [map, addPointOnClick]);
 
-  const addStartFromSearch = ({ displayAddress, lon, lat }: any) => {
-    // const { displayAddress } = searchResult;
-    const coordinate = getCoordinates(lon, lat);
+  const addStartFromSearch = (searchResult: any) => {
+    const point = createRoutePoint(searchResult);
     startLayer.clear();
-    startLayer.addFeature(createPoint(coordinate, displayAddress));
-    setRouteInfo({ ...routeInfo, startPoint: coordinate });
+    startLayer.addFeature(point);
+    setRouteInfo({ ...routeInfo, startPoint: point });
   };
 
-  const addEndFromSearch = ({ displayAddress, lon, lat }: any) => {
-    const coordinate = getCoordinates(lon, lat);
+  const addEndFromSearch = (searchResult: any) => {
+    const point = createRoutePoint(searchResult);
     endLayer.clear();
-    endLayer.addFeature(createPoint(coordinate,  displayAddress));
-    setRouteInfo({ ...routeInfo, endPoint: coordinate });
+    endLayer.addFeature(point);
+    setRouteInfo({ ...routeInfo, endPoint: point });
   };
 
-  const addRoutePointFromSearch = ({ displayAddress, lon, lat }: any) => {
-    const coordinate = getCoordinates(lon, lat);
-    stopsLayer.addFeature(createPoint(coordinate, displayAddress));
+  const addRoutePointFromSearch = (searchResult: any) => {
+    const point = createRoutePoint(searchResult);
+    stopsLayer.addFeature(point);
     setRouteInfo({
       ...routeInfo,
-      stops: [...routeInfo.stops, coordinate],
+      stops: [...routeInfo.stops, point],
     });
+  };
+
+  const createRoutePoint = ({ displayAddress, lon, lat }: any) => {
+    const coordinate = getCoordinates(lon, lat);
+    return createPoint(coordinate, displayAddress);
+  };
+
+  const getCoordinates = (lon: string, lat: string) => {
+    const lonLat = [lon, lat].map((c) => parseFloat(c));
+    return fromLonLat(lonLat) as Coordinate;
   };
 
   useEffect(() => {
@@ -113,29 +120,27 @@ export const ActionComponent = ({
     }
   }, [startLayer, endLayer, stopsLayer, map, routeInfo]);
 
-  const getCoordinates = (lon: string, lat: string) => {
-    const lonLat = [lon, lat].map((c) => parseFloat(c));
-    return fromLonLat(lonLat) as Coordinate;
-  };
-
   const optimize = async () => {
     routeLayer.clear();
-    const route = await calculateRoute(startLayer, endLayer, stopsLayer);
+    const route = await calculateRoute(routeInfo);
     route && setCalculatedRoute(route);
   };
+
+  useEffect(() => map && calculateRoute && console.log(calculateRoute), [map]);
 
   return (
     <div className="action-component">
       Create your best delivery route
       <RoutePoints
-        start={startPoint}
-        end={endPoint}
-        stops={stops}
         updateStartFunction={addStartFromSearch}
         updateEndFunction={addEndFromSearch}
         addStopsFunction={addRoutePointFromSearch}
       />
-      <div onClick={optimize}>Calculate Route</div>
+      {routeInfo.startPoint &&
+        routeInfo.endPoint &&
+        !!routeInfo.stops.length && (
+          <div onClick={optimize}>Calculate Route</div>
+        )}
       {calculatedRoute && (
         <ShowRoute route={calculatedRoute} map={map} layer={routeLayer} />
       )}

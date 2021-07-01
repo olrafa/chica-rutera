@@ -1,21 +1,17 @@
+import { Feature } from 'ol';
 import { Coordinate } from 'ol/coordinate';
 import Geometry from 'ol/geom/Geometry';
 import Point from 'ol/geom/Point';
-import { Vector as VectorSource } from 'ol/source';
 import { orsUrl } from './orsUrl';
 
-
-const createStopsPoints = (pointLayer: VectorSource) => {
-  const points = pointLayer.getFeatures();
-  const wgs84points = points.map((p) => getWgs84Coordinates(p));
-  return wgs84points
-    .filter((p) => p)
-    .map((p, i) => {
-      return {
-        id: i + 1,
-        location: p,
-      };
-    });
+const createStopsPoints = (stops: Feature[]) => {
+  const wgs84points = stops.map((s) => getWgs84Coordinates(s));
+  return wgs84points.map((s, i) => {
+    return {
+      id: i + 1,
+      location: s,
+    };
+  });
 };
 
 const getWgs84Coordinates = (point: any) => {
@@ -31,20 +27,26 @@ const getWgs84Coordinates = (point: any) => {
   }
 };
 
-export const calculateRoute = async (
-  startPoint: VectorSource,
-  endPoint: VectorSource,
-  stopsPoints: VectorSource,
-) => {
-  const requestPoints = createStopsPoints(stopsPoints);
+type RouteInfoProps = {
+  startPoint: Feature | undefined;
+  endPoint: Feature | undefined;
+  stops: Feature[];
+};
+
+export const calculateRoute = async ({
+  startPoint,
+  endPoint,
+  stops,
+}: RouteInfoProps) => {
+  const requestPoints = createStopsPoints(stops);
   const orsRequest = {
     jobs: requestPoints,
     vehicles: [
       {
         id: 1,
         profile: 'driving-car',
-        start: getWgs84Coordinates(startPoint.getFeatures()[0]),
-        end: getWgs84Coordinates(endPoint.getFeatures()[0]),
+        start: getWgs84Coordinates(startPoint),
+        end: getWgs84Coordinates(endPoint),
       },
     ],
     options: {

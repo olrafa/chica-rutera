@@ -3,18 +3,12 @@ import { addressSearch } from '../requests/addressSearch';
 import { formatAddress } from '../requests/formatAddress';
 
 type RoutePointsProps = {
-  start: number[] | undefined;
-  end: number[] | undefined;
-  stops: number[][];
   updateStartFunction: (location: any) => void;
   updateEndFunction: (location: any) => void;
   addStopsFunction: (location: any) => void;
 };
 
 export const RoutePoints = ({
-  start,
-  end,
-  stops,
   updateStartFunction,
   updateEndFunction,
   addStopsFunction,
