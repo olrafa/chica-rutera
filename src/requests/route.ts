@@ -5,11 +5,17 @@ import Point from 'ol/geom/Point';
 import { orsUrl } from './orsUrl';
 
 const createStopsPoints = (stops: Feature[]) => {
-  const wgs84points = stops.map((s) => getWgs84Coordinates(s));
+  stops.forEach((s, i) => s.setId(i + 73));
+  const wgs84points = stops.map((s) => {
+    return {
+      coords: getWgs84Coordinates(s),
+      pointId: s.getId(),
+    };
+  });
   return wgs84points.map((s, i) => {
     return {
-      id: i + 1,
-      location: s,
+      id: s.pointId,
+      location: s.coords,
     };
   });
 };

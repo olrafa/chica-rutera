@@ -126,7 +126,11 @@ export const ActionComponent = ({
     route && setCalculatedRoute(route);
   };
 
-  useEffect(() => map && calculateRoute && console.log(calculateRoute), [map]);
+  useEffect(() => {
+    if (map && calculatedRoute) {
+      console.log(calculatedRoute, routeInfo.stops);
+    }
+  }, [calculatedRoute, map, routeInfo.stops]);
 
   return (
     <div className="action-component">

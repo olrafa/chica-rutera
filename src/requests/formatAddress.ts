@@ -79,9 +79,11 @@ export const formatAddress = (address: any) => {
       bridge ||
       tunnel ||
       waterway,
-    street: `${road}${
-      house_number || house_name ? ` ${house_number || house_name}` : ''
-    }`,
+    street: road
+      ? `${road}${
+          house_number || house_name ? ` ${house_number || house_name}` : ''
+        }`
+      : undefined,
     neighbourhood:
       neighbourhood ||
       suburb ||
