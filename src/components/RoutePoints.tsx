@@ -1,3 +1,4 @@
+import { Feature } from 'ol';
 import React, { useState } from 'react';
 import { addressSearch } from '../requests/addressSearch';
 import { formatAddress } from '../requests/formatAddress';
@@ -6,14 +7,18 @@ type RoutePointsProps = {
   updateStartFunction: (location: any) => void;
   updateEndFunction: (location: any) => void;
   addStopsFunction: (location: any) => void;
+  removeStopsFunction: (stop: Feature) => void;
+  stops: Feature[];
 };
 
 export const RoutePoints = ({
   updateStartFunction,
   updateEndFunction,
   addStopsFunction,
+  removeStopsFunction,
+  stops,
 }: RoutePointsProps) => {
-  const [stopsList, setStopsList] = useState<string[]>([]);
+  // const [stopsList, setStopsList] = useState<string[]>([]);
 
   const handleAddressInput = async (
     e: { key: string; target: any },
@@ -41,7 +46,7 @@ export const RoutePoints = ({
       updateEndFunction(r);
     } else if (item === 'stops') {
       addStopsFunction(r);
-      setStopsList([...stopsList, r.displayAddress]);
+      // setStopsList([...stopsList, r.displayAddress]);
     }
   };
 
@@ -71,8 +76,15 @@ export const RoutePoints = ({
           />
         </div>
         <div>
-          {stopsList.map((s, i) => (
-            <input type="text" key={i + 1} value={s} disabled={true} />
+          {stops.map((s, i) => (
+            <div key={i + 1}>
+              <input
+                type="text"
+                value={s.get('name')}
+                disabled={true}
+              />
+              <span onClick={() => removeStopsFunction(s)}>&times;</span>
+            </div>
           ))}
         </div>
       </div>

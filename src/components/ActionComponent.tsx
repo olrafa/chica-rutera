@@ -95,6 +95,14 @@ export const ActionComponent = ({
     });
   };
 
+  const removeStopFromList = (stop: Feature) => {
+    stopsLayer.removeFeature(stop);
+    setRouteInfo({
+      ...routeInfo,
+      stops: routeInfo.stops.filter((s) => s !== stop),
+    });
+  };
+
   const createRoutePoint = ({ displayAddress, lon, lat }: any) => {
     const coordinate = getCoordinates(lon, lat);
     return createPoint(coordinate, displayAddress);
@@ -136,12 +144,17 @@ export const ActionComponent = ({
   return (
     <div className="action-component">
       Create your best delivery route
-      <RoutePoints
-        updateStartFunction={addStartFromSearch}
-        updateEndFunction={addEndFromSearch}
-        addStopsFunction={addRoutePointFromSearch}
-      />
-      {routeInfo.startPoint &&
+      {!calculatedRoute && (
+        <RoutePoints
+          updateStartFunction={addStartFromSearch}
+          updateEndFunction={addEndFromSearch}
+          addStopsFunction={addRoutePointFromSearch}
+          removeStopsFunction={removeStopFromList}
+          stops={routeInfo.stops}
+        />
+      )}
+      {!calculatedRoute &&
+        routeInfo.startPoint &&
         routeInfo.endPoint &&
         !!routeInfo.stops.length && (
           <div onClick={optimize}>Calculate Route</div>

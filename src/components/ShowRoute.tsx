@@ -62,6 +62,10 @@ export const ShowRoute = ({
     lineLayer.addFeature(line);
   });
 
+  const zoomToRoute = () => map.getView().fit(lineLayer.getExtent(), { padding: [50, 50, 50, 200] });
+
+  zoomToRoute();
+
   map.getView().fit(lineLayer.getExtent(), { padding: [50, 50, 50, 200] });
 
   const routesDisplay = routes.map((r: RouteDetail) => {
@@ -100,6 +104,7 @@ export const ShowRoute = ({
             <div>
               <b>End:</b> {endPoint.get('name')}
             </div>
+            <div onClick={zoomToRoute}>Zoom to route</div>
           </div>
         );
       })}
