@@ -10,7 +10,7 @@ import './ActionComponent.css';
 import { ShowRoute } from './ShowRoute';
 import { RoutePoints } from './RoutePoints';
 import { Coordinate } from 'ol/coordinate';
-import { reverseGeocode } from '../requests/reverseGeocode';
+import { reverseGeocode } from '../requests/geoapify';
 
 type ActionComponentProps = {
   map: Map;
@@ -47,33 +47,6 @@ export const ActionComponent = ({
       geometry: new Point(coordinate),
       name: formatted,
     });
-
-  // const addPointOnClick = useCallback(
-  //   (e: any) => {
-  //     const { coordinate } = e;
-  //     const address = reverseGeocode(toLonLat(coordinate));
-  //     const { properties } = address;
-  //     if (!routeInfo.startPoint) {
-  //       startLayer.addFeature(createPoint(coordinate));
-  //       setRouteInfo({ ...routeInfo, startPoint: coordinate });
-  //     } else if (!routeInfo.endPoint) {
-  //       endLayer.addFeature(createPoint(coordinate));
-  //       setRouteInfo({ ...routeInfo, endPoint: coordinate });
-  //     } else {
-  //       stopsLayer.addFeature(createPoint(coordinate));
-  //       setRouteInfo({
-  //         ...routeInfo,
-  //         stops: [...routeInfo.stops, [coordinate]],
-  //       });
-  //     }
-  //   },
-  //   [endLayer, routeInfo, startLayer, stopsLayer]
-  // );
-
-  // useEffect(() => {
-  //   map && map.on('singleclick', addPointOnClick);
-  //   return () => map.un('singleclick', addPointOnClick);
-  // }, [map, addPointOnClick]);
 
   const addStartFromSearch = (searchResult: any) => {
     const point = createRoutePoint(searchResult);
@@ -116,6 +89,28 @@ export const ActionComponent = ({
     return fromLonLat(lonLat) as Coordinate;
   };
 
+  const addPointOnClick = useCallback(
+    (e: any) => {
+      const { coordinate } = e;
+      reverseGeocode(toLonLat(coordinate)).then((searchResult) => {
+        console.log(searchResult);
+        if (!routeInfo.startPoint) {
+          addStartFromSearch(searchResult);
+        } else if (!routeInfo.endPoint) {
+          addEndFromSearch(searchResult);
+        } else {
+          addRoutePointFromSearch(searchResult);
+        }
+      });
+    },
+    [endLayer, routeInfo, startLayer, stopsLayer]
+  );
+
+  useEffect(() => {
+    map && map.on('singleclick', addPointOnClick);
+    return () => map.un('singleclick', addPointOnClick);
+  }, [map, addPointOnClick]);
+
   useEffect(() => {
     if (
       map &&
@@ -148,6 +143,8 @@ export const ActionComponent = ({
           removeStopsFunction={removeStopFromList}
           stops={routeInfo.stops}
           mapView={map.getView()}
+          currentStart={routeInfo.startPoint?.get('name') || ''}
+          currentEnd={routeInfo.endPoint?.get('name') || ''}
         />
       )}
       {!calculatedRoute &&

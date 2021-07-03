@@ -2,7 +2,8 @@ import { Feature } from 'ol';
 import { Coordinate } from 'ol/coordinate';
 import Geometry from 'ol/geom/Geometry';
 import Point from 'ol/geom/Point';
-import { orsUrl } from './apiUrls';
+
+const orsUrl = 'https://api.openrouteservice.org/';
 
 const createStopsPoints = (stops: Feature[]) => {
   stops.forEach((s, i) => s.setId(i + 73));

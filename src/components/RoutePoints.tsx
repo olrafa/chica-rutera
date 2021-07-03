@@ -1,7 +1,6 @@
 import { Feature, View } from 'ol';
 import { toLonLat } from 'ol/proj';
 import React from 'react';
-import { formatAddress } from '../requests/formatAddress';
 import { addressSearch } from '../requests/geoapify';
 
 type RoutePointsProps = {
@@ -10,6 +9,8 @@ type RoutePointsProps = {
   addStopsFunction: (location: any) => void;
   removeStopsFunction: (stop: Feature) => void;
   stops: Feature[];
+  currentStart: string;
+  currentEnd: string;
   mapView: View;
 };
 
@@ -20,6 +21,8 @@ export const RoutePoints = ({
   removeStopsFunction,
   stops,
   mapView,
+  currentStart,
+  currentEnd
 }: RoutePointsProps) => {
   const handleAddressInput = async (
     e: { key: string; target: any },
@@ -66,12 +69,14 @@ export const RoutePoints = ({
         type="text"
         onKeyDown={(e) => handleAddressInput(e, 'start')}
         placeholder={placeHolderTxt}
+        value={currentStart}
       />
       <div>Ending point:</div>
       <input
         type="text"
         onKeyDown={(e) => handleAddressInput(e, 'end')}
         placeholder={placeHolderTxt}
+        value={currentEnd}
       />
       <div>
         Add stops:

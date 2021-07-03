@@ -90,7 +90,7 @@ function App() {
         ],
         view: new View({
           center: fromLonLat([0, 0]),
-          zoom: 12,
+          zoom: 3,
           maxZoom: 19,
         }),
       });
@@ -109,6 +109,7 @@ function App() {
         const { latitude, longitude } = r.location;
         const userLocation = fromLonLat([longitude, latitude]);
         map.getView().setCenter(userLocation);
+      map.getView().setZoom(12);
       });
     }
   }, [map]);
