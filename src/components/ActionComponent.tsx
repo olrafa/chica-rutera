@@ -2,7 +2,7 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import Map from 'ol/Map';
 import { Vector as VectorSource } from 'ol/source';
-import { fromLonLat } from 'ol/proj';
+import { fromLonLat, toLonLat } from 'ol/proj';
 import { createEmpty, extend, Extent } from 'ol/extent';
 import React, { useEffect, useState, useCallback } from 'react';
 import { calculateRoute } from '../requests/route';
@@ -10,6 +10,7 @@ import './ActionComponent.css';
 import { ShowRoute } from './ShowRoute';
 import { RoutePoints } from './RoutePoints';
 import { Coordinate } from 'ol/coordinate';
+import { reverseGeocode } from '../requests/reverseGeocode';
 
 type ActionComponentProps = {
   map: Map;
@@ -50,6 +51,8 @@ export const ActionComponent = ({
   // const addPointOnClick = useCallback(
   //   (e: any) => {
   //     const { coordinate } = e;
+  //     const address = reverseGeocode(toLonLat(coordinate));
+  //     const { properties } = address;
   //     if (!routeInfo.startPoint) {
   //       startLayer.addFeature(createPoint(coordinate));
   //       setRouteInfo({ ...routeInfo, startPoint: coordinate });
@@ -133,13 +136,6 @@ export const ActionComponent = ({
     const route = await calculateRoute(routeInfo);
     route && setCalculatedRoute(route);
   };
-
-  // useEffect(() => {
-  //   if (map && routeInfo.stops.length) {
-  //     stopsLayer.getFeatures().forEach((s, i) => s.setId(i + 73));
-  //     stopsLayer.getFeatures().forEach((s) => console.log(s));
-  //   }
-  // }, [map, routeInfo.stops, stopsLayer]);
 
   return (
     <div className="action-component">

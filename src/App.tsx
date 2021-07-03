@@ -15,7 +15,9 @@ import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
 import 'ol/ol.css';
 import './App.css';
 
+// other imports
 import { ActionComponent } from './components/ActionComponent';
+import { getIpInfo } from './requests/geoapify';
 
 function App() {
   const [map, setMap] = useState<Map | null>(null);
@@ -86,7 +88,7 @@ function App() {
           routeVector,
         ],
         view: new View({
-          center: fromLonLat([-58.43, -34.63]),
+          center: fromLonLat([0, 0]),
           zoom: 12,
           maxZoom: 19,
         }),
@@ -99,6 +101,16 @@ function App() {
       setMap(initialMap);
     }
   }, []);
+
+  useEffect(() => {
+    if (map) {
+      getIpInfo().then((r) => {
+        const { latitude, longitude } = r.location;
+        const userLocation = fromLonLat([longitude, latitude]);
+        map.getView().setCenter(userLocation);
+      });
+    }
+  }, [map]);
 
   return (
     <div className="App">

@@ -1,6 +1,6 @@
 import { Feature } from 'ol';
-import React, { useState } from 'react';
-import { addressSearch } from '../requests/addressSearch';
+import React from 'react';
+import { addressSearch } from '../requests/geoapify';
 import { formatAddress } from '../requests/formatAddress';
 
 type RoutePointsProps = {
