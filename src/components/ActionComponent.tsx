@@ -41,11 +41,11 @@ export const ActionComponent = ({
 
   const [calculatedRoute, setCalculatedRoute] = useState(null);
 
-  const createPoint = (coordinate: Coordinate, displayAddress?: string) =>
+  const createPoint = (coordinate: Coordinate, formatted?: string) =>
     new Feature({
       type: 'geoMarker',
       geometry: new Point(coordinate),
-      name: displayAddress,
+      name: formatted,
     });
 
   // const addPointOnClick = useCallback(
@@ -106,9 +106,9 @@ export const ActionComponent = ({
     });
   };
 
-  const createRoutePoint = ({ displayAddress, lon, lat }: any) => {
+  const createRoutePoint = ({ formatted, lon, lat }: any) => {
     const coordinate = getCoordinates(lon, lat);
-    return createPoint(coordinate, displayAddress);
+    return createPoint(coordinate, formatted);
   };
 
   const getCoordinates = (lon: string, lat: string) => {
@@ -140,13 +140,14 @@ export const ActionComponent = ({
   return (
     <div className="action-component">
       Create your best delivery route
-      {!calculatedRoute && (
+      {!calculatedRoute && map && (
         <RoutePoints
           updateStartFunction={addStartFromSearch}
           updateEndFunction={addEndFromSearch}
           addStopsFunction={addRoutePointFromSearch}
           removeStopsFunction={removeStopFromList}
           stops={routeInfo.stops}
+          mapView={map.getView()}
         />
       )}
       {!calculatedRoute &&

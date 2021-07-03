@@ -1,7 +1,8 @@
-import { Feature } from 'ol';
+import { Feature, View } from 'ol';
+import { toLonLat } from 'ol/proj';
 import React from 'react';
-import { addressSearch } from '../requests/geoapify';
 import { formatAddress } from '../requests/formatAddress';
+import { addressSearch } from '../requests/geoapify';
 
 type RoutePointsProps = {
   updateStartFunction: (location: any) => void;
@@ -9,6 +10,7 @@ type RoutePointsProps = {
   addStopsFunction: (location: any) => void;
   removeStopsFunction: (stop: Feature) => void;
   stops: Feature[];
+  mapView: View;
 };
 
 export const RoutePoints = ({
@@ -17,18 +19,24 @@ export const RoutePoints = ({
   addStopsFunction,
   removeStopsFunction,
   stops,
+  mapView,
 }: RoutePointsProps) => {
-  // const [stopsList, setStopsList] = useState<string[]>([]);
-
   const handleAddressInput = async (
     e: { key: string; target: any },
     item: string
   ) => {
     if (e.key === 'Enter') {
-      addressSearch(e.target.value).then((r) => {
+      let mapCenter = [0, 0];
+      const viewCenter = mapView.getCenter();
+      if (viewCenter !== undefined) {
+        mapCenter = toLonLat(viewCenter);
+      }
+
+      const [lon, lat] = mapCenter;
+      addressSearch(e.target.value, lon, lat).then((r) => {
         if (r) {
-          r.displayAddress = formatAddress(r.address);
-          e.target.value = item === 'stops' ? '' : r.displayAddress;
+          // r.displayAddress = formatAddress(r.address);
+          e.target.value = item === 'stops' ? '' : r.formatted;
           updateState(r, item);
         } else {
           alert(
@@ -46,7 +54,6 @@ export const RoutePoints = ({
       updateEndFunction(r);
     } else if (item === 'stops') {
       addStopsFunction(r);
-      // setStopsList([...stopsList, r.displayAddress]);
     }
   };
 
@@ -78,11 +85,7 @@ export const RoutePoints = ({
         <div>
           {stops.map((s, i) => (
             <div key={i + 1}>
-              <input
-                type="text"
-                value={s.get('name')}
-                disabled={true}
-              />
+              <input type="text" value={s.get('name')} disabled={true} />
               <span onClick={() => removeStopsFunction(s)}>&times;</span>
             </div>
           ))}

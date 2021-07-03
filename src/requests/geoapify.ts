@@ -18,15 +18,19 @@ const geoApifyFetcher = async (url: string) => {
   const data = await fetch(url, requestOptions);
   const response = await data.json();
   const [address] = response.features;
-  return address;
+  return address.properties;
 };
 
-export const addressSearch = async (address: string) => {
+export const addressSearch = async (
+  address: string,
+  lon?: number,
+  lat?: number
+) => {
   const searchUrl = geocoder + 'search';
   const text = `?text=${address}`;
   const limit = '&limit=1';
   const bias =
-    '&bias=proximity:4.458368182798949,51.913643798380605|countrycode:none';
+    lat || lon ? `&bias=proximity:${lon},${lat}|countrycode:none` : '';
 
   const url = searchUrl + text + limit + bias + keyParam;
 
