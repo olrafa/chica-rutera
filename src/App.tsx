@@ -109,7 +109,7 @@ function App() {
         const { latitude, longitude } = r.location;
         const userLocation = fromLonLat([longitude, latitude]);
         map.getView().setCenter(userLocation);
-      map.getView().setZoom(12);
+      map.getView().setZoom(13);
       });
     }
   }, [map]);

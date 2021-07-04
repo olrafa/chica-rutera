@@ -61,16 +61,16 @@ export const ShowRoute = ({
         return (
           <div key={i}>
             Route {i + 1}
-            <div>
+            <div className="route-address">
               <b>Start:</b>{' '}
               {startPoint ? startPoint.get('name') : 'Starting point'}
             </div>
             {rd.steps.map((s: RouteStep, i: number) => (
-              <div key={i + 1}>
+              <div key={i + 1} className="route-address">
                 <b>Stop {i + 1}</b>: {s.displayName}
               </div>
             ))}
-            <div>
+            <div className="route-address">
               <b>End:</b> {endPoint ? endPoint.get('name') : 'Ending point'}
             </div>
             <div onClick={zoomToRoute}>Zoom to route</div>

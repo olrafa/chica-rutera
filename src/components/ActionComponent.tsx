@@ -7,7 +7,7 @@ import { reverseGeocode } from '../requests/geoapify';
 import { calculateRoute } from '../requests/route';
 import { ActionComponentProps, Destinations } from '../types/route.types';
 import { createRoutePoint } from '../utils/createPoints';
-import './ActionComponent.css';
+import './components.css';
 import { RoutePoints } from './RoutePoints';
 import { ShowRoute } from './ShowRoute';
 
