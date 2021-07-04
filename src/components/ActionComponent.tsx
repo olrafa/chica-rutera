@@ -1,30 +1,15 @@
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
-import Map from 'ol/Map';
-import { Vector as VectorSource } from 'ol/source';
-import { fromLonLat, toLonLat } from 'ol/proj';
 import { createEmpty, extend, Extent } from 'ol/extent';
-import React, { useEffect, useState, useCallback } from 'react';
-import { calculateRoute } from '../requests/route';
-import './ActionComponent.css';
-import { ShowRoute } from './ShowRoute';
-import { RoutePoints } from './RoutePoints';
-import { Coordinate } from 'ol/coordinate';
+import Feature from 'ol/Feature';
+import { toLonLat } from 'ol/proj';
+import { Vector as VectorSource } from 'ol/source';
+import React, { useCallback, useEffect, useState } from 'react';
 import { reverseGeocode } from '../requests/geoapify';
-
-type ActionComponentProps = {
-  map: Map;
-  startLayer: VectorSource;
-  endLayer: VectorSource;
-  stopsLayer: VectorSource;
-  routeLayer: VectorSource;
-};
-
-type RouteInfo = {
-  startPoint: Feature | undefined;
-  endPoint: Feature | undefined;
-  stops: Feature[];
-};
+import { calculateRoute } from '../requests/route';
+import { createRoutePoint } from '../utils/createPoints';
+import './ActionComponent.css';
+import { ActionComponentProps, RouteInfo } from './ActionComponent.types';
+import { RoutePoints } from './RoutePoints';
+import { ShowRoute } from './ShowRoute';
 
 export const ActionComponent = ({
   map,
@@ -41,12 +26,12 @@ export const ActionComponent = ({
 
   const [calculatedRoute, setCalculatedRoute] = useState(null);
 
-  const createPoint = (coordinate: Coordinate, formatted?: string) =>
-    new Feature({
-      type: 'geoMarker',
-      geometry: new Point(coordinate),
-      name: formatted,
-    });
+  const addFeatureFromSearch = (searchResult: any, layer: VectorSource) => {
+    const point = createRoutePoint(searchResult);
+    layer !== stopsLayer && layer.clear();
+    layer.addFeature(point);
+    return point;
+  };
 
   const addStartFromSearch = (searchResult: any) => {
     const point = createRoutePoint(searchResult);
@@ -79,27 +64,24 @@ export const ActionComponent = ({
     });
   };
 
-  const createRoutePoint = ({ formatted, lon, lat }: any) => {
-    const coordinate = getCoordinates(lon, lat);
-    return createPoint(coordinate, formatted);
-  };
-
-  const getCoordinates = (lon: string, lat: string) => {
-    const lonLat = [lon, lat].map((c) => parseFloat(c));
-    return fromLonLat(lonLat) as Coordinate;
-  };
-
   const addPointOnClick = useCallback(
     (e: any) => {
       const { coordinate } = e;
       reverseGeocode(toLonLat(coordinate)).then((searchResult) => {
         console.log(searchResult);
+        let point;
         if (!routeInfo.startPoint) {
-          addStartFromSearch(searchResult);
+          point = addFeatureFromSearch(searchResult, startLayer);
+          setRouteInfo({ ...routeInfo, startPoint: point });
         } else if (!routeInfo.endPoint) {
-          addEndFromSearch(searchResult);
+          point = addFeatureFromSearch(searchResult, endLayer);
+          setRouteInfo({ ...routeInfo, endPoint: point });
         } else {
-          addRoutePointFromSearch(searchResult);
+          point = addFeatureFromSearch(searchResult, stopsLayer);
+          setRouteInfo({
+            ...routeInfo,
+            stops: [...routeInfo.stops, point],
+          });
         }
       });
     },

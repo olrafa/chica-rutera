@@ -22,7 +22,7 @@ export const RoutePoints = ({
   stops,
   mapView,
   currentStart,
-  currentEnd
+  currentEnd,
 }: RoutePointsProps) => {
   const handleAddressInput = async (
     e: { key: string; target: any },
@@ -69,14 +69,14 @@ export const RoutePoints = ({
         type="text"
         onKeyDown={(e) => handleAddressInput(e, 'start')}
         placeholder={placeHolderTxt}
-        value={currentStart}
+        defaultValue={currentStart || ''}
       />
       <div>Ending point:</div>
       <input
         type="text"
         onKeyDown={(e) => handleAddressInput(e, 'end')}
         placeholder={placeHolderTxt}
-        value={currentEnd}
+        defaultValue={currentEnd || ''}
       />
       <div>
         Add stops:
