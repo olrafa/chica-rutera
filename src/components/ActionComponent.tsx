@@ -5,9 +5,9 @@ import { Vector as VectorSource } from 'ol/source';
 import React, { useCallback, useEffect, useState } from 'react';
 import { reverseGeocode } from '../requests/geoapify';
 import { calculateRoute } from '../requests/route';
+import { ActionComponentProps, Destinations } from '../types/route.types';
 import { createRoutePoint } from '../utils/createPoints';
 import './ActionComponent.css';
-import { ActionComponentProps, RouteInfo } from './ActionComponent.types';
 import { RoutePoints } from './RoutePoints';
 import { ShowRoute } from './ShowRoute';
 
@@ -18,7 +18,7 @@ export const ActionComponent = ({
   stopsLayer,
   routeLayer,
 }: ActionComponentProps) => {
-  const [routeInfo, setRouteInfo] = useState<RouteInfo>({
+  const [destinations, setDestinations] = useState<Destinations>({
     startPoint: undefined,
     endPoint: undefined,
     stops: [],
@@ -37,30 +37,30 @@ export const ActionComponent = ({
     const point = createRoutePoint(searchResult);
     startLayer.clear();
     startLayer.addFeature(point);
-    setRouteInfo({ ...routeInfo, startPoint: point });
+    setDestinations({ ...destinations, startPoint: point });
   };
 
   const addEndFromSearch = (searchResult: any) => {
     const point = createRoutePoint(searchResult);
     endLayer.clear();
     endLayer.addFeature(point);
-    setRouteInfo({ ...routeInfo, endPoint: point });
+    setDestinations({ ...destinations, endPoint: point });
   };
 
   const addRoutePointFromSearch = (searchResult: any) => {
     const point = createRoutePoint(searchResult);
     stopsLayer.addFeature(point);
-    setRouteInfo({
-      ...routeInfo,
-      stops: [...routeInfo.stops, point],
+    setDestinations({
+      ...destinations,
+      stops: [...destinations.stops, point],
     });
   };
 
   const removeStopFromList = (stop: Feature) => {
     stopsLayer.removeFeature(stop);
-    setRouteInfo({
-      ...routeInfo,
-      stops: routeInfo.stops.filter((s) => s !== stop),
+    setDestinations({
+      ...destinations,
+      stops: destinations.stops.filter((s) => s !== stop),
     });
   };
 
@@ -70,22 +70,22 @@ export const ActionComponent = ({
       reverseGeocode(toLonLat(coordinate)).then((searchResult) => {
         console.log(searchResult);
         let point;
-        if (!routeInfo.startPoint) {
+        if (!destinations.startPoint) {
           point = addFeatureFromSearch(searchResult, startLayer);
-          setRouteInfo({ ...routeInfo, startPoint: point });
-        } else if (!routeInfo.endPoint) {
+          setDestinations({ ...destinations, startPoint: point });
+        } else if (!destinations.endPoint) {
           point = addFeatureFromSearch(searchResult, endLayer);
-          setRouteInfo({ ...routeInfo, endPoint: point });
+          setDestinations({ ...destinations, endPoint: point });
         } else {
           point = addFeatureFromSearch(searchResult, stopsLayer);
-          setRouteInfo({
-            ...routeInfo,
-            stops: [...routeInfo.stops, point],
+          setDestinations({
+            ...destinations,
+            stops: [...destinations.stops, point],
           });
         }
       });
     },
-    [endLayer, routeInfo, startLayer, stopsLayer]
+    [endLayer, destinations, startLayer, stopsLayer]
   );
 
   useEffect(() => {
@@ -96,7 +96,7 @@ export const ActionComponent = ({
   useEffect(() => {
     if (
       map &&
-      (routeInfo.startPoint || routeInfo.endPoint || routeInfo.stops.length)
+      (destinations.startPoint || destinations.endPoint || destinations.stops.length)
     ) {
       let extent = createEmpty();
       [startLayer, endLayer, stopsLayer].forEach(function (layer) {
@@ -106,11 +106,11 @@ export const ActionComponent = ({
       });
       map.getView().fit(extent, { padding: Array(4).fill(150) });
     }
-  }, [startLayer, endLayer, stopsLayer, map, routeInfo]);
+  }, [startLayer, endLayer, stopsLayer, map, destinations]);
 
   const optimize = async () => {
     routeLayer.clear();
-    const route = await calculateRoute(routeInfo);
+    const route = await calculateRoute(destinations);
     route && setCalculatedRoute(route);
   };
 
@@ -123,29 +123,27 @@ export const ActionComponent = ({
           updateEndFunction={addEndFromSearch}
           addStopsFunction={addRoutePointFromSearch}
           removeStopsFunction={removeStopFromList}
-          stops={routeInfo.stops}
+          stops={destinations.stops}
           mapView={map.getView()}
-          currentStart={routeInfo.startPoint?.get('name') || ''}
-          currentEnd={routeInfo.endPoint?.get('name') || ''}
+          currentStart={destinations.startPoint?.get('name') || ''}
+          currentEnd={destinations.endPoint?.get('name') || ''}
         />
       )}
       {!calculatedRoute &&
-        routeInfo.startPoint &&
-        routeInfo.endPoint &&
-        !!routeInfo.stops.length && (
+        destinations.startPoint &&
+        destinations.endPoint &&
+        !!destinations.stops.length && (
           <div onClick={optimize}>Calculate Route</div>
         )}
       {calculatedRoute &&
-        routeInfo.startPoint &&
-        routeInfo.endPoint &&
-        !!routeInfo.stops.length && (
+        destinations.startPoint &&
+        destinations.endPoint &&
+        !!destinations.stops.length && (
           <ShowRoute
             route={calculatedRoute}
             map={map}
             lineLayer={routeLayer}
-            startPoint={routeInfo.startPoint}
-            endPoint={routeInfo.endPoint}
-            stops={routeInfo.stops}
+            destinations={destinations}
           />
         )}
     </div>

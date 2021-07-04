@@ -1,51 +1,18 @@
-import React from 'react';
-
 import Feature from 'ol/Feature';
 import Polyline from 'ol/format/Polyline';
 import Geometry from 'ol/geom/Geometry';
-import { Map } from 'ol';
-import { Vector as VectorSource } from 'ol/source';
-import { Coordinate } from 'ol/coordinate';
-
-type RouteInfo = {
-  route: any;
-  map: Map;
-  lineLayer: VectorSource;
-  startPoint: Feature;
-  endPoint: Feature;
-  stops: Feature[];
-};
-
-type RouteStep = {
-  arrival: number;
-  distance: number;
-  duration: number;
-  location: Coordinate;
-  type: string;
-  displayName?: string;
-  id?: number;
-};
-
-type RouteDetail = {
-  cost: number;
-  distance: number;
-  duration: number;
-  geometry: string;
-  service: number;
-  steps: RouteStep[];
-  vehicle: number;
-  waiting_time: number;
-};
+import React from 'react';
+import { RouteDetail, RouteInfo, RouteStep } from '../types/route.types';
 
 export const ShowRoute = ({
   route,
   map,
   lineLayer,
-  startPoint,
-  endPoint,
-  stops,
+  destinations,
 }: RouteInfo) => {
   const { routes } = route;
+
+  const { startPoint, endPoint, stops } = destinations;
 
   const routeLines = routes.map(({ geometry }: any) => {
     const trace = new Polyline().readGeometry(geometry, {
@@ -62,7 +29,8 @@ export const ShowRoute = ({
     lineLayer.addFeature(line);
   });
 
-  const zoomToRoute = () => map.getView().fit(lineLayer.getExtent(), { padding: [50, 50, 50, 200] });
+  const zoomToRoute = () =>
+    map.getView().fit(lineLayer.getExtent(), { padding: [50, 50, 50, 200] });
 
   zoomToRoute();
 
@@ -94,7 +62,8 @@ export const ShowRoute = ({
           <div key={i}>
             Route {i + 1}
             <div>
-              <b>Start:</b> {startPoint.get('name')}
+              <b>Start:</b>{' '}
+              {startPoint ? startPoint.get('name') : 'Starting point'}
             </div>
             {rd.steps.map((s: RouteStep, i: number) => (
               <div key={i + 1}>
@@ -102,7 +71,7 @@ export const ShowRoute = ({
               </div>
             ))}
             <div>
-              <b>End:</b> {endPoint.get('name')}
+              <b>End:</b> {endPoint ? endPoint.get('name') : 'Ending point'}
             </div>
             <div onClick={zoomToRoute}>Zoom to route</div>
           </div>
