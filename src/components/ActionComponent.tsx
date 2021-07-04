@@ -64,6 +64,15 @@ export const ActionComponent = ({
     });
   };
 
+  const copyEndFromStart = () => {
+    const { startPoint } = destinations;
+    if (startPoint !== undefined) {
+      endLayer.clear();
+      endLayer.addFeature(startPoint);
+      setDestinations({ ...destinations, endPoint: startPoint });
+    }
+  };
+
   const addPointOnClick = useCallback(
     (e: any) => {
       const { coordinate } = e;
@@ -96,7 +105,9 @@ export const ActionComponent = ({
   useEffect(() => {
     if (
       map &&
-      (destinations.startPoint || destinations.endPoint || destinations.stops.length)
+      (destinations.startPoint ||
+        destinations.endPoint ||
+        destinations.stops.length)
     ) {
       let extent = createEmpty();
       [startLayer, endLayer, stopsLayer].forEach(function (layer) {
@@ -127,6 +138,7 @@ export const ActionComponent = ({
           mapView={map.getView()}
           currentStart={destinations.startPoint?.get('name') || ''}
           currentEnd={destinations.endPoint?.get('name') || ''}
+          copyEndFromStart={copyEndFromStart}
         />
       )}
       {!calculatedRoute &&

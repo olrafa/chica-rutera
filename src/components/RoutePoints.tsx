@@ -12,6 +12,7 @@ type RoutePointsProps = {
   currentStart: string;
   currentEnd: string;
   mapView: View;
+  copyEndFromStart: () => void;
 };
 
 export const RoutePoints = ({
@@ -23,6 +24,7 @@ export const RoutePoints = ({
   mapView,
   currentStart,
   currentEnd,
+  copyEndFromStart,
 }: RoutePointsProps) => {
   const handleAddressInput = async (
     e: { key: string; target: any },
@@ -78,6 +80,7 @@ export const RoutePoints = ({
         placeholder={placeHolderTxt}
         defaultValue={currentEnd || ''}
       />
+      {currentStart && <span onClick={copyEndFromStart}>Same as start</span>}
       <div>
         Add stops:
         <div>
