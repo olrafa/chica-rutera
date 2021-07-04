@@ -9,7 +9,7 @@ import { XYZ } from 'ol/source';
 import View from 'ol/View';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
-import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
+import { Stroke, Style } from 'ol/style';
 
 // css
 import 'ol/ol.css';
@@ -18,6 +18,7 @@ import './App.css';
 // other imports
 import { ActionComponent } from './components/ActionComponent';
 import { getIpInfo } from './requests/geoapify';
+import { createPointVector } from './utils/createPoints';
 
 function App() {
   const [map, setMap] = useState<Map | null>(null);
@@ -27,27 +28,6 @@ function App() {
   const [routeLayer, setRouteLayer] = useState<VectorSource | null>(null);
 
   const mapElement = useRef<HTMLDivElement>(null);
-
-  const createPointVector = (
-    source: VectorSource,
-    color: string,
-    zIndex: number
-  ) => {
-    return new VectorLayer({
-      source,
-      style: new Style({
-        image: new CircleStyle({
-          radius: 7,
-          fill: new Fill({ color }),
-          stroke: new Stroke({
-            color: '#258',
-            width: 2,
-          }),
-        }),
-      }),
-      zIndex,
-    });
-  };
 
   useEffect(() => {
     if (mapElement.current) {
@@ -109,7 +89,7 @@ function App() {
         const { latitude, longitude } = r.location;
         const userLocation = fromLonLat([longitude, latitude]);
         map.getView().setCenter(userLocation);
-      map.getView().setZoom(13);
+        map.getView().setZoom(13);
       });
     }
   }, [map]);

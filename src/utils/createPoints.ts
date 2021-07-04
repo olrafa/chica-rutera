@@ -1,7 +1,10 @@
 import { Coordinate } from 'ol/coordinate';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
+import { Vector as VectorLayer } from 'ol/layer';
 import { fromLonLat } from 'ol/proj';
+import { Vector as VectorSource } from 'ol/source';
+import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
 
 const createPoint = (coordinate: Coordinate, formatted?: string) =>
   new Feature({
@@ -20,9 +23,26 @@ export const createRoutePoint = ({ formatted, lon, lat }: any) => {
   return createPoint(coordinate, formatted);
 };
 
-// const addFeatureFromSearch = (searchResult: any, layer: VectorSource) => {
-//   const point = createRoutePoint(searchResult);
-//   layer !== stopsLayer && layer.clear();
-//   layer.addFeature(point);
-//   return point;
-// };
+export const createPointVector = (
+  source: VectorSource,
+  color: string,
+  zIndex: number
+) => {
+  return new VectorLayer({
+    source,
+    style: createStyle(color),
+    zIndex,
+  });
+};
+
+export const createStyle = (color: string) =>
+  new Style({
+    image: new CircleStyle({
+      radius: 7,
+      fill: new Fill({ color }),
+      stroke: new Stroke({
+        color: '#258',
+        width: 2,
+      }),
+    }),
+  });

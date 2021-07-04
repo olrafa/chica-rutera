@@ -3,6 +3,7 @@ import Polyline from 'ol/format/Polyline';
 import Geometry from 'ol/geom/Geometry';
 import React from 'react';
 import { RouteDetail, RouteInfo, RouteStep } from '../types/route.types';
+import { createStyle } from '../utils/createPoints';
 
 export const ShowRoute = ({
   route,
@@ -54,6 +55,13 @@ export const ShowRoute = ({
     };
   });
 
+  const changeFeatureStyle = (
+    mapFeature: Feature | undefined,
+    add?: boolean
+  ) => {
+    mapFeature?.setStyle(add ? createStyle('yellow') : undefined);
+  };
+
   return (
     <div>
       <div>Route ready</div>
@@ -61,16 +69,32 @@ export const ShowRoute = ({
         return (
           <div key={i}>
             Route {i + 1}
-            <div className="route-address">
+            <div
+              className="route-address"
+              onMouseEnter={() => changeFeatureStyle(startPoint, true)}
+              onMouseLeave={() => changeFeatureStyle(startPoint)}
+            >
               <b>Start:</b>{' '}
               {startPoint ? startPoint.get('name') : 'Starting point'}
             </div>
-            {rd.steps.map((s: RouteStep, i: number) => (
-              <div key={i + 1} className="route-address">
-                <b>Stop {i + 1}</b>: {s.displayName}
-              </div>
-            ))}
-            <div className="route-address">
+            {rd.steps.map((s: RouteStep, i: number) => {
+              const mapFeature = stops.find((f) => s.id === f.getId());
+              return (
+                <div
+                  key={i + 1}
+                  className="route-address"
+                  onMouseEnter={() => changeFeatureStyle(mapFeature, true)}
+                  onMouseLeave={() => changeFeatureStyle(mapFeature)}
+                >
+                  <b>Stop {i + 1}</b>: {s.displayName}
+                </div>
+              );
+            })}
+            <div
+              className="route-address"
+              onMouseEnter={() => changeFeatureStyle(endPoint, true)}
+              onMouseLeave={() => changeFeatureStyle(endPoint)}
+            >
               <b>End:</b> {endPoint ? endPoint.get('name') : 'Ending point'}
             </div>
             <div onClick={zoomToRoute}>Zoom to route</div>
