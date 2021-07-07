@@ -1,6 +1,6 @@
 import { Feature, View } from 'ol';
 import { toLonLat } from 'ol/proj';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { addressSearch } from '../requests/geoapify';
 
 type RoutePointsProps = {
@@ -30,26 +30,28 @@ export const RoutePoints = ({
     e: { key: string; target: any },
     item: string
   ) => {
-    if (e.key === 'Enter') {
-      let mapCenter = [0, 0];
-      const viewCenter = mapView.getCenter();
-      if (viewCenter !== undefined) {
-        mapCenter = toLonLat(viewCenter);
-      }
+    e.key === 'Enter' && searchForAddress(e.target.value, item);
+  };
 
-      const [lon, lat] = mapCenter;
-      addressSearch(e.target.value, lon, lat).then((r) => {
-        if (r) {
-          // r.displayAddress = formatAddress(r.address);
-          e.target.value = item === 'stops' ? '' : r.formatted;
-          updateState(r, item);
-        } else {
-          alert(
-            'No address found. Please check for typos and/or add details (city, region, country)'
-          );
-        }
-      });
+  const searchForAddress = (value: string, item: string) => {
+    let mapCenter = [0, 0];
+    const viewCenter = mapView.getCenter();
+    if (viewCenter !== undefined) {
+      mapCenter = toLonLat(viewCenter);
     }
+
+    const [lon, lat] = mapCenter;
+    addressSearch(value, lon, lat).then((r) => {
+      if (r) {
+        // r.displayAddress = formatAddress(r.address);
+        value = item === 'stops' ? '' : r.formatted;
+        updateState(r, item);
+      } else {
+        alert(
+          'No address found. Please check for typos and/or add details (city, region, country)'
+        );
+      }
+    });
   };
 
   const updateState = (r: any, item: string) => {
@@ -63,6 +65,35 @@ export const RoutePoints = ({
   };
 
   const placeHolderTxt = 'Search an address';
+
+  const fileHandler = (files: FileList | null) => {
+    const file = files && files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsText(file, 'UTF-8');
+      reader.onload = (e) =>
+        e && e.target && addPointsFromFile(e.target.result as string);
+      reader.onerror = () => console.log('error reading file');
+    }
+  };
+
+  const [addressesFromFile, setAddressesFromFile] = useState<string[]>([]);
+
+  const addPointsFromFile = (text: string) => {
+    const addresses = text
+      .split('\n')
+      .filter((a) => a)
+      .map((a) => a.replace(/;/g, ', '));
+    console.log(addresses);
+    setAddressesFromFile(addresses);
+  };
+
+  useEffect(() => {
+    if (addressesFromFile.length) {
+      const nextAddress = addressesFromFile.pop();
+      setTimeout(() => searchForAddress(nextAddress as string, 'stops'), 500);
+    }
+  }, [stops, addressesFromFile]);
 
   return (
     <div>
@@ -90,6 +121,20 @@ export const RoutePoints = ({
             placeholder={placeHolderTxt}
           />
         </div>
+        <div>
+          Or upload a file
+          <input
+            type="file"
+            multiple={false}
+            accept={
+              '.csv, text/plain,' +
+              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, ' +
+              'application/vnd.ms-excel'
+            }
+            onChange={(e) => fileHandler(e.target.files)}
+          />
+        </div>
+        {stops.length === 48 && <div>maximum number of points reached.</div>}
         <div>
           {stops.map((s, i) => (
             <div key={i + 1}>
