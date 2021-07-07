@@ -86,13 +86,6 @@ export const RoutePoints = ({
       .map((a) => a.replace(/;/g, ', '));
     console.log(addresses);
     setAddressesFromFile(addresses);
-    // addresses.forEach((address, index) => {
-    //   const searchValue = address.replace(/;/g, ', ');
-    //   setTimeout(() => {
-    //     console.log(searchValue);
-    //     searchForAddress(searchValue, 'stops');
-    //   }, 500 * index);
-    // });
   };
 
   useEffect(() => {
@@ -141,6 +134,7 @@ export const RoutePoints = ({
             onChange={(e) => fileHandler(e.target.files)}
           />
         </div>
+        {stops.length === 48 && <div>maximum number of points reached.</div>}
         <div>
           {stops.map((s, i) => (
             <div key={i + 1}>

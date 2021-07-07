@@ -48,12 +48,14 @@ export const ActionComponent = ({
   };
 
   const addRoutePointFromSearch = (searchResult: any) => {
-    const point = createRoutePoint(searchResult);
-    stopsLayer.addFeature(point);
-    setDestinations({
-      ...destinations,
-      stops: [...destinations.stops, point],
-    });
+    if (destinations.stops.length < 48) {
+      const point = createRoutePoint(searchResult);
+      stopsLayer.addFeature(point);
+      setDestinations({
+        ...destinations,
+        stops: [...destinations.stops, point],
+      });
+    }
   };
 
   const removeStopFromList = (stop: Feature) => {
@@ -86,11 +88,13 @@ export const ActionComponent = ({
           point = addFeatureFromSearch(searchResult, endLayer);
           setDestinations({ ...destinations, endPoint: point });
         } else {
-          point = addFeatureFromSearch(searchResult, stopsLayer);
-          setDestinations({
-            ...destinations,
-            stops: [...destinations.stops, point],
-          });
+          if (destinations.stops.length < 48) {
+            point = addFeatureFromSearch(searchResult, stopsLayer);
+            setDestinations({
+              ...destinations,
+              stops: [...destinations.stops, point],
+            });
+          }
         }
       });
     },
@@ -109,7 +113,7 @@ export const ActionComponent = ({
         destinations.endPoint ||
         destinations.stops.length)
     ) {
-      let extent = createEmpty();
+      const extent = createEmpty();
       [startLayer, endLayer, stopsLayer].forEach(function (layer) {
         layer.getFeatures.length && console.log(layer.getExtent());
         const layerExtent = layer.getExtent();

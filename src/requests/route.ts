@@ -45,6 +45,7 @@ export const calculateRoute = async ({
   endPoint,
   stops,
 }: RouteInfoProps) => {
+  console.log(stops.length, stops);
   const requestPoints = createStopsPoints(stops);
   const orsRequest = {
     jobs: requestPoints,
