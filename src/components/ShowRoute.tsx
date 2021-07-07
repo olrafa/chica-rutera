@@ -62,6 +62,15 @@ export const ShowRoute = ({
     mapFeature?.setStyle(add ? createStyle('yellow') : undefined);
   };
 
+  const secondsToHours = (seconds: number) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+
+    const hDisplay = h ? h + (h === 1 ? ' hour, ' : ' hours, ') : '';
+    const mDisplay = m ? m + (m === 1 ? ' minute, ' : ' minutes ') : '';
+    return hDisplay + mDisplay;
+  };
+
   return (
     <div>
       <div>Route ready</div>
@@ -97,6 +106,8 @@ export const ShowRoute = ({
             >
               <b>End:</b> {endPoint ? endPoint.get('name') : 'Ending point'}
             </div>
+            <div>Distance: {(rd.distance / 1000).toFixed(1)} km</div>
+            <div>Travel time: {secondsToHours(rd.duration)}</div>
             <div onClick={zoomToRoute}>Zoom to route</div>
           </div>
         );
