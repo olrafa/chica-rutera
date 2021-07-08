@@ -10,6 +10,7 @@ export const ShowRoute = ({
   map,
   lineLayer,
   destinations,
+  exitFunction
 }: RouteInfo) => {
   const { routes } = route;
 
@@ -75,7 +76,7 @@ export const ShowRoute = ({
       {routesDisplay.map((rd: RouteDetail, i: number) => {
         return (
           <div key={i}>
-            Route {i + 1}
+            {/* Route {i + 1} */}
             <div
               className="route-address"
               onMouseEnter={() => changeFeatureStyle(startPoint, true)}
@@ -107,6 +108,7 @@ export const ShowRoute = ({
             <div>Distance: {(rd.distance / 1000).toFixed(1)} km</div>
             <div>Travel time: {secondsToHours(rd.duration)}</div>
             <div onClick={zoomToRoute}>Zoom to route</div>
+            <div onClick={exitFunction}>Return</div>
           </div>
         );
       })}
