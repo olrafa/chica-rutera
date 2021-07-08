@@ -101,10 +101,12 @@ export const ActionComponent = ({
     [endLayer, destinations, startLayer, stopsLayer]
   );
 
+  const [clickActive, setClickActive] = useState(false);
+
   useEffect(() => {
-    map && map.on('singleclick', addPointOnClick);
+    clickActive && map && map.on('singleclick', addPointOnClick);
     return () => map.un('singleclick', addPointOnClick);
-  }, [map, addPointOnClick]);
+  }, [map, addPointOnClick, clickActive]);
 
   useEffect(() => {
     if (
@@ -132,6 +134,11 @@ export const ActionComponent = ({
   return (
     <div className="action-component">
       Create your best delivery route
+      <div onClick={() => setClickActive(!clickActive)}>
+        {clickActive
+          ? 'Stop search from map click'
+          : 'Add points as I click on the map'}
+      </div>
       {!calculatedRoute && map && (
         <RoutePoints
           updateStartFunction={addStartFromSearch}

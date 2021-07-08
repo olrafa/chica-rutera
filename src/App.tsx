@@ -83,16 +83,16 @@ function App() {
     }
   }, []);
 
-  useEffect(() => {
-    if (map) {
-      getIpInfo().then((r) => {
-        const { latitude, longitude } = r.location;
-        const userLocation = fromLonLat([longitude, latitude]);
-        map.getView().setCenter(userLocation);
-        map.getView().setZoom(13);
-      });
-    }
-  }, [map]);
+  // useEffect(() => {
+  //   if (map) {
+  //     getIpInfo().then((r) => {
+  //       const { latitude, longitude } = r.location;
+  //       const userLocation = fromLonLat([longitude, latitude]);
+  //       map.getView().setCenter(userLocation);
+  //       map.getView().setZoom(13);
+  //     });
+  //   }
+  // }, [map]);
 
   return (
     <div className="App">
