@@ -156,7 +156,9 @@ export const RoutePoints = ({
             </div>
           ))}
           {stops.length > 1 && (
-            <div onClick={clearStopsFunction}>Clear all stops</div>
+            <div className="option-btn" onClick={clearStopsFunction}>
+              Clear all stops
+            </div>
           )}
         </div>
       </div>

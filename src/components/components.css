@@ -48,6 +48,10 @@ input[type='text'] {
   width: 150px;
 }
 
-.search-item.upload {
-  
+.option-btn {
+  cursor: pointer;
+  margin: 0.5em auto;
+  border: 1px solid gainsboro;
+  padding: 0.5em;
+  width: fit-content;
 }

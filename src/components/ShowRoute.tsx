@@ -107,8 +107,8 @@ export const ShowRoute = ({
             </div>
             <div>Distance: {(rd.distance / 1000).toFixed(1)} km</div>
             <div>Travel time: {secondsToHours(rd.duration)}</div>
-            <div onClick={zoomToRoute}>Zoom to route</div>
-            <div onClick={exitFunction}>Return</div>
+            <div className="option-btn" onClick={zoomToRoute}>Zoom to route</div>
+            <div className="option-btn" onClick={exitFunction}>Return</div>
           </div>
         );
       })}

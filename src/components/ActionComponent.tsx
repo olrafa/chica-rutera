@@ -170,7 +170,9 @@ export const ActionComponent = ({
         destinations.startPoint &&
         destinations.endPoint &&
         !!destinations.stops.length && (
-          <div onClick={optimize}>Calculate Route</div>
+          <div className="option-btn" onClick={optimize}>
+            Calculate Route
+          </div>
         )}
       {calculatedRoute &&
         destinations.startPoint &&
