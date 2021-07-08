@@ -35,8 +35,6 @@ export const ShowRoute = ({
 
   zoomToRoute();
 
-  map.getView().fit(lineLayer.getExtent(), { padding: [50, 50, 50, 200] });
-
   const routesDisplay = routes.map((r: RouteDetail) => {
     const { cost, distance, duration, service, steps } = r;
     return {
