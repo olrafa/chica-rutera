@@ -10,6 +10,7 @@ export const ShowRoute = ({
   map,
   lineLayer,
   destinations,
+  exitFunction
 }: RouteInfo) => {
   const { routes } = route;
 
@@ -34,8 +35,6 @@ export const ShowRoute = ({
     map.getView().fit(lineLayer.getExtent(), { padding: [50, 50, 50, 200] });
 
   zoomToRoute();
-
-  map.getView().fit(lineLayer.getExtent(), { padding: [50, 50, 50, 200] });
 
   const routesDisplay = routes.map((r: RouteDetail) => {
     const { cost, distance, duration, service, steps } = r;
@@ -77,7 +76,7 @@ export const ShowRoute = ({
       {routesDisplay.map((rd: RouteDetail, i: number) => {
         return (
           <div key={i}>
-            Route {i + 1}
+            {/* Route {i + 1} */}
             <div
               className="route-address"
               onMouseEnter={() => changeFeatureStyle(startPoint, true)}
@@ -108,7 +107,8 @@ export const ShowRoute = ({
             </div>
             <div>Distance: {(rd.distance / 1000).toFixed(1)} km</div>
             <div>Travel time: {secondsToHours(rd.duration)}</div>
-            <div onClick={zoomToRoute}>Zoom to route</div>
+            <div className="option-btn" onClick={zoomToRoute}>Zoom to route</div>
+            <div className="option-btn" onClick={exitFunction}>Return</div>
           </div>
         );
       })}

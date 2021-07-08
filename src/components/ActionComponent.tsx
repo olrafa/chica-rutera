@@ -79,7 +79,6 @@ export const ActionComponent = ({
     (e: any) => {
       const { coordinate } = e;
       reverseGeocode(toLonLat(coordinate)).then((searchResult) => {
-        console.log(searchResult);
         let point;
         if (!destinations.startPoint) {
           point = addFeatureFromSearch(searchResult, startLayer);
@@ -101,10 +100,12 @@ export const ActionComponent = ({
     [endLayer, destinations, startLayer, stopsLayer]
   );
 
+  const [clickActive, setClickActive] = useState(false);
+
   useEffect(() => {
-    map && map.on('singleclick', addPointOnClick);
+    clickActive && map && map.on('singleclick', addPointOnClick);
     return () => map.un('singleclick', addPointOnClick);
-  }, [map, addPointOnClick]);
+  }, [map, addPointOnClick, clickActive]);
 
   useEffect(() => {
     if (
@@ -119,7 +120,7 @@ export const ActionComponent = ({
         const layerExtent = layer.getExtent();
         extend(extent, layerExtent as Extent);
       });
-      map.getView().fit(extent, { padding: Array(4).fill(150) });
+      map.getView().fit(extent, { padding: Array(4).fill(200) });
     }
   }, [startLayer, endLayer, stopsLayer, map, destinations]);
 
@@ -129,9 +130,28 @@ export const ActionComponent = ({
     route && setCalculatedRoute(route);
   };
 
+  const cancelRoute = () => {
+    routeLayer.clear();
+    setCalculatedRoute(null);
+  };
+  const clearAllStops = () => {
+    stopsLayer.clear();
+    setDestinations({
+      ...destinations,
+      stops: [],
+    });
+  };
+
   return (
     <div className="action-component">
       Create your best delivery route
+      {!calculatedRoute && (
+        <div onClick={() => setClickActive(!clickActive)}>
+          {clickActive
+            ? 'Stop search from map click'
+            : 'Add points as I click on the map'}
+        </div>
+      )}
       {!calculatedRoute && map && (
         <RoutePoints
           updateStartFunction={addStartFromSearch}
@@ -143,13 +163,16 @@ export const ActionComponent = ({
           currentStart={destinations.startPoint?.get('name') || ''}
           currentEnd={destinations.endPoint?.get('name') || ''}
           copyEndFromStart={copyEndFromStart}
+          clearStopsFunction={clearAllStops}
         />
       )}
       {!calculatedRoute &&
         destinations.startPoint &&
         destinations.endPoint &&
         !!destinations.stops.length && (
-          <div onClick={optimize}>Calculate Route</div>
+          <div className="option-btn" onClick={optimize}>
+            Calculate Route
+          </div>
         )}
       {calculatedRoute &&
         destinations.startPoint &&
@@ -160,6 +183,7 @@ export const ActionComponent = ({
             map={map}
             lineLayer={routeLayer}
             destinations={destinations}
+            exitFunction={cancelRoute}
           />
         )}
     </div>

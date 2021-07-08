@@ -22,3 +22,36 @@
 .route-address:hover {
   background-color: whitesmoke;
 }
+
+.repeat-start-btn {
+  font-size: 10px;
+  background-color: darkcyan;
+  color: white;
+  margin-left: 5px;
+}
+
+input[type='text'] {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 12px;
+  width: 250px;
+  flex-grow: 1;
+}
+
+.search-item {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.search-item label {
+  width: 150px;
+}
+
+.option-btn {
+  cursor: pointer;
+  margin: 0.5em auto;
+  border: 1px solid gainsboro;
+  padding: 0.5em;
+  width: fit-content;
+}

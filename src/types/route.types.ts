@@ -22,6 +22,7 @@ export type RouteInfo = {
   map: Map;
   lineLayer: VectorSource;
   destinations: Destinations;
+  exitFunction: () => void;
 };
 
 export type RouteStep = {

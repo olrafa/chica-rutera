@@ -13,6 +13,7 @@ type RoutePointsProps = {
   currentEnd: string;
   mapView: View;
   copyEndFromStart: () => void;
+  clearStopsFunction: () => void;
 };
 
 export const RoutePoints = ({
@@ -25,6 +26,7 @@ export const RoutePoints = ({
   currentStart,
   currentEnd,
   copyEndFromStart,
+  clearStopsFunction,
 }: RoutePointsProps) => {
   const handleAddressInput = async (
     e: { key: string; target: any },
@@ -64,7 +66,7 @@ export const RoutePoints = ({
     }
   };
 
-  const placeHolderTxt = 'Search an address';
+  const placeHolderTxt = 'Search for an address';
 
   const fileHandler = (files: FileList | null) => {
     const file = files && files[0];
@@ -84,7 +86,6 @@ export const RoutePoints = ({
       .split('\n')
       .filter((a) => a)
       .map((a) => a.replace(/;/g, ', '));
-    console.log(addresses);
     setAddressesFromFile(addresses);
   };
 
@@ -97,33 +98,45 @@ export const RoutePoints = ({
 
   return (
     <div>
-      <div>Starting point:</div>
-      <input
-        type="text"
-        onKeyDown={(e) => handleAddressInput(e, 'start')}
-        placeholder={placeHolderTxt}
-        defaultValue={currentStart || ''}
-      />
-      <div>Ending point:</div>
-      <input
-        type="text"
-        onKeyDown={(e) => handleAddressInput(e, 'end')}
-        placeholder={placeHolderTxt}
-        defaultValue={currentEnd || ''}
-      />
-      {currentStart && <span onClick={copyEndFromStart}>Same as start</span>}
+      <div className="search-item">
+        <label htmlFor="search-start">Starting point:</label>
+        <input
+          id="search-start"
+          type="text"
+          onKeyDown={(e) => handleAddressInput(e, 'start')}
+          placeholder={placeHolderTxt}
+          defaultValue={currentStart || ''}
+        />
+      </div>
+      <div className="search-item">
+        <label htmlFor="search-end">Ending point:</label>
+        <input
+          id="search-end"
+          type="text"
+          onKeyDown={(e) => handleAddressInput(e, 'end')}
+          placeholder={placeHolderTxt}
+          defaultValue={currentEnd || ''}
+        />
+        {currentStart && (
+          <span className="repeat-start-btn" onClick={copyEndFromStart}>
+            Same as start
+          </span>
+        )}
+      </div>
       <div>
-        Add stops:
-        <div>
+        <div className="search-item">
+          <label htmlFor="search-stops">Add stops:</label>
           <input
+            id="search-stops"
             type="text"
             onKeyDown={(e) => handleAddressInput(e, 'stops')}
             placeholder={placeHolderTxt}
           />
         </div>
-        <div>
-          Or upload a file
+        <div className="search-item">
+          <label htmlFor="uploader">Or upload a file:</label>
           <input
+            id="uploader"
             type="file"
             multiple={false}
             accept={
@@ -142,6 +155,11 @@ export const RoutePoints = ({
               <span onClick={() => removeStopsFunction(s)}>&times;</span>
             </div>
           ))}
+          {stops.length > 1 && (
+            <div className="option-btn" onClick={clearStopsFunction}>
+              Clear all stops
+            </div>
+          )}
         </div>
       </div>
     </div>
