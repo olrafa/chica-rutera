@@ -127,7 +127,12 @@ export const ActionComponent = ({
   const optimize = async () => {
     routeLayer.clear();
     const route = await calculateRoute(destinations);
-    route && setCalculatedRoute(route);
+    const validRoute = !route.code;
+    if (validRoute) {
+      setCalculatedRoute(route);
+    } else {
+      alert('Unable to create route. Please check your points and try again');
+    }
   };
 
   const cancelRoute = () => {
