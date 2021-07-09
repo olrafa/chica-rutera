@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: chicarutera.netlify.app
+Token: b1dbc3619e39f97e185a3c7d312fea22b6479d8d456cc9c37d8c5b8bb28d84c6
