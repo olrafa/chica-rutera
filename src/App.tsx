@@ -19,6 +19,7 @@ import './App.css';
 import { ActionComponent } from './components/ActionComponent';
 import { getIpInfo } from './requests/geoapify';
 import { createPointVector } from './utils/createPoints';
+import { PageInfo } from './components/PageInfo';
 
 function App() {
   const [map, setMap] = useState<Map | null>(null);
@@ -106,6 +107,7 @@ function App() {
           routeLayer={routeLayer}
         />
       )}
+      <PageInfo />
     </div>
   );
 }
