@@ -28,6 +28,7 @@
   background-color: darkcyan;
   color: white;
   margin-left: 5px;
+  cursor: pointer;
 }
 
 input[type='text'] {
@@ -54,4 +55,10 @@ input[type='text'] {
   border: 1px solid gainsboro;
   padding: 0.5em;
   width: fit-content;
+}
+
+.option-btn.route {
+  background-color: darkcyan;
+  color: white;
+  font-weight: bold;
 }
