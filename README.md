@@ -1,6 +1,6 @@
 # Chica Rutera
 
-This app is meant as a study for myself into the [Travelling Salesman Problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem) and the existing APIs meant to solve it.
+This app is meant as a study of the [Travelling Salesman Problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem) and the existing APIs meant to solve it.
 
 It uses the [Open Route Service](https://openrouteservice.org/) API to generate routes between multiple points.
 
@@ -25,7 +25,7 @@ npm install
 npm start
 ```
 
-Runs the app in the development mode.\
+This will runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
