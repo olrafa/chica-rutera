@@ -32,10 +32,14 @@ export const RoutePoints = ({
     e: { key: string; target: any },
     item: string
   ) => {
-    e.key === 'Enter' && searchForAddress(e.target.value, item);
+    e.key === 'Enter' && searchForAddress(e.target.value, item, e.target);
   };
 
-  const searchForAddress = (value: string, item: string) => {
+  const searchForAddress = (
+    value: string,
+    item: string,
+    elementToUpdate?: { value: string } | undefined
+  ) => {
     let mapCenter = [0, 0];
     const viewCenter = mapView.getCenter();
     if (viewCenter !== undefined) {
@@ -45,8 +49,9 @@ export const RoutePoints = ({
     const [lon, lat] = mapCenter;
     addressSearch(value, lon, lat).then((r) => {
       if (r) {
-        // r.displayAddress = formatAddress(r.address);
-        value = item === 'stops' ? '' : r.formatted;
+        if (elementToUpdate) {
+          elementToUpdate.value = item === 'stops' ? '' : r.formatted;
+        }
         updateState(r, item);
       } else {
         alert(
@@ -86,7 +91,7 @@ export const RoutePoints = ({
       .split('\n')
       .filter((a) => a)
       .map((a) => a.replace(/;/g, ', '));
-    setAddressesFromFile(addresses);
+    setAddressesFromFile(Array.from(new Set(addresses)));
   };
 
   useEffect(() => {
@@ -134,7 +139,7 @@ export const RoutePoints = ({
           />
         </div>
         <div className="search-item">
-          <label htmlFor="uploader">Or upload a file:</label>
+          <label htmlFor="uploader">Or upload a file (txt/csv):</label>
           <input
             id="uploader"
             type="file"
@@ -147,7 +152,9 @@ export const RoutePoints = ({
             onChange={(e) => fileHandler(e.target.files)}
           />
         </div>
-        {stops.length === 48 && <div>maximum number of points reached.</div>}
+        {stops.length === 48 && (
+          <div>Maximum number of points (48) reached.</div>
+        )}
         <div>
           {stops.map((s, i) => (
             <div key={i + 1}>

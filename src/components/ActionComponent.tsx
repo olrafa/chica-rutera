@@ -127,7 +127,12 @@ export const ActionComponent = ({
   const optimize = async () => {
     routeLayer.clear();
     const route = await calculateRoute(destinations);
-    route && setCalculatedRoute(route);
+    const validRoute = !route.code;
+    if (validRoute) {
+      setCalculatedRoute(route);
+    } else {
+      alert('Unable to create route. Please check your points and try again');
+    }
   };
 
   const cancelRoute = () => {
@@ -170,7 +175,7 @@ export const ActionComponent = ({
         destinations.startPoint &&
         destinations.endPoint &&
         !!destinations.stops.length && (
-          <div className="option-btn" onClick={optimize}>
+          <div className="option-btn route" onClick={optimize}>
             Calculate Route
           </div>
         )}
