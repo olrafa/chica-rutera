@@ -1,6 +1,6 @@
 # Chica Rutera
 
-This app is meant as a study for myself into the [Traveling Salesman Problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem) and the existing APIs meant to solve it.
+This app is meant as a study for myself into the [Travelling Salesman Problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem) and the existing APIs meant to solve it.
 
 It uses the [Open Route Service](https://openrouteservice.org/) API to generate routes between multiple points.
 
@@ -22,23 +22,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 git clone git@github.com:rafaelrolivares/chica-rutera.git
 cd chica-rutera
 npm install
+npm start
 ```
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
-
-### `npm test`
-
-Currently there are no tests included.
 
 ## Contributing
 
