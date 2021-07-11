@@ -44,4 +44,6 @@ export type RouteDetail = {
   steps: RouteStep[];
   vehicle: number;
   waiting_time: number;
+  start?: any;
+  end?: any;
 };

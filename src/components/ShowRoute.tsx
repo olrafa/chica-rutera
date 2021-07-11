@@ -4,6 +4,7 @@ import Geometry from 'ol/geom/Geometry';
 import React from 'react';
 import { RouteDetail, RouteInfo, RouteStep } from '../types/route.types';
 import { createStyle } from '../utils/createPoints';
+import { ShareRoute } from './ShareRoute';
 
 export const ShowRoute = ({
   route,
@@ -108,6 +109,7 @@ export const ShowRoute = ({
             <div>Distance: {(rd.distance / 1000).toFixed(1)} km</div>
             <div>Travel time: {secondsToHours(rd.duration)}</div>
             <div className="option-btn" onClick={zoomToRoute}>Zoom to route</div>
+            <ShareRoute route={rd}/>
             <div className="option-btn" onClick={exitFunction}>Return</div>
           </div>
         );
