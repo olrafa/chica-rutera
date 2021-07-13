@@ -108,6 +108,7 @@ export const ActionComponent = ({
   }, [map, addPointOnClick, clickActive]);
 
   const optimize = async () => {
+    setClickActive(false);
     routeLayer.clear();
     const route = await calculateRoute(destinations);
     const validRoute = !route.code;
@@ -133,14 +134,7 @@ export const ActionComponent = ({
   return (
     <div className="action-component">
       <div className="action-component-wrapper">
-        Create your best delivery route
-        {!calculatedRoute && (
-          <div onClick={() => setClickActive(!clickActive)}>
-            {clickActive
-              ? 'Stop search from map click'
-              : 'Add points as I click on the map'}
-          </div>
-        )}
+        Create your best route between multiple points{' '}
         {!calculatedRoute && map && (
           <RoutePoints
             updateStartFunction={addStartFromSearch}
@@ -163,6 +157,14 @@ export const ActionComponent = ({
               Calculate Route
             </div>
           )}
+          {!calculatedRoute && (
+          <div
+            onClick={() => setClickActive(!clickActive)}
+            className="map-click-btn"
+          >
+            {clickActive ? 'Disable' : 'Enable'} adding points from map click
+          </div>
+        )}
         {calculatedRoute &&
           destinations.startPoint &&
           destinations.endPoint &&
