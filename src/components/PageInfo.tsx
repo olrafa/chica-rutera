@@ -6,7 +6,7 @@ export const PageInfo = () => {
   return (
     <div className="page-info">
       {open ? (
-        <div className="open">
+        <div className="page-info open">
           Hello, my name is Rafael and I am a geographer and developer.
           <br />
           <br /> This page is meant as a study for myself. The code is available
@@ -24,7 +24,7 @@ export const PageInfo = () => {
           </div>
         </div>
       ) : (
-        <div className="closed" onClick={() => setOpen(!open)}>
+        <div className="page-info closed" onClick={() => setOpen(!open)}>
           Chica Rutera{' '}
         </div>
       )}

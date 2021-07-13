@@ -72,26 +72,31 @@ input[type='text'] {
 
 .page-info {
   position: absolute;
-  top: 10px;
-  background-color: darkcyan;
-  /* width: 150px; */
-  right: 48px;
+  top: 6px;
+  width: 120px;
+  right: 25px;
   border-radius: 4px;
   padding: 7px;
   box-sizing: border-box;
-  color: white;
-  opacity: 0.9;
 }
 
 .page-info .closed {
   font-size: 14px;
   cursor: pointer;
   font-weight: bold;
+  background-color: darkcyan;
+  color: white;
+  opacity: 0.9;
 }
 
 .page-info .open {
   width: 350px;
   text-align: left;
+  background-color: white;
+  color: #222;
+  opacity: 0.95;
+  border: 1px solid darkcyan;
+  font-size: 1em;
 }
 
 .close-info {
