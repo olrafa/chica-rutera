@@ -1,4 +1,5 @@
 import { RouteDetail } from '../types/route.types';
+import waLogo from '../images/WhatsApp_Logo.png';
 
 type ShareRouteProps = {
   route: RouteDetail;
@@ -32,8 +33,9 @@ export const ShareRoute = ({ route }: ShareRouteProps) => {
       <div className="option-btn" onClick={() => window.open(googleLink)}>
         Open route in GoogleMaps
       </div>
-      <div className="option-btn" onClick={() => window.open(whatsApp)}>
-        Share driving directions via WhatsApp
+      <div className="option-btn social" >
+        <span className="social-btn">Share driving directions</span>
+        <img className="social-logos" src={waLogo} alt="WhatsApp logo" onClick={() => window.open(whatsApp)} />
       </div>
     </div>
   );

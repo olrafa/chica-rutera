@@ -57,12 +57,17 @@ input[type='text'] {
   border: 1px solid gainsboro;
   padding: 0.5em;
   width: fit-content;
+  display: flex;
 }
 
 .option-btn.route {
   background-color: darkcyan;
   color: white;
   font-weight: bold;
+}
+
+.option-btn.social {
+  cursor: default;
 }
 
 .page-info {
@@ -93,4 +98,13 @@ input[type='text'] {
   cursor: pointer;
   text-align: end;
   margin-bottom: 5px;
+}
+
+.social-btn {
+  padding: 0.7em;
+}
+
+.social-logos {
+  height: 3em;
+  cursor: pointer;
 }
