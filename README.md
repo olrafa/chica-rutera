@@ -12,7 +12,7 @@ At this moment it is possible to add one start, one finish and 48 points to a ro
 
 The address search and the reverse geocoding, as well as the map positioning based on the user's IP address, are done using the [Geoapify](https://www.geoapify.com/) APIs. The map engine is [OpenLayers](https://openlayers.org/), and the map style is by [Carto](https://github.com/CartoDB/basemap-styles).
 
-Chica Rutera is the name of a song by Argentinean band [Él Mató a un Policía Motorizado](https://www.elmato.com.ar/).
+Chica Rutera is the name of a song by Argentine band [Él Mató a un Policía Motorizado](https://www.elmato.com.ar/).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -1,14 +1,16 @@
 .action-component {
-  width: 350px;
-  position: absolute;
-  left: 8px;
-  top: 8px;
+  min-width: 300px;
+  max-width: 35vw;
+  position: fixed;
   background-color: white;
-  padding: 15px;
-  border-radius: 2px;
   color: #222;
-  max-height: 90%;
+  max-height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.action-component-wrapper {
+  padding: 15px;
 }
 
 .route-address {

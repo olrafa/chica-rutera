@@ -149,48 +149,50 @@ export const ActionComponent = ({
 
   return (
     <div className="action-component">
-      Create your best delivery route
-      {!calculatedRoute && (
-        <div onClick={() => setClickActive(!clickActive)}>
-          {clickActive
-            ? 'Stop search from map click'
-            : 'Add points as I click on the map'}
-        </div>
-      )}
-      {!calculatedRoute && map && (
-        <RoutePoints
-          updateStartFunction={addStartFromSearch}
-          updateEndFunction={addEndFromSearch}
-          addStopsFunction={addRoutePointFromSearch}
-          removeStopsFunction={removeStopFromList}
-          stops={destinations.stops}
-          mapView={map.getView()}
-          currentStart={destinations.startPoint?.get('name') || ''}
-          currentEnd={destinations.endPoint?.get('name') || ''}
-          copyEndFromStart={copyEndFromStart}
-          clearStopsFunction={clearAllStops}
-        />
-      )}
-      {!calculatedRoute &&
-        destinations.startPoint &&
-        destinations.endPoint &&
-        !!destinations.stops.length && (
-          <div className="option-btn route" onClick={optimize}>
-            Calculate Route
+      <div className="action-component-wrapper">
+        Create your best delivery route
+        {!calculatedRoute && (
+          <div onClick={() => setClickActive(!clickActive)}>
+            {clickActive
+              ? 'Stop search from map click'
+              : 'Add points as I click on the map'}
           </div>
         )}
-      {calculatedRoute &&
-        destinations.startPoint &&
-        destinations.endPoint &&
-        !!destinations.stops.length && (
-          <ShowRoute
-            route={calculatedRoute}
-            map={map}
-            lineLayer={routeLayer}
-            destinations={destinations}
-            exitFunction={cancelRoute}
+        {!calculatedRoute && map && (
+          <RoutePoints
+            updateStartFunction={addStartFromSearch}
+            updateEndFunction={addEndFromSearch}
+            addStopsFunction={addRoutePointFromSearch}
+            removeStopsFunction={removeStopFromList}
+            stops={destinations.stops}
+            mapView={map.getView()}
+            currentStart={destinations.startPoint?.get('name') || ''}
+            currentEnd={destinations.endPoint?.get('name') || ''}
+            copyEndFromStart={copyEndFromStart}
+            clearStopsFunction={clearAllStops}
           />
         )}
+        {!calculatedRoute &&
+          destinations.startPoint &&
+          destinations.endPoint &&
+          !!destinations.stops.length && (
+            <div className="option-btn route" onClick={optimize}>
+              Calculate Route
+            </div>
+          )}
+        {calculatedRoute &&
+          destinations.startPoint &&
+          destinations.endPoint &&
+          !!destinations.stops.length && (
+            <ShowRoute
+              route={calculatedRoute}
+              map={map}
+              lineLayer={routeLayer}
+              destinations={destinations}
+              exitFunction={cancelRoute}
+            />
+          )}
+      </div>
     </div>
   );
 };
