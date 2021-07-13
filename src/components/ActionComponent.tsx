@@ -107,23 +107,6 @@ export const ActionComponent = ({
     return () => map.un('singleclick', addPointOnClick);
   }, [map, addPointOnClick, clickActive]);
 
-  useEffect(() => {
-    if (
-      map &&
-      (destinations.startPoint ||
-        destinations.endPoint ||
-        destinations.stops.length)
-    ) {
-      const extent = createEmpty();
-      [startLayer, endLayer, stopsLayer].forEach(function (layer) {
-        layer.getFeatures.length && console.log(layer.getExtent());
-        const layerExtent = layer.getExtent();
-        extend(extent, layerExtent as Extent);
-      });
-      map.getView().fit(extent, { padding: Array(4).fill(200) });
-    }
-  }, [startLayer, endLayer, stopsLayer, map, destinations]);
-
   const optimize = async () => {
     routeLayer.clear();
     const route = await calculateRoute(destinations);
@@ -165,7 +148,7 @@ export const ActionComponent = ({
             addStopsFunction={addRoutePointFromSearch}
             removeStopsFunction={removeStopFromList}
             stops={destinations.stops}
-            mapView={map.getView()}
+            map={map}
             currentStart={destinations.startPoint?.get('name') || ''}
             currentEnd={destinations.endPoint?.get('name') || ''}
             copyEndFromStart={copyEndFromStart}

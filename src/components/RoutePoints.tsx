@@ -1,5 +1,6 @@
-import { Feature, View } from 'ol';
-import { toLonLat } from 'ol/proj';
+import { Feature, Map, View } from 'ol';
+import { Coordinate } from 'ol/coordinate';
+import { fromLonLat, toLonLat } from 'ol/proj';
 import React, { useEffect, useState } from 'react';
 import { addressSearch } from '../requests/geoapify';
 
@@ -11,10 +12,16 @@ type RoutePointsProps = {
   stops: Feature[];
   currentStart: string;
   currentEnd: string;
-  mapView: View;
+  map: Map;
   copyEndFromStart: () => void;
   clearStopsFunction: () => void;
 };
+
+type GeocoderResponse = {
+  formatted: string;
+  lat: number;
+  lon: number;
+}
 
 export const RoutePoints = ({
   updateStartFunction,
@@ -22,7 +29,7 @@ export const RoutePoints = ({
   addStopsFunction,
   removeStopsFunction,
   stops,
-  mapView,
+  map,
   currentStart,
   currentEnd,
   copyEndFromStart,
@@ -41,18 +48,21 @@ export const RoutePoints = ({
     elementToUpdate?: { value: string } | undefined
   ) => {
     let mapCenter = [0, 0];
-    const viewCenter = mapView.getCenter();
+    const viewCenter = map.getView().getCenter();
     if (viewCenter !== undefined) {
       mapCenter = toLonLat(viewCenter);
     }
 
     const [lon, lat] = mapCenter;
-    addressSearch(value, lon, lat).then((r) => {
+    addressSearch(value, lon, lat).then((r: GeocoderResponse) => {
       if (r) {
         if (elementToUpdate) {
           elementToUpdate.value = item === 'stops' ? '' : r.formatted;
         }
         updateState(r, item);
+        const point = [r.lon, r.lat];
+        map.getView().setCenter(fromLonLat(point) as Coordinate);
+        map.getView().setZoom(15);
       } else {
         alert(
           'No address found. Please check for typos and/or add details (city, region, country)'
