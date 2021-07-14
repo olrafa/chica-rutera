@@ -11,7 +11,7 @@ export const ShowRoute = ({
   map,
   lineLayer,
   destinations,
-  exitFunction
+  exitFunction,
 }: RouteInfo) => {
   const { routes } = route;
 
@@ -32,8 +32,13 @@ export const ShowRoute = ({
     lineLayer.addFeature(line);
   });
 
-  const zoomToRoute = () =>
-    map.getView().fit(lineLayer.getExtent(), { padding: [50, 50, 50, 200] });
+  const zoomToRoute = () => {
+    console.log(lineLayer.getExtent());
+    map.getView().fit(lineLayer.getExtent(), {
+      size: map.getSize(),
+      padding: [50, 50, 50, 450],
+    });
+  };
 
   zoomToRoute();
 
@@ -108,9 +113,13 @@ export const ShowRoute = ({
             </div>
             <div>Distance: {(rd.distance / 1000).toFixed(1)} km</div>
             <div>Travel time: {secondsToHours(rd.duration)}</div>
-            <div className="option-btn" onClick={zoomToRoute}>Zoom to route</div>
-            <ShareRoute route={rd}/>
-            <div className="option-btn" onClick={exitFunction}>Return</div>
+            <div className="option-btn" onClick={zoomToRoute}>
+              Zoom to route
+            </div>
+            <ShareRoute route={rd} />
+            <div className="option-btn" onClick={exitFunction}>
+              Return
+            </div>
           </div>
         );
       })}
