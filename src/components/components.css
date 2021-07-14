@@ -1,6 +1,5 @@
 .action-component {
-  min-width: 300px;
-  max-width: 35vw;
+  width: 400px;
   position: fixed;
   background-color: white;
   color: #222;

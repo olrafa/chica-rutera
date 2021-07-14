@@ -134,20 +134,22 @@ export const ActionComponent = ({
   return (
     <div className="action-component">
       <div className="action-component-wrapper">
-        Create your best route between multiple points{' '}
         {!calculatedRoute && map && (
-          <RoutePoints
-            updateStartFunction={addStartFromSearch}
-            updateEndFunction={addEndFromSearch}
-            addStopsFunction={addRoutePointFromSearch}
-            removeStopsFunction={removeStopFromList}
-            stops={destinations.stops}
-            map={map}
-            currentStart={destinations.startPoint?.get('name') || ''}
-            currentEnd={destinations.endPoint?.get('name') || ''}
-            copyEndFromStart={copyEndFromStart}
-            clearStopsFunction={clearAllStops}
-          />
+          <div>
+            Create your best driving route between multiple points
+            <RoutePoints
+              updateStartFunction={addStartFromSearch}
+              updateEndFunction={addEndFromSearch}
+              addStopsFunction={addRoutePointFromSearch}
+              removeStopsFunction={removeStopFromList}
+              stops={destinations.stops}
+              map={map}
+              currentStart={destinations.startPoint?.get('name') || ''}
+              currentEnd={destinations.endPoint?.get('name') || ''}
+              copyEndFromStart={copyEndFromStart}
+              clearStopsFunction={clearAllStops}
+            />
+          </div>
         )}
         {!calculatedRoute &&
           destinations.startPoint &&
@@ -157,7 +159,7 @@ export const ActionComponent = ({
               Calculate Route
             </div>
           )}
-          {!calculatedRoute && (
+        {!calculatedRoute && (
           <div
             onClick={() => setClickActive(!clickActive)}
             className="map-click-btn"
