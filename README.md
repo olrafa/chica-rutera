@@ -22,14 +22,18 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 git clone git@github.com:rafaelrolivares/chica-rutera.git
 cd chica-rutera
 npm install
-npm start
 ```
 
-This will runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Keep in mind that you will need your own [Open Route Service](https://openrouteservice.org/) and [Geoapify](https://www.geoapify.com/) API keys to run it locally. Once you have them, you need to create a `.env` file (which is gitignored) in your local root folder, with the following structure:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+REACT_APP_ORS_KEY=YOUR_KEY
+REACT_APP_GEOAPIFY_KEY=YOUR_KEY
+```
+
+Then, run `npm start`. This will run the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits. You will also see any lint errors in the console.
 
 ## Contributing
 
