@@ -81,7 +81,7 @@ export const RoutePoints = ({
     }
   };
 
-  const placeHolderTxt = 'Search for an address';
+  const placeHolderTxt = 'Search for an address and press \'Enter\'';
 
   const fileHandler = (files: FileList | null) => {
     const file = files && files[0];
