@@ -32,8 +32,8 @@
   cursor: pointer;
 }
 
-input[type='text'] {
-  font-family: 'Noto Sans JP', sans-serif;
+input[type="text"] {
+  font-family: "Noto Sans JP", sans-serif;
   font-size: 12px;
   width: 250px;
   flex-grow: 1;

@@ -1,14 +1,15 @@
-import { Coordinate } from 'ol/coordinate';
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
-import { Vector as VectorLayer } from 'ol/layer';
-import { fromLonLat } from 'ol/proj';
-import { Vector as VectorSource } from 'ol/source';
-import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
+import { Coordinate } from "ol/coordinate";
+import Feature from "ol/Feature";
+import Geometry from "ol/geom/Geometry";
+import Point from "ol/geom/Point";
+import { Vector as VectorLayer } from "ol/layer";
+import { fromLonLat } from "ol/proj";
+import { Vector as VectorSource } from "ol/source";
+import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
 
 const createPoint = (coordinate: Coordinate, formatted?: string) =>
   new Feature({
-    type: 'geoMarker',
+    type: "geoMarker",
     geometry: new Point(coordinate),
     name: formatted,
   });
@@ -27,13 +28,12 @@ export const createPointVector = (
   source: VectorSource,
   color: string,
   zIndex: number
-) => {
-  return new VectorLayer({
+) =>
+  new VectorLayer({
     source,
     style: createStyle(color),
     zIndex,
   });
-};
 
 export const createStyle = (color: string) =>
   new Style({
@@ -41,7 +41,7 @@ export const createStyle = (color: string) =>
       radius: 7,
       fill: new Fill({ color }),
       stroke: new Stroke({
-        color: '#258',
+        color: "#258",
         width: 2,
       }),
     }),

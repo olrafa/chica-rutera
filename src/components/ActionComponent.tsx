@@ -1,15 +1,19 @@
-import { createEmpty, extend, Extent } from 'ol/extent';
-import Feature from 'ol/Feature';
-import { toLonLat } from 'ol/proj';
-import { Vector as VectorSource } from 'ol/source';
-import React, { useCallback, useEffect, useState } from 'react';
-import { reverseGeocode } from '../requests/geoapify';
-import { calculateRoute } from '../requests/route';
-import { ActionComponentProps, Destinations } from '../types/route.types';
-import { createRoutePoint } from '../utils/createPoints';
-import './components.css';
-import { RoutePoints } from './RoutePoints';
-import { ShowRoute } from './ShowRoute';
+import { createEmpty, extend, Extent } from "ol/extent";
+import Feature from "ol/Feature";
+import Geometry from "ol/geom/Geometry";
+import { toLonLat } from "ol/proj";
+import { Vector as VectorSource } from "ol/source";
+import React, { useCallback, useEffect, useState } from "react";
+import { reverseGeocode } from "../requests/geoapify";
+import { calculateRoute } from "../requests/route";
+import {
+  ActionComponentProps,
+  Destinations,
+} from "../types/route.types";
+import { createRoutePoint } from "../util";
+import "./components.css";
+import { RoutePoints } from "./RoutePoints";
+import { ShowRoute } from "./ShowRoute";
 
 export const ActionComponent = ({
   map,
@@ -103,8 +107,8 @@ export const ActionComponent = ({
   const [clickActive, setClickActive] = useState(false);
 
   useEffect(() => {
-    clickActive && map && map.on('singleclick', addPointOnClick);
-    return () => map.un('singleclick', addPointOnClick);
+    clickActive && map && map.on("singleclick", addPointOnClick);
+    return () => map.un("singleclick", addPointOnClick);
   }, [map, addPointOnClick, clickActive]);
 
   const optimize = async () => {
@@ -115,7 +119,7 @@ export const ActionComponent = ({
     if (validRoute) {
       setCalculatedRoute(route);
     } else {
-      alert('Unable to create route. Please check your points and try again');
+      alert("Unable to create route. Please check your points and try again");
     }
   };
 
@@ -144,8 +148,8 @@ export const ActionComponent = ({
               removeStopsFunction={removeStopFromList}
               stops={destinations.stops}
               map={map}
-              currentStart={destinations.startPoint?.get('name') || ''}
-              currentEnd={destinations.endPoint?.get('name') || ''}
+              currentStart={destinations.startPoint?.get("name") || ""}
+              currentEnd={destinations.endPoint?.get("name") || ""}
               copyEndFromStart={copyEndFromStart}
               clearStopsFunction={clearAllStops}
             />
@@ -164,7 +168,7 @@ export const ActionComponent = ({
             onClick={() => setClickActive(!clickActive)}
             className="map-click-btn"
           >
-            {clickActive ? 'Disable' : 'Enable'} adding points from map click
+            {clickActive ? "Disable" : "Enable"} adding points from map click
           </div>
         )}
         {calculatedRoute &&
