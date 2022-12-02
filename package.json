@@ -31,9 +31,9 @@
       "react-app/jest"
     ],
     "rules": {
-      "semi": "warn",
-      "no-var": "warn",
-      "prefer-const": "warn"
+      "semi": "error",
+      "no-var": "error",
+      "prefer-const": "error"
     }
   },
   "browserslist": {

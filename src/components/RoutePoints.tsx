@@ -1,8 +1,8 @@
-import { Feature, Map, View } from 'ol';
-import { Coordinate } from 'ol/coordinate';
-import { fromLonLat, toLonLat } from 'ol/proj';
-import React, { useEffect, useState } from 'react';
-import { addressSearch } from '../requests/geoapify';
+import { Feature, Map, View } from "ol";
+import { Coordinate } from "ol/coordinate";
+import { fromLonLat, toLonLat } from "ol/proj";
+import React, { useEffect, useState } from "react";
+import { addressSearch } from "../requests/geoapify";
 
 type RoutePointsProps = {
   updateStartFunction: (location: any) => void;
@@ -21,7 +21,7 @@ type GeocoderResponse = {
   formatted: string;
   lat: number;
   lon: number;
-}
+};
 
 export const RoutePoints = ({
   updateStartFunction,
@@ -39,7 +39,7 @@ export const RoutePoints = ({
     e: { key: string; target: any },
     item: string
   ) => {
-    e.key === 'Enter' && searchForAddress(e.target.value, item, e.target);
+    e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
   };
 
   const searchForAddress = (
@@ -57,7 +57,7 @@ export const RoutePoints = ({
     addressSearch(value, lon, lat).then((r: GeocoderResponse) => {
       if (r) {
         if (elementToUpdate) {
-          elementToUpdate.value = item === 'stops' ? '' : r.formatted;
+          elementToUpdate.value = item === "stops" ? "" : r.formatted;
         }
         updateState(r, item);
         const point = [r.lon, r.lat];
@@ -65,32 +65,32 @@ export const RoutePoints = ({
         map.getView().setZoom(15);
       } else {
         alert(
-          'No address found. Please check for typos and/or add details (city, region, country)'
+          "No address found. Please check for typos and/or add details (city, region, country)"
         );
       }
     });
   };
 
   const updateState = (r: any, item: string) => {
-    if (item === 'start') {
+    if (item === "start") {
       updateStartFunction(r);
-    } else if (item === 'end') {
+    } else if (item === "end") {
       updateEndFunction(r);
-    } else if (item === 'stops') {
+    } else if (item === "stops") {
       addStopsFunction(r);
     }
   };
 
-  const placeHolderTxt = 'Search for an address and press \'Enter\'';
+  const placeHolderTxt = "Search for an address and press 'Enter'";
 
   const fileHandler = (files: FileList | null) => {
     const file = files && files[0];
     if (file) {
       const reader = new FileReader();
-      reader.readAsText(file, 'UTF-8');
+      reader.readAsText(file, "UTF-8");
       reader.onload = (e) =>
         e && e.target && addPointsFromFile(e.target.result as string);
-      reader.onerror = () => console.log('error reading file');
+      reader.onerror = () => console.log("error reading file");
     }
   };
 
@@ -98,16 +98,16 @@ export const RoutePoints = ({
 
   const addPointsFromFile = (text: string) => {
     const addresses = text
-      .split('\n')
+      .split("\n")
       .filter((a) => a)
-      .map((a) => a.replace(/;/g, ', '));
+      .map((a) => a.replace(/;/g, ", "));
     setAddressesFromFile(Array.from(new Set(addresses)));
   };
 
   useEffect(() => {
     if (addressesFromFile.length) {
       const nextAddress = addressesFromFile.pop();
-      setTimeout(() => searchForAddress(nextAddress as string, 'stops'), 500);
+      setTimeout(() => searchForAddress(nextAddress as string, "stops"), 500);
     }
   }, [stops, addressesFromFile]);
 
@@ -118,9 +118,9 @@ export const RoutePoints = ({
         <input
           id="search-start"
           type="text"
-          onKeyDown={(e) => handleAddressInput(e, 'start')}
+          onKeyDown={(e) => handleAddressInput(e, "start")}
           placeholder={placeHolderTxt}
-          defaultValue={currentStart || ''}
+          defaultValue={currentStart || ""}
         />
       </div>
       <div className="search-item">
@@ -128,9 +128,9 @@ export const RoutePoints = ({
         <input
           id="search-end"
           type="text"
-          onKeyDown={(e) => handleAddressInput(e, 'end')}
+          onKeyDown={(e) => handleAddressInput(e, "end")}
           placeholder={placeHolderTxt}
-          defaultValue={currentEnd || ''}
+          defaultValue={currentEnd || ""}
         />
         {currentStart && (
           <span className="repeat-start-btn" onClick={copyEndFromStart}>
@@ -144,7 +144,7 @@ export const RoutePoints = ({
           <input
             id="search-stops"
             type="text"
-            onKeyDown={(e) => handleAddressInput(e, 'stops')}
+            onKeyDown={(e) => handleAddressInput(e, "stops")}
             placeholder={placeHolderTxt}
           />
         </div>
@@ -155,9 +155,9 @@ export const RoutePoints = ({
             type="file"
             multiple={false}
             accept={
-              '.csv, text/plain,' +
-              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, ' +
-              'application/vnd.ms-excel'
+              ".csv, text/plain," +
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, " +
+              "application/vnd.ms-excel"
             }
             onChange={(e) => fileHandler(e.target.files)}
           />
@@ -168,7 +168,7 @@ export const RoutePoints = ({
         <div>
           {stops.map((s, i) => (
             <div key={i + 1}>
-              <input type="text" value={s.get('name')} disabled={true} />
+              <input type="text" value={s.get("name")} disabled={true} />
               <span onClick={() => removeStopsFunction(s)}>&times;</span>
             </div>
           ))}

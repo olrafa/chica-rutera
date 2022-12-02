@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export const PageInfo = () => {
   const [open, setOpen] = useState(false);
@@ -10,7 +10,7 @@ export const PageInfo = () => {
           Hello, my name is Rafael and I am a geographer and developer.
           <br />
           <br /> This page is meant as a study for myself. The code is available
-          on{' '}
+          on{" "}
           <a
             href="https://github.com/rafaelrolivares/chica-rutera"
             target="_blank"
@@ -25,7 +25,7 @@ export const PageInfo = () => {
         </div>
       ) : (
         <div className="page-info closed" onClick={() => setOpen(!open)}>
-          Chica Rutera{' '}
+          Chica Rutera{" "}
         </div>
       )}
     </div>

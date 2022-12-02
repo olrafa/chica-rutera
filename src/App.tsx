@@ -1,25 +1,25 @@
 // react
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
 // openlayers
-import TileLayer from 'ol/layer/Tile';
-import Map from 'ol/Map';
-import { fromLonLat } from 'ol/proj';
-import { XYZ } from 'ol/source';
-import View from 'ol/View';
-import { Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource } from 'ol/source';
-import { Stroke, Style } from 'ol/style';
+import TileLayer from "ol/layer/Tile";
+import Map from "ol/Map";
+import { fromLonLat } from "ol/proj";
+import { XYZ } from "ol/source";
+import View from "ol/View";
+import { Vector as VectorLayer } from "ol/layer";
+import { Vector as VectorSource } from "ol/source";
+import { Stroke, Style } from "ol/style";
 
 // css
-import 'ol/ol.css';
-import './App.css';
+import "ol/ol.css";
+import "./App.css";
 
 // other imports
-import { ActionComponent } from './components/ActionComponent';
-import { getIpInfo } from './requests/geoapify';
-import { createPointVector } from './utils/createPoints';
-import { PageInfo } from './components/PageInfo';
+import { ActionComponent } from "./components/ActionComponent";
+import { getIpInfo } from "./requests/geoapify";
+import { createPointVector } from "./util";
+import { PageInfo } from "./components/PageInfo";
 
 function App() {
   const [map, setMap] = useState<Map | null>(null);
@@ -36,9 +36,9 @@ function App() {
       const endSource = new VectorSource();
       const stopsSource = new VectorSource();
 
-      const startVector = createPointVector(startSource, '#5FA', 12);
-      const endVector = createPointVector(endSource, '#F08', 11);
-      const stopsVector = createPointVector(stopsSource, '#0AA', 10);
+      const startVector = createPointVector(startSource, "#5FA", 12);
+      const endVector = createPointVector(endSource, "#F08", 11);
+      const stopsVector = createPointVector(stopsSource, "#0AA", 10);
 
       const routeSource = new VectorSource();
       const routeVector = new VectorLayer({
@@ -56,7 +56,7 @@ function App() {
         layers: [
           new TileLayer({
             source: new XYZ({
-              url: 'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+              url: "https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
               attributions:
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' +
                 ' contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
