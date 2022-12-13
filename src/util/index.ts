@@ -1,6 +1,5 @@
 import { Coordinate } from "ol/coordinate";
 import Feature from "ol/Feature";
-import Geometry from "ol/geom/Geometry";
 import Point from "ol/geom/Point";
 import { Vector as VectorLayer } from "ol/layer";
 import { fromLonLat } from "ol/proj";

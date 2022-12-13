@@ -1,15 +1,11 @@
-import { createEmpty, extend, Extent } from "ol/extent";
 import Feature from "ol/Feature";
-import Geometry from "ol/geom/Geometry";
+
 import { toLonLat } from "ol/proj";
 import { Vector as VectorSource } from "ol/source";
 import React, { useCallback, useEffect, useState } from "react";
-import { reverseGeocode } from "../requests/geoapify";
+import { reverseGeocode } from "../requests/geoapify/input";
 import { calculateRoute } from "../requests/route";
-import {
-  ActionComponentProps,
-  Destinations,
-} from "../types/route.types";
+import { ActionComponentProps, Destinations } from "../types/route.types";
 import { createRoutePoint } from "../util";
 import "./components.css";
 import { RoutePoints } from "./RoutePoints";
