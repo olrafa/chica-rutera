@@ -1,8 +1,8 @@
-import { Feature, Map, View } from "ol";
+import { Feature, Map } from "ol";
 import { Coordinate } from "ol/coordinate";
 import { fromLonLat, toLonLat } from "ol/proj";
 import React, { useEffect, useState } from "react";
-import { addressSearch } from "../requests/geoapify";
+import { addressSearch } from "../requests/geoapify/input";
 
 type RoutePointsProps = {
   updateStartFunction: (location: any) => void;
@@ -39,6 +39,7 @@ export const RoutePoints = ({
     e: { key: string; target: any },
     item: string
   ) => {
+    console.log(e);
     e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
   };
 

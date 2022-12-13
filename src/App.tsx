@@ -17,7 +17,7 @@ import "./App.css";
 
 // other imports
 import { ActionComponent } from "./components/ActionComponent";
-import { getIpInfo } from "./requests/geoapify";
+import { getIpInfo } from "./requests/geoapify/output";
 import { createPointVector } from "./util";
 import { PageInfo } from "./components/PageInfo";
 
