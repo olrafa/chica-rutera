@@ -2,6 +2,7 @@ import Feature from "ol/Feature";
 import Polyline from "ol/format/Polyline";
 import Geometry from "ol/geom/Geometry";
 import React from "react";
+
 import { RouteDetail, RouteInfo, RouteStep } from "../types/route.types";
 import { createStyle } from "./Map/util";
 import { ShareRoute } from "./ShareRoute";

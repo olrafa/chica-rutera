@@ -1,5 +1,5 @@
-import { RouteDetail } from "../types/route.types";
 import waLogo from "../images/WhatsApp_Logo.png";
+import { RouteDetail } from "../types/route.types";
 
 type ShareRouteProps = {
   route: RouteDetail;

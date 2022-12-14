@@ -1,5 +1,6 @@
 import { Map } from "ol";
 import { fromLonLat } from "ol/proj";
+
 import { getIpInfo } from "../../requests/geoapify/output";
 import { IP_ZOOM } from "./constants";
 

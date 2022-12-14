@@ -5,6 +5,7 @@ import { Vector as VectorLayer } from "ol/layer";
 import { fromLonLat } from "ol/proj";
 import { Vector as VectorSource } from "ol/source";
 import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
+
 import { STROKE_COLOR, STROKE_WIDTH } from "./constants";
 
 const createPoint = (coordinate: Coordinate, formatted?: string) =>
@@ -24,10 +25,7 @@ export const createRoutePoint = ({ formatted, lon, lat }: any) => {
   return createPoint(coordinate, formatted);
 };
 
-export const createPointVector = (
-  color: string,
-  zIndex: number,
-) =>
+export const createPointVector = (color: string, zIndex: number) =>
   new VectorLayer({
     source: new VectorSource(),
     style: createStyle(color),
