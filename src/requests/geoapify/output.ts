@@ -1,4 +1,4 @@
-import { GEOAPIFY_IP_INFO } from "./constants";
+import { GEOAPIFY_IP_INFO } from './constants';
 
 const requestOptions = { method: "GET" };
 

@@ -1,16 +1,11 @@
-import { Map, View } from "ol";
-import TileLayer from "ol/layer/Tile";
-import VectorLayer from "ol/layer/Vector";
-import { XYZ } from "ol/source";
-import VectorSource from "ol/source/Vector";
-import { Stroke, Style } from "ol/style";
-import {
-  CARTO_ATTRIBUTION,
-  CARTO_URL,
-  INITIAL_ZOOM,
-  MAP_CENTER,
-  MAX_ZOOM,
-} from "./constants";
+import { Map, View } from 'ol';
+import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
+import { XYZ } from 'ol/source';
+import VectorSource from 'ol/source/Vector';
+import { Stroke, Style } from 'ol/style';
+
+import { CARTO_ATTRIBUTION, CARTO_URL, INITIAL_ZOOM, MAP_CENTER, MAX_ZOOM } from './constants';
 
 export const createRouteVector = () =>
   new VectorLayer({

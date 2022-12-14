@@ -1,11 +1,12 @@
-import { Coordinate } from "ol/coordinate";
-import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
-import { Vector as VectorLayer } from "ol/layer";
-import { fromLonLat } from "ol/proj";
-import { Vector as VectorSource } from "ol/source";
-import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
-import { STROKE_COLOR, STROKE_WIDTH } from "./constants";
+import { Coordinate } from 'ol/coordinate';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import { Vector as VectorLayer } from 'ol/layer';
+import { fromLonLat } from 'ol/proj';
+import { Vector as VectorSource } from 'ol/source';
+import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
+
+import { STROKE_COLOR, STROKE_WIDTH } from './constants';
 
 const createPoint = (coordinate: Coordinate, formatted?: string) =>
   new Feature({
