@@ -12,10 +12,12 @@ const MapComponent = (): ReactElement => {
   const mapElement = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (mapElement.current) {
+    // This effect will build the map and attach it to the node.
+    // The !map assertion will prevent a new map to be added on every reload.
+    if (mapElement.current && !map) {
       setMap(createMap(mapElement.current));
     }
-  }, []);
+  }, [map]);
 
   useEffect(() => {
     if (map) {
