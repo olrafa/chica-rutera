@@ -1,4 +1,4 @@
-import { fromLonLat } from 'ol/proj';
+import { fromLonLat } from "ol/proj";
 
 export const CARTO_URL =
   "https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";

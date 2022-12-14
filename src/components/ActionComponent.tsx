@@ -1,18 +1,18 @@
-import './components.css';
+import "./components.css";
 
-import { Map } from 'ol';
-import Feature from 'ol/Feature';
-import { toLonLat } from 'ol/proj';
-import { Vector as VectorSource } from 'ol/source';
-import React, { useCallback, useEffect, useState } from 'react';
+import { Map } from "ol";
+import Feature from "ol/Feature";
+import { toLonLat } from "ol/proj";
+import { Vector as VectorSource } from "ol/source";
+import React, { useCallback, useEffect, useState } from "react";
 
-import { reverseGeocode } from '../requests/geoapify/input';
-import { calculateRoute } from '../requests/route';
-import { Destinations } from '../types/route.types';
-import { createRouteVector } from './Map/layers';
-import { createPointVector, createRoutePoint } from './Map/util';
-import { RoutePoints } from './RoutePoints';
-import { ShowRoute } from './ShowRoute';
+import { reverseGeocode } from "../requests/geoapify/input";
+import { calculateRoute } from "../requests/route";
+import { Destinations } from "../types/route.types";
+import { createRouteVector } from "./Map/layers";
+import { createPointVector, createRoutePoint } from "./Map/util";
+import { RoutePoints } from "./RoutePoints";
+import { ShowRoute } from "./ShowRoute";
 
 type ActionComponentProps = {
   map: Map;

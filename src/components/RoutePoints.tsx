@@ -1,9 +1,9 @@
-import { Feature, Map } from 'ol';
-import { Coordinate } from 'ol/coordinate';
-import { fromLonLat, toLonLat } from 'ol/proj';
-import React, { useEffect, useState } from 'react';
+import { Feature, Map } from "ol";
+import { Coordinate } from "ol/coordinate";
+import { fromLonLat, toLonLat } from "ol/proj";
+import React, { useEffect, useState } from "react";
 
-import { addressSearch } from '../requests/geoapify/input';
+import { addressSearch } from "../requests/geoapify/input";
 
 type RoutePointsProps = {
   updateStartFunction: (location: any) => void;

@@ -1,6 +1,6 @@
-import { GeoapifyAPI } from './constants';
-import { geoApifyFetcher } from './output';
-import { createAddressParams, getFetcherUrl } from './util';
+import { GeoapifyAPI } from "./constants";
+import { geoApifyFetcher } from "./output";
+import { createAddressParams, getFetcherUrl } from "./util";
 
 export const addressSearch = async (
   address: string,

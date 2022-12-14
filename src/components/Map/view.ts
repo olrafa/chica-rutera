@@ -1,8 +1,8 @@
-import { Map } from 'ol';
-import { fromLonLat } from 'ol/proj';
+import { Map } from "ol";
+import { fromLonLat } from "ol/proj";
 
-import { getIpInfo } from '../../requests/geoapify/output';
-import { IP_ZOOM } from './constants';
+import { getIpInfo } from "../../requests/geoapify/output";
+import { IP_ZOOM } from "./constants";
 
 export const zoomToUserArea = async (map: Map): Promise<void> => {
   const ipInfo = await getIpInfo();

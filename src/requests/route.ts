@@ -1,7 +1,7 @@
-import { Feature } from 'ol';
-import { Coordinate } from 'ol/coordinate';
-import Geometry from 'ol/geom/Geometry';
-import Point from 'ol/geom/Point';
+import { Feature } from "ol";
+import { Coordinate } from "ol/coordinate";
+import Geometry from "ol/geom/Geometry";
+import Point from "ol/geom/Point";
 
 const orsUrl = "https://api.openrouteservice.org/";
 

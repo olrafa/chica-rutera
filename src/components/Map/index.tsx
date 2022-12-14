@@ -1,13 +1,13 @@
-import 'ol/ol.css';
-import './index.css';
+import "ol/ol.css";
+import "./index.css";
 
-import { Map } from 'ol';
-import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import { Map } from "ol";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 
-import { ActionComponent } from '../ActionComponent';
-import { PageInfo } from '../PageInfo';
-import { createMap } from './layers';
-import { zoomToUserArea } from './view';
+import { ActionComponent } from "../ActionComponent";
+import { PageInfo } from "../PageInfo";
+import { createMap } from "./layers";
+import { zoomToUserArea } from "./view";
 
 const MapComponent = (): ReactElement => {
   const [map, setMap] = useState<Map>();
