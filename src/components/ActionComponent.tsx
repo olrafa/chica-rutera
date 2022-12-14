@@ -5,19 +5,36 @@ import { Vector as VectorSource } from "ol/source";
 import React, { useCallback, useEffect, useState } from "react";
 import { reverseGeocode } from "../requests/geoapify/input";
 import { calculateRoute } from "../requests/route";
-import { ActionComponentProps, Destinations } from "../types/route.types";
-import { createRoutePoint } from "../util";
+import { Destinations } from "../types/route.types";
+import { createPointVector, createRoutePoint } from "./Map/util";
 import "./components.css";
 import { RoutePoints } from "./RoutePoints";
 import { ShowRoute } from "./ShowRoute";
+import { Map } from "ol";
+import { createRouteVector } from "./Map/layers";
 
-export const ActionComponent = ({
-  map,
-  startLayer,
-  endLayer,
-  stopsLayer,
-  routeLayer,
-}: ActionComponentProps) => {
+type ActionComponentProps = {
+  map: Map;
+};
+
+export const ActionComponent = ({ map }: ActionComponentProps) => {
+  const startVector = createPointVector("#5FA", 12);
+  const startLayer = startVector.getSource();
+
+  const endVector = createPointVector("#F08", 11);
+  const endLayer = endVector.getSource();
+
+  const stopsVector = createPointVector("#0AA", 10);
+  const stopsLayer = stopsVector.getSource();
+
+  const routeVector = createRouteVector();
+  const routeLayer = routeVector.getSource();
+
+  map.addLayer(startVector);
+  map.addLayer(endVector);
+  map.addLayer(stopsVector);
+  map.addLayer(routeVector);
+
   const [destinations, setDestinations] = useState<Destinations>({
     startPoint: undefined,
     endPoint: undefined,
@@ -134,7 +151,7 @@ export const ActionComponent = ({
   return (
     <div className="action-component">
       <div className="action-component-wrapper">
-        {!calculatedRoute && map && (
+        {!calculatedRoute && (
           <div>
             Create your best driving route between multiple points
             <RoutePoints
