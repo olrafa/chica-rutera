@@ -2,12 +2,14 @@ import "ol/ol.css";
 import "./index.css";
 
 import { Map } from "ol";
+import { fromLonLat } from "ol/proj";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 
 import { ActionComponent } from "../ActionComponent";
 import { PageInfo } from "../PageInfo";
+import { IP_ZOOM } from "./constants";
 import { createMap } from "./layers";
-import { zoomToUserArea } from "./view";
+import useGetUserIpInfo from "./useGetUserUserIpInfo";
 
 const MapComponent = (): ReactElement => {
   const [map, setMap] = useState<Map>();
@@ -21,11 +23,16 @@ const MapComponent = (): ReactElement => {
     }
   }, [map]);
 
+  const { data: userIpInfo } = useGetUserIpInfo();
+
   useEffect(() => {
-    if (map) {
-      zoomToUserArea(map);
+    if (map && userIpInfo) {
+      const { latitude, longitude } = userIpInfo.location;
+      const userLocation = fromLonLat([longitude, latitude]);
+      map.getView().setCenter(userLocation);
+      map.getView().setZoom(IP_ZOOM);
     }
-  }, [map]);
+  }, [map, userIpInfo]);
 
   return (
     <>
