@@ -54,7 +54,6 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
     if (destinations.stops.length < 48) {
       const point = createRoutePoint(searchResult);
       stopsLayer.addFeature(point);
-      console.log(stopsLayer.getFeatures());
       setDestinations({
         ...destinations,
         stops: [...destinations.stops, point],
@@ -128,9 +127,6 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
     setCalculatedRoute(null);
   };
   const clearAllStops = () => {
-    console.log("aaaa");
-    console.log(stopsLayer.getFeatures());
-    console.log(map.getLayers());
     stopsLayer.clear();
     setDestinations({
       ...destinations,
