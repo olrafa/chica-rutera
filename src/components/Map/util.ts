@@ -10,7 +10,7 @@ const createPoint = (coordinate: Coordinate, formatted?: string) =>
   new Feature({
     type: "geoMarker",
     geometry: new Point(coordinate),
-    name: formatted
+    name: formatted,
   });
 
 const getCoordinates = (lon: string, lat: string): Coordinate => {
