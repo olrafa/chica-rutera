@@ -15,3 +15,8 @@ export const STROKE_COLOR = "#258";
 export const STROKE_WIDTH = 2;
 
 export const MAP_CENTER = fromLonLat([0, 0]);
+
+export const START_LAYER = "start";
+export const END_LAYER = "end";
+export const STOPS_LAYER = "stops";
+export const ROUTE_LAYER = "route";

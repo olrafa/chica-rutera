@@ -5,7 +5,7 @@ import { Map } from "ol";
 import { fromLonLat } from "ol/proj";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 
-import { ActionComponent } from "../ActionComponent";
+import { ActionComponent } from "../Form/ActionComponent";
 import { PageInfo } from "../PageInfo";
 import { IP_ZOOM } from "./constants";
 import { createMap } from "./layers";
