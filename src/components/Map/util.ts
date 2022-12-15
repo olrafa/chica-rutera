@@ -15,12 +15,12 @@ const createPoint = (coordinate: Coordinate, formatted?: string) =>
 
 const getCoordinates = (lon: string, lat: string): Coordinate => {
   const lonLat = [lon, lat].map((c) => parseFloat(c));
-  return fromLonLat(lonLat)
+  return fromLonLat(lonLat);
 };
 
 export const createRoutePoint = ({ formatted, lon, lat }: any) => {
-  const coordinate = getCoordinates(lon, lat)
-  return createPoint(coordinate, formatted)
+  const coordinate = getCoordinates(lon, lat);
+  return createPoint(coordinate, formatted);
 };
 
 export const createStyle = (color: string) =>
