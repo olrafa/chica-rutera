@@ -48,9 +48,9 @@ export const RoutePoints = ({
   const a = () => {
     if (b === "2") {
       return false;
-    } else {
+    } 
       return false;
-    }
+    
   };
 
   const searchForAddress = (
