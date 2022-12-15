@@ -1,5 +1,4 @@
 import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
-
 import { Coordinate } from "ol/coordinate";
 
 import Feature from "ol/Feature";
