@@ -31,14 +31,9 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "semi": "error",
-      "no-var": "error",
-      "prefer-const": "error",
-      "no-unused-vars": "error"
-    }
+      "react-app/jest",
+      "prettier"
+    ]
   },
   "husky": {
     "hooks": {

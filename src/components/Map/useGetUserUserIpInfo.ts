@@ -18,7 +18,6 @@ type IpInfoResponse = {
   };
 };
 
-
 /**
  * Gets the user's IP info to zoom the map to their area when opening the app.
  * @returns the result of the query
