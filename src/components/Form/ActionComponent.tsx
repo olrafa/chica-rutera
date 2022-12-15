@@ -28,7 +28,7 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
   });
 
   const [calculatedRoute, setCalculatedRoute] = useState(null);
-  
+
   const addFeatureFromSearch = (searchResult: any, layer: VectorSource) => {
     const point = createRoutePoint(searchResult);
     layer !== stopsLayer && layer.clear();
@@ -74,7 +74,10 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
     if (startPoint !== undefined) {
       endLayer.clear();
       endLayer.addFeature(startPoint);
-      setDestinations({ ...destinations, endPoint: startPoint });
+      setDestinations({
+        ...destinations,
+        endPoint: startPoint,
+      });
     }
   };
 
@@ -85,10 +88,16 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
         let point;
         if (!destinations.startPoint) {
           point = addFeatureFromSearch(searchResult, startLayer);
-          setDestinations({ ...destinations, startPoint: point });
+          setDestinations({
+            ...destinations,
+            startPoint: point,
+          });
         } else if (!destinations.endPoint) {
           point = addFeatureFromSearch(searchResult, endLayer);
-          setDestinations({ ...destinations, endPoint: point });
+          setDestinations({
+            ...destinations,
+            endPoint: point,
+          });
         } else {
           if (destinations.stops.length < 48) {
             point = addFeatureFromSearch(searchResult, stopsLayer);
@@ -104,13 +113,13 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
   );
 
   const [clickActive, setClickActive] = useState(false);
-  
+
   useEffect(() => {
     clickActive && map && map.on("singleclick", addPointOnClick);
     return () => map.un("singleclick", addPointOnClick);
   }, [map, addPointOnClick, clickActive]);
 
-    const optimize = async () => {
+  const optimize = async () => {
     setClickActive(false);
     routeLayer.clear();
     const route = await calculateRoute(destinations);
@@ -122,7 +131,7 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
     }
   };
 
-    const cancelRoute = () => {
+  const cancelRoute = () => {
     routeLayer.clear();
     setCalculatedRoute(null);
   };
@@ -140,7 +149,7 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
         {!calculatedRoute && (
           <div>
             Create your best driving route between multiple points
-             <RoutePoints
+            <RoutePoints
               updateStartFunction={addStartFromSearch}
               updateEndFunction={addEndFromSearch}
               addStopsFunction={addRoutePointFromSearch}
@@ -170,7 +179,7 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
             {clickActive ? "Disable" : "Enable"} adding points from map click
           </div>
         )}
-         {calculatedRoute &&
+        {calculatedRoute &&
           destinations.startPoint &&
           destinations.endPoint &&
           !!destinations.stops.length && (

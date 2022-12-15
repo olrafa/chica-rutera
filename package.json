@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@tanstack/react-query": "^4.20.3",
-    "@tanstack/react-query-devtools": "^4.20.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -14,29 +13,75 @@
     "@types/react": "^17.0.11",
     "@types/react-dom": "^17.0.8",
     "ol": "^6.5.0",
-    "prettier": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "^5.0.1",
     "typescript": "^4.8.4",
     "web-vitals": "^1.1.2"
   },
+  "devDependencies": {
+    "@tanstack/react-query-devtools": "^4.20.4",
+    "eslint-config-prettier": "^8.5.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.1.0",
+    "prettier": "^2.8.1",
+    "ts-unused-exports": "^8.0.5"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "prettier"
     ],
     "rules": {
-      "semi": "error",
-      "no-var": "error",
-      "prefer-const": "error"
+      "no-duplicate-imports": "error",
+      "camelcase": "error",
+      "complexity": "warn",
+      "default-case": "error",
+      "default-case-last": "error",
+      "default-param-last": "error",
+      "dot-notation": "error",
+      "eqeqeq": "error",
+      "max-lines": [
+        "warn",
+        500
+      ],
+      "no-console": "warn",
+      "no-else-return": "error",
+      "no-empty": "error",
+      "no-empty-function": "error",
+      "no-unneeded-ternary": "warn",
+      "no-useless-return": "warn",
+      "prefer-destructuring": [
+        "warn",
+        {
+          "array": true,
+          "object": true
+        },
+        {
+          "enforceForRenamedProperties": false
+        }
+      ],
+      "require-await": "warn"
     }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   },
   "browserslist": {
     "production": [

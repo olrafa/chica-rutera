@@ -1,10 +1,10 @@
+import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
+import { STROKE_COLOR, STROKE_WIDTH } from "./constants";
+
 import { Coordinate } from "ol/coordinate";
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 import { fromLonLat } from "ol/proj";
-import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
-
-import { STROKE_COLOR, STROKE_WIDTH } from "./constants";
 
 const createPoint = (coordinate: Coordinate, formatted?: string) =>
   new Feature({
@@ -13,9 +13,9 @@ const createPoint = (coordinate: Coordinate, formatted?: string) =>
     name: formatted,
   });
 
-const getCoordinates = (lon: string, lat: string) => {
+const getCoordinates = (lon: string, lat: string): Coordinate => {
   const lonLat = [lon, lat].map((c) => parseFloat(c));
-  return fromLonLat(lonLat) as Coordinate;
+  return fromLonLat(lonLat);
 };
 
 export const createRoutePoint = ({ formatted, lon, lat }: any) => {
