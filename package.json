@@ -31,7 +31,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -63,9 +64,7 @@
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css}": [
       "prettier --write",
-      "eslint --fix src/",
-      "tslint --fix --project .",
-      "git add"
+      "eslint --fix"
     ]
   },
   "browserslist": {

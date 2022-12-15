@@ -40,7 +40,7 @@ export const RoutePoints = ({
     e: { key: string; target: any },
     item: string
   ) => {
-    console.log(e)
+    console.log(e);
     e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
   };
 
@@ -49,7 +49,7 @@ export const RoutePoints = ({
     item: string,
     elementToUpdate?: { value: string } | undefined
   ) => {
-    let mapCenter = [0, 0]
+    let mapCenter = [0, 0];
     const viewCenter = map.getView().getCenter();
     if (viewCenter !== undefined) {
       mapCenter = toLonLat(viewCenter);
