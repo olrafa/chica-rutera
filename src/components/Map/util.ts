@@ -10,12 +10,13 @@ const createPoint = (coordinate: Coordinate, formatted?: string) =>
   new Feature({
     type: "geoMarker",
     geometry: new Point(coordinate),
-    name: formatted,
+    name: formatted
   });
 
 const getCoordinates = (lon: string, lat: string): Coordinate => {
   const lonLat = [lon, lat].map((c) => parseFloat(c));
-  return fromLonLat(lonLat);
+  const a = fromLonLat(lonLat);
+  return a;
 };
 
 export const createRoutePoint = ({ formatted, lon, lat }: any) => {

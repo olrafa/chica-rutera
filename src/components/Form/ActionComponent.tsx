@@ -74,7 +74,10 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
     if (startPoint !== undefined) {
       endLayer.clear();
       endLayer.addFeature(startPoint);
-      setDestinations({ ...destinations, endPoint: startPoint });
+      setDestinations({
+        ...destinations,
+        endPoint: startPoint,
+      });
     }
   };
 
@@ -85,10 +88,16 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
         let point;
         if (!destinations.startPoint) {
           point = addFeatureFromSearch(searchResult, startLayer);
-          setDestinations({ ...destinations, startPoint: point });
+          setDestinations({
+            ...destinations,
+            startPoint: point,
+          });
         } else if (!destinations.endPoint) {
           point = addFeatureFromSearch(searchResult, endLayer);
-          setDestinations({ ...destinations, endPoint: point });
+          setDestinations({
+            ...destinations,
+            endPoint: point,
+          });
         } else {
           if (destinations.stops.length < 48) {
             point = addFeatureFromSearch(searchResult, stopsLayer);

@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import { GEOAPIFY_IP_INFO } from "../../requests/geoapify/constants";
 import convertTimeToMilliseconds from "../../util/convertTimeToMilliseconds";
-import { MAX_ZOOM } from "./constants";
 
 const useGetUserIpInfo = () =>
   useQuery(["ipInfo"], getIpInfo, {
@@ -23,7 +22,9 @@ type IpInfoResponse = {
  * @returns the result of the query
  */
 const getIpInfo = async (): Promise<IpInfoResponse> => {
-  const data = await fetch(GEOAPIFY_IP_INFO, { method: "GET" });
+  const data = await fetch(GEOAPIFY_IP_INFO, {
+    method: "GET",
+  });
   const response = await data.json();
   return response;
 };
