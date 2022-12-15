@@ -8,18 +8,14 @@ import { Stroke, Style } from "ol/style";
 import {
   CARTO_ATTRIBUTION,
   CARTO_URL,
-  END_LAYER,
   INITIAL_ZOOM,
   MAP_CENTER,
   MAX_ZOOM,
-  ROUTE_LAYER,
-  START_LAYER,
-  STOPS_LAYER,
 } from "./constants";
 import { createStyle } from "./util";
 
-export const createRouteVector = (name: string) => {
-  const layer = new VectorLayer({
+export const createRouteVector = () =>
+  new VectorLayer({
     source: new VectorSource(),
     style: new Style({
       stroke: new Stroke({
@@ -28,9 +24,6 @@ export const createRouteVector = (name: string) => {
       }),
     }),
   });
-  layer.set("name", name);
-  return layer;
-};
 
 const tileLayer = new TileLayer({
   source: new XYZ({
@@ -41,24 +34,17 @@ const tileLayer = new TileLayer({
   }),
 });
 
-const createPointVector = (
-  color: string,
-  zIndex: number,
-  name: string
-): VectorLayer => {
-  const layer = new VectorLayer({
+const createPointVector = (color: string, zIndex: number): VectorLayer =>
+  new VectorLayer({
     source: new VectorSource(),
     style: createStyle(color),
     zIndex,
   });
-  layer.set("name", name);
-  return layer;
-};
 
-const startVector = createPointVector("#5FA", 12, START_LAYER);
-const endVector = createPointVector("#F08", 11, END_LAYER);
-const stopsVector = createPointVector("#0AA", 10, STOPS_LAYER);
-const routeVector = createRouteVector(ROUTE_LAYER);
+const startVector = createPointVector("#5FA", 12);
+const endVector = createPointVector("#F08", 11);
+const stopsVector = createPointVector("#0AA", 10);
+const routeVector = createRouteVector();
 
 export const MAP_SOURCES = [
   startVector.getSource(),
