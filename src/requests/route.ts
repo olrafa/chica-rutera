@@ -25,13 +25,13 @@ const getWgs84Coordinates = (point: any) => {
   const pointGeo = point.getGeometry();
   if (!pointGeo) {
     return null;
-  } else {
+  } 
     const copiedGeo = pointGeo.clone();
     const wgs84geo: Geometry = copiedGeo.transform("EPSG:3857", "EPSG:4326");
     const castGeo: Point = wgs84geo as Point;
     const coordinates: Coordinate = castGeo.getCoordinates();
     return coordinates;
-  }
+  
 };
 
 type RouteInfoProps = {
