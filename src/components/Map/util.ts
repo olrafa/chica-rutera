@@ -1,8 +1,10 @@
+import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
+
 import { Coordinate } from "ol/coordinate";
+
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 import { fromLonLat } from "ol/proj";
-import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
 
 import { STROKE_COLOR, STROKE_WIDTH } from "./constants";
 

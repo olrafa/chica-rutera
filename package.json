@@ -54,7 +54,37 @@
         500
       ],
       "no-console": "warn",
-      "no-else-return": "error"
+      "no-else-return": "error",
+      "no-empty": "error",
+      "no-empty-function": "error",
+      "no-unneeded-ternary": "warn",
+      "no-useless-return": "warn",
+      "prefer-destructuring": [
+        "warn",
+        {
+          "array": true,
+          "object": true
+        },
+        {
+          "enforceForRenamedProperties": false
+        }
+      ],
+      "require-await": "warn",
+      "sort-imports": [
+        "warn",
+        {
+          "ignoreCase": false,
+          "ignoreDeclarationSort": false,
+          "ignoreMemberSort": false,
+          "memberSyntaxSortOrder": [
+            "none",
+            "all",
+            "multiple",
+            "single"
+          ],
+          "allowSeparatedGroups": false
+        }
+      ]
     }
   },
   "husky": {
