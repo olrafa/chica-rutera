@@ -6,7 +6,7 @@ import convertTimeToMilliseconds from "../../util/convertTimeToMilliseconds";
 const useGetUserIpInfo = () =>
   useQuery(["ipInfo"], getIpInfo, {
     onError: (error) => console.log("Error getting IP Info", error),
-    staleTime: convertTimeToMilliseconds(2, "hours")
+    staleTime: convertTimeToMilliseconds(2, "hours"),
   });
 
 // Not really all there is to it but what we're using so far
