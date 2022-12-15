@@ -36,10 +36,8 @@ export const RoutePoints = ({
   copyEndFromStart,
   clearStopsFunction,
 }: RoutePointsProps) => {
-  const handleAddressInput = async (
-    e: { key: string; target: any },
-    item: string
-  ) => e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
+  const handleAddressInput = (e: { key: string; target: any }, item: string) =>
+    e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
 
   const searchForAddress = (
     value: string,

@@ -8,7 +8,6 @@ export const addressSearch = async (
   lat?: number
 ) => {
   const addressParams = createAddressParams(address, lon, lat);
-  console.log(address);
   const url = getFetcherUrl(addressParams, GeoapifyAPI.SEARCH);
   return await geoApifyFetcher(url);
 };
