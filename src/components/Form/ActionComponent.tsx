@@ -1,4 +1,4 @@
-import "./components.css";
+import "../components.css";
 
 import { Map } from "ol";
 import Feature from "ol/Feature";
@@ -6,35 +6,20 @@ import { toLonLat } from "ol/proj";
 import { Vector as VectorSource } from "ol/source";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { reverseGeocode } from "../requests/geoapify/input";
-import { calculateRoute } from "../requests/route";
-import { Destinations } from "../types/route.types";
-import { createRouteVector } from "./Map/layers";
-import { createPointVector, createRoutePoint } from "./Map/util";
-import { RoutePoints } from "./RoutePoints";
-import { ShowRoute } from "./ShowRoute";
+import { reverseGeocode } from "../../requests/geoapify/input";
+import { calculateRoute } from "../../requests/route";
+import { Destinations } from "../../types/route.types";
+import { MAP_SOURCES } from "../Map/layers";
+import { createRoutePoint } from "../Map/util";
+import { RoutePoints } from "../RoutePoints";
+import { ShowRoute } from "../ShowRoute";
 
 type ActionComponentProps = {
   map: Map;
 };
 
 export const ActionComponent = ({ map }: ActionComponentProps) => {
-  const startVector = createPointVector("#5FA", 12);
-  const startLayer = startVector.getSource();
-
-  const endVector = createPointVector("#F08", 11);
-  const endLayer = endVector.getSource();
-
-  const stopsVector = createPointVector("#0AA", 10);
-  const stopsLayer = stopsVector.getSource();
-
-  const routeVector = createRouteVector();
-  const routeLayer = routeVector.getSource();
-
-  map.addLayer(startVector);
-  map.addLayer(endVector);
-  map.addLayer(stopsVector);
-  map.addLayer(routeVector);
+  const [startLayer, endLayer, stopsLayer, routeLayer] = MAP_SOURCES;
 
   const [destinations, setDestinations] = useState<Destinations>({
     startPoint: undefined,
@@ -43,7 +28,7 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
   });
 
   const [calculatedRoute, setCalculatedRoute] = useState(null);
-
+  
   const addFeatureFromSearch = (searchResult: any, layer: VectorSource) => {
     const point = createRoutePoint(searchResult);
     layer !== stopsLayer && layer.clear();
@@ -119,13 +104,13 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
   );
 
   const [clickActive, setClickActive] = useState(false);
-
+  
   useEffect(() => {
     clickActive && map && map.on("singleclick", addPointOnClick);
     return () => map.un("singleclick", addPointOnClick);
   }, [map, addPointOnClick, clickActive]);
 
-  const optimize = async () => {
+    const optimize = async () => {
     setClickActive(false);
     routeLayer.clear();
     const route = await calculateRoute(destinations);
@@ -137,7 +122,7 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
     }
   };
 
-  const cancelRoute = () => {
+    const cancelRoute = () => {
     routeLayer.clear();
     setCalculatedRoute(null);
   };
@@ -155,7 +140,7 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
         {!calculatedRoute && (
           <div>
             Create your best driving route between multiple points
-            <RoutePoints
+             <RoutePoints
               updateStartFunction={addStartFromSearch}
               updateEndFunction={addEndFromSearch}
               addStopsFunction={addRoutePointFromSearch}
@@ -185,7 +170,7 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
             {clickActive ? "Disable" : "Enable"} adding points from map click
           </div>
         )}
-        {calculatedRoute &&
+         {calculatedRoute &&
           destinations.startPoint &&
           destinations.endPoint &&
           !!destinations.stops.length && (

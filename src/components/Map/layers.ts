@@ -10,8 +10,9 @@ import {
   CARTO_URL,
   INITIAL_ZOOM,
   MAP_CENTER,
-  MAX_ZOOM
+  MAX_ZOOM,
 } from "./constants";
+import { createStyle } from "./util";
 
 export const createRouteVector = () =>
   new VectorLayer({
@@ -33,10 +34,29 @@ const tileLayer = new TileLayer({
   }),
 });
 
+const createPointVector = (color: string, zIndex: number): VectorLayer =>
+  new VectorLayer({
+    source: new VectorSource(),
+    style: createStyle(color),
+    zIndex,
+  });
+
+const startVector = createPointVector("#5FA", 12);
+const endVector = createPointVector("#F08", 11);
+const stopsVector = createPointVector("#0AA", 10);
+const routeVector = createRouteVector();
+
+export const MAP_SOURCES = [
+  startVector.getSource(),
+  endVector.getSource(),
+  stopsVector.getSource(),
+  routeVector.getSource(),
+];
+
 export const createMap = (target: HTMLDivElement) =>
   new Map({
     target,
-    layers: [tileLayer],
+    layers: [tileLayer, startVector, endVector, stopsVector, routeVector],
     view: new View({
       center: MAP_CENTER,
       zoom: INITIAL_ZOOM,
