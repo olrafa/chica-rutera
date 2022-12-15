@@ -15,8 +15,7 @@ const createPoint = (coordinate: Coordinate, formatted?: string) =>
 
 const getCoordinates = (lon: string, lat: string): Coordinate => {
   const lonLat = [lon, lat].map((c) => parseFloat(c));
-  const a = fromLonLat(lonLat);
-  return a;
+  return fromLonLat(lonLat);
 };
 
 export const createRoutePoint = ({ formatted, lon, lat }: any) => {
