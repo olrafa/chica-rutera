@@ -69,22 +69,7 @@
           "enforceForRenamedProperties": false
         }
       ],
-      "require-await": "warn",
-      "sort-imports": [
-        "warn",
-        {
-          "ignoreCase": false,
-          "ignoreDeclarationSort": false,
-          "ignoreMemberSort": false,
-          "memberSyntaxSortOrder": [
-            "none",
-            "all",
-            "multiple",
-            "single"
-          ],
-          "allowSeparatedGroups": false
-        }
-      ]
+      "require-await": "warn"
     }
   },
   "husky": {
