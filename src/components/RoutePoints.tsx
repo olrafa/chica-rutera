@@ -49,7 +49,7 @@ export const RoutePoints = ({
     item: string,
     elementToUpdate?: { value: string } | undefined
   ) => {
-    let mapCenter = [0, 0]
+    let mapCenter = [0, 0];
     const viewCenter = map.getView().getCenter();
     if (viewCenter !== undefined) {
       mapCenter = toLonLat(viewCenter);
