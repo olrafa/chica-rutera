@@ -40,7 +40,7 @@ export const RoutePoints = ({
     e: { key: string; target: any },
     item: string
   ) => {
-    console.log(e);
+    console.log(e)
     e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
   };
 
