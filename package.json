@@ -36,7 +36,8 @@
     "rules": {
       "semi": "error",
       "no-var": "error",
-      "prefer-const": "error"
+      "prefer-const": "error",
+      "no-unused-vars": "error"
     }
   },
   "husky": {
@@ -62,6 +63,7 @@
     ]
   },
   "devDependencies": {
-    "@tanstack/react-query-devtools": "^4.20.4"
+    "@tanstack/react-query-devtools": "^4.20.4",
+    "ts-unused-exports": "^8.0.5"
   }
 }

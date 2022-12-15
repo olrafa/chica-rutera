@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { GEOAPIFY_IP_INFO } from "../../requests/geoapify/constants";
 import convertTimeToMilliseconds from "../../util/convertTimeToMilliseconds";
+import { MAX_ZOOM } from "./constants";
 
 const useGetUserIpInfo = () =>
   useQuery(["ipInfo"], getIpInfo, {
@@ -16,6 +17,7 @@ type IpInfoResponse = {
     longitude: number;
   };
 };
+
 
 /**
  * Gets the user's IP info to zoom the map to their area when opening the app.
