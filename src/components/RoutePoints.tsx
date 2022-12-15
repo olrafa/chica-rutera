@@ -1,7 +1,6 @@
 import { Feature, Map } from "ol";
 import { Coordinate } from "ol/coordinate";
-import { fromLonLat } from "ol/proj";
-import { toLonLat } from "ol/proj";
+import { fromLonLat, toLonLat } from "ol/proj";
 import React, { useEffect, useState } from "react";
 
 import { addressSearch } from "../requests/geoapify/input";
