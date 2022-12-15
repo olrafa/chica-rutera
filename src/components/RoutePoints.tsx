@@ -44,6 +44,15 @@ export const RoutePoints = ({
     e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
   };
 
+  const b = "2";
+  const a = () => {
+    if (b === "2") {
+      return false;
+    } else {
+      return false;
+    }
+  };
+
   const searchForAddress = (
     value: string,
     item: string,
