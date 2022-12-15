@@ -39,19 +39,7 @@ export const RoutePoints = ({
   const handleAddressInput = async (
     e: { key: string; target: any },
     item: string
-  ) => {
-    console.log(e);
-    e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
-  };
-
-  const b = "2";
-  const a = () => {
-    if (b === "2") {
-      return false;
-    } 
-      return false;
-    
-  };
+  ) => e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
 
   const searchForAddress = (
     value: string,
