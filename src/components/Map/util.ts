@@ -1,10 +1,10 @@
-import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
-import { STROKE_COLOR, STROKE_WIDTH } from "./constants";
-
 import { Coordinate } from "ol/coordinate";
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 import { fromLonLat } from "ol/proj";
+import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
+
+import { STROKE_COLOR, STROKE_WIDTH } from "./constants";
 
 const createPoint = (coordinate: Coordinate, formatted?: string) =>
   new Feature({

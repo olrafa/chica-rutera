@@ -14,6 +14,7 @@
     "@types/ol": "^6.5.1",
     "@types/react": "^17.0.11",
     "@types/react-dom": "^17.0.8",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
     "ol": "^6.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -47,6 +48,9 @@
       "plugin:@typescript-eslint/recommended",
       "prettier"
     ],
+    "plugins": [
+      "simple-import-sort"
+    ],
     "rules": {
       "no-duplicate-imports": "error",
       "camelcase": "error",
@@ -76,7 +80,40 @@
           "enforceForRenamedProperties": false
         }
       ],
-      "require-await": "warn"
+      "require-await": "warn",
+      "simple-import-sort/imports": [
+        "error",
+        {
+          "groups": [
+            [
+              "^react$",
+              "^next",
+              "^[a-z]"
+            ],
+            [
+              "^@"
+            ],
+            [
+              "^~"
+            ],
+            [
+              "^\\.\\.(?!/?$)",
+              "^\\.\\./?$"
+            ],
+            [
+              "^\\./(?=.*/)(?!/?$)",
+              "^\\.(?!/?$)",
+              "^\\./?$"
+            ],
+            [
+              "^.+\\.s?css$"
+            ],
+            [
+              "^\\u0000"
+            ]
+          ]
+        }
+      ]
     }
   },
   "husky": {

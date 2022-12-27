@@ -1,10 +1,8 @@
-import "../components.css";
-
+import React, { useCallback, useEffect, useState } from "react";
 import { Map } from "ol";
 import Feature from "ol/Feature";
 import { toLonLat } from "ol/proj";
 import { Vector as VectorSource } from "ol/source";
-import React, { useCallback, useEffect, useState } from "react";
 
 import { reverseGeocode } from "../../requests/geoapify/input";
 import { calculateRoute } from "../../requests/route";
@@ -13,6 +11,8 @@ import { MAP_SOURCES } from "../Map/layers";
 import { createRoutePoint } from "../Map/util";
 import { RoutePoints } from "../RoutePoints";
 import { ShowRoute } from "../ShowRoute";
+
+import "../components.css";
 
 type ActionComponentProps = {
   map: Map;

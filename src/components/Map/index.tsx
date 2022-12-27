@@ -1,15 +1,16 @@
-import "ol/ol.css";
-import "./index.css";
-
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { Map } from "ol";
 import { fromLonLat } from "ol/proj";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
 
 import { ActionComponent } from "../Form/ActionComponent";
 import { PageInfo } from "../PageInfo";
+
 import { IP_ZOOM } from "./constants";
 import { createMap } from "./layers";
 import useGetUserIpInfo from "./useGetUserUserIpInfo";
+
+import "ol/ol.css";
+import "./index.css";
 
 const MapComponent = (): ReactElement => {
   const [map, setMap] = useState<Map>();
