@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@tanstack/query-sync-storage-persister": "^4.20.4",
     "@tanstack/react-query": "^4.20.3",
+    "@tanstack/react-query-persist-client": "^4.20.4",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -12,20 +14,24 @@
     "@types/ol": "^6.5.1",
     "@types/react": "^17.0.11",
     "@types/react-dom": "^17.0.8",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
     "ol": "^6.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "^5.0.1",
-    "typescript": "^4.8.4",
     "web-vitals": "^1.1.2"
   },
   "devDependencies": {
     "@tanstack/react-query-devtools": "^4.20.4",
+    "@typescript-eslint/eslint-plugin": "^5.47.1",
+    "@typescript-eslint/parser": "^5.47.1",
+    "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.1",
-    "ts-unused-exports": "^8.0.5"
+    "ts-unused-exports": "^8.0.5",
+    "typescript": "^4.9.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -38,7 +44,12 @@
     "extends": [
       "react-app",
       "react-app/jest",
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
       "prettier"
+    ],
+    "plugins": [
+      "simple-import-sort"
     ],
     "rules": {
       "no-duplicate-imports": "error",
@@ -69,7 +80,36 @@
           "enforceForRenamedProperties": false
         }
       ],
-      "require-await": "warn"
+      "require-await": "warn",
+      "simple-import-sort/imports": [
+        "error",
+        {
+          "groups": [
+            [
+              "^react$",
+              "^[a-z]"
+            ],
+            [
+              "^@"
+            ],
+            [
+              "^\\.\\.(?!/?$)",
+              "^\\.\\./?$"
+            ],
+            [
+              "^\\./(?=.*/)(?!/?$)",
+              "^\\.(?!/?$)",
+              "^\\./?$"
+            ],
+            [
+              "^.+\\.s?css$"
+            ],
+            [
+              "^\\u0000"
+            ]
+          ]
+        }
+      ]
     }
   },
   "husky": {
