@@ -51,6 +51,7 @@
     "plugins": [
       "simple-import-sort"
     ],
+    "ignorePatterns": ["**/*.css","**/*.scss"],
     "rules": {
       "no-duplicate-imports": "error",
       "camelcase": "error",
