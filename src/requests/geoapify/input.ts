@@ -1,13 +1,13 @@
 import { GeoapifyAPI } from "./constants";
 import { geoApifyFetcher } from "./output";
+import { AddressSearchParams } from "./types";
 import { createAddressParams, getFetcherUrl } from "./util";
 
-export const addressSearch = async (
-  address: string,
-  lon?: number,
-  lat?: number
-) => {
-  const addressParams = createAddressParams(address, lon, lat);
+/**
+ * Send the request to search for an address.
+ */
+export const addressSearch = async (params: AddressSearchParams) => {
+  const addressParams = createAddressParams(params);
   const url = getFetcherUrl(addressParams, GeoapifyAPI.SEARCH);
   return await geoApifyFetcher(url);
 };

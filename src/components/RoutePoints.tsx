@@ -4,11 +4,12 @@ import { Coordinate } from "ol/coordinate";
 import { fromLonLat, toLonLat } from "ol/proj";
 
 import { addressSearch } from "../requests/geoapify/input";
+import { AddressResult } from "../requests/geoapify/types";
 
 type RoutePointsProps = {
-  updateStartFunction: (location: any) => void;
-  updateEndFunction: (location: any) => void;
-  addStopsFunction: (location: any) => void;
+  updateStartFunction: (location: AddressResult) => void;
+  updateEndFunction: (location: AddressResult) => void;
+  addStopsFunction: (location: AddressResult) => void;
   removeStopsFunction: (stop: Feature) => void;
   stops: Feature[];
   currentStart: string;
@@ -46,12 +47,12 @@ export const RoutePoints = ({
   ) => {
     let mapCenter = [0, 0];
     const viewCenter = map.getView().getCenter();
-    if (viewCenter !== undefined) {
+    if (viewCenter) {
       mapCenter = toLonLat(viewCenter);
     }
 
     const [lon, lat] = mapCenter;
-    addressSearch(value, lon, lat).then((r: GeocoderResponse) => {
+    addressSearch({ address: value, lon, lat }).then((r: GeocoderResponse) => {
       if (r) {
         if (elementToUpdate) {
           elementToUpdate.value = item === "stops" ? "" : r.formatted;

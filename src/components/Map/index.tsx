@@ -18,7 +18,7 @@ const MapComponent = (): ReactElement => {
 
   useEffect(() => {
     // This effect will build the map and attach it to the node.
-    // The !map assertion will prevent a new map to be added on every reload.
+    // The !map assertion will prevent it from adding a new map on every reload.
     if (mapElement.current && !map) {
       setMap(createMap(mapElement.current));
     }
