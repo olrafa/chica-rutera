@@ -5,7 +5,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 
-import MapComponent from "./components/Map";
+import MapComponent from "./components/MapComponent";
 
 import "./App.css";
 

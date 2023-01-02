@@ -1,9 +1,11 @@
+import { AddressResult } from "./types";
+
 /**
  * Given a text query, search for the address in Geoapify.
  * @param url the address, plus bias from location.
  * @returns only the first result.
  */
-export const geoApifyFetcher = async (url: string) => {
+export const geoApifyFetcher = async (url: string): Promise<AddressResult> => {
   const data = await fetch(url, { method: "GET" });
   const response = await data.json();
   const [address] = response.features;
