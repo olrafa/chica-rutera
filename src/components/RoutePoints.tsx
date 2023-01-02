@@ -19,12 +19,6 @@ type RoutePointsProps = {
   clearStopsFunction: () => void;
 };
 
-type GeocoderResponse = {
-  formatted: string;
-  lat: number;
-  lon: number;
-};
-
 export const RoutePoints = ({
   updateStartFunction,
   updateEndFunction,
@@ -52,7 +46,7 @@ export const RoutePoints = ({
     }
 
     const [lon, lat] = mapCenter;
-    addressSearch({ address: value, lon, lat }).then((r: GeocoderResponse) => {
+    addressSearch({ address: value, lon, lat }).then((r: AddressResult) => {
       if (r) {
         if (elementToUpdate) {
           elementToUpdate.value = item === "stops" ? "" : r.formatted;
@@ -69,7 +63,7 @@ export const RoutePoints = ({
     });
   };
 
-  const updateState = (r: any, item: string) => {
+  const updateState = (r: AddressResult, item: string) => {
     if (item === "start") {
       updateStartFunction(r);
     } else if (item === "end") {

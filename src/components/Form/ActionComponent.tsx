@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Map } from "ol";
+import { Map, MapBrowserEvent } from "ol";
 import Feature from "ol/Feature";
 import { toLonLat } from "ol/proj";
 import { Vector as VectorSource } from "ol/source";
@@ -86,7 +86,7 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
   };
 
   const addPointOnClick = useCallback(
-    (e: any) => {
+    (e: MapBrowserEvent) => {
       const { coordinate } = e;
       reverseGeocode(toLonLat(coordinate)).then((searchResult) => {
         let point;
@@ -119,7 +119,7 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
   const [clickActive, setClickActive] = useState(false);
 
   useEffect(() => {
-    clickActive && map && map.on("singleclick", addPointOnClick);
+    clickActive && map.on("singleclick", addPointOnClick);
     return () => map.un("singleclick", addPointOnClick);
   }, [map, addPointOnClick, clickActive]);
 

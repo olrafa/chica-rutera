@@ -1,3 +1,5 @@
+import { Coordinate } from "ol/coordinate";
+
 import { GeoapifyAPI } from "./constants";
 import { geoApifyFetcher } from "./output";
 import { AddressSearchParams } from "./types";
@@ -12,7 +14,7 @@ export const addressSearch = async (params: AddressSearchParams) => {
   return await geoApifyFetcher(url);
 };
 
-export const reverseGeocode = async ([lon, lat]: any) => {
+export const reverseGeocode = async ([lon, lat]: Coordinate) => {
   const point = `?lat=${lat}&lon=${lon}`;
   const url = getFetcherUrl(point, GeoapifyAPI.REVERSE);
   return await geoApifyFetcher(url);

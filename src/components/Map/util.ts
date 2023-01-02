@@ -4,6 +4,8 @@ import Point from "ol/geom/Point";
 import { fromLonLat } from "ol/proj";
 import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
 
+import { AddressResult } from "../../requests/geoapify/types";
+
 import { STROKE_COLOR, STROKE_WIDTH } from "./constants";
 
 const createPoint = (coordinate: Coordinate, formatted?: string) =>
@@ -13,13 +15,8 @@ const createPoint = (coordinate: Coordinate, formatted?: string) =>
     name: formatted,
   });
 
-const getCoordinates = (lon: string, lat: string): Coordinate => {
-  const lonLat = [lon, lat].map((c) => parseFloat(c));
-  return fromLonLat(lonLat);
-};
-
-export const createRoutePoint = ({ formatted, lon, lat }: any) => {
-  const coordinate = getCoordinates(lon, lat);
+export const createRoutePoint = ({ formatted, lon, lat }: AddressResult) => {
+  const coordinate = fromLonLat([lon, lat]);
   return createPoint(coordinate, formatted);
 };
 
