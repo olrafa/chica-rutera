@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Map, MapBrowserEvent } from "ol";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { MapBrowserEvent } from "ol";
 import Feature from "ol/Feature";
 import { toLonLat } from "ol/proj";
 import { Vector as VectorSource } from "ol/source";
@@ -8,19 +8,16 @@ import { reverseGeocode } from "../../requests/geoapify/input";
 import { AddressResult } from "../../requests/geoapify/types";
 import { calculateRoute } from "../../requests/route";
 import { Destinations } from "../../types/route.types";
-import { MAP_SOURCES } from "../MapComponent/layers";
+import MapContext from "../MapComponent/MapContext";
 import { createRoutePoint } from "../MapComponent/util";
 import { RoutePoints } from "../RoutePoints";
 import { ShowRoute } from "../ShowRoute";
 
 import "../components.css";
 
-type ActionComponentProps = {
-  map: Map;
-};
-
-export const ActionComponent = ({ map }: ActionComponentProps) => {
-  const [startLayer, endLayer, stopsLayer, routeLayer] = MAP_SOURCES;
+export const ActionComponent = () => {
+  const { map, startLayer, endLayer, stopsLayer, routeLayer } =
+    useContext(MapContext);
 
   const [destinations, setDestinations] = useState<Destinations>({
     startPoint: undefined,
@@ -159,7 +156,6 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
               addStopsFunction={addRoutePointFromSearch}
               removeStopsFunction={removeStopFromList}
               stops={destinations.stops}
-              map={map}
               currentStart={destinations.startPoint?.get("name") || ""}
               currentEnd={destinations.endPoint?.get("name") || ""}
               copyEndFromStart={copyEndFromStart}
@@ -189,8 +185,6 @@ export const ActionComponent = ({ map }: ActionComponentProps) => {
           !!destinations.stops.length && (
             <ShowRoute
               route={calculatedRoute}
-              map={map}
-              lineLayer={routeLayer}
               destinations={destinations}
               exitFunction={cancelRoute}
             />
