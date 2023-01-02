@@ -1,33 +1,34 @@
-import React, { ReactElement, useEffect, useRef, useState } from "react";
-import { Map } from "ol";
+import React, { ReactElement, useContext, useEffect, useRef } from "react";
 import { fromLonLat } from "ol/proj";
 
 import { ActionComponent } from "../Form/ActionComponent";
 import { PageInfo } from "../PageInfo";
 
 import { IP_ZOOM } from "./constants";
-import { createMap } from "./layers";
+import MapContext from "./MapContext";
 import useGetUserIpInfo from "./useGetUserUserIpInfo";
 
 import "ol/ol.css";
 import "./index.css";
 
 const MapComponent = (): ReactElement => {
-  const [map, setMap] = useState<Map>();
+  const { map } = useContext(MapContext);
   const mapElement = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // This effect will build the map and attach it to the node.
-    // The !map assertion will prevent it from adding a new map on every reload.
-    if (mapElement.current && !map) {
-      setMap(createMap(mapElement.current));
+    // This effect will attach the map to the node.
+    // The !map.getTarget assertion will prevent it from adding a new map on every reload.
+    if (mapElement.current && !map.getTarget()) {
+      map.setTarget(mapElement.current);
     }
-  }, [map]);
+    // this must run only once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { data: userIpInfo } = useGetUserIpInfo();
 
   useEffect(() => {
-    if (map && userIpInfo) {
+    if (userIpInfo) {
       const { latitude, longitude } = userIpInfo.location;
       const userLocation = fromLonLat([longitude, latitude]);
       map.getView().setCenter(userLocation);
@@ -38,7 +39,7 @@ const MapComponent = (): ReactElement => {
   return (
     <>
       <div ref={mapElement} className="ol-map" />
-      {map && <ActionComponent map={map} />}
+      <ActionComponent />
       <PageInfo />
     </>
   );

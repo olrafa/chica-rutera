@@ -1,7 +1,5 @@
 import { Coordinate } from "ol/coordinate";
 import Feature from "ol/Feature";
-import Map from "ol/Map";
-import { Vector as VectorSource } from "ol/source";
 
 export type Destinations = {
   startPoint: Feature | undefined;
@@ -11,8 +9,6 @@ export type Destinations = {
 
 export type RouteInfo = {
   route: any;
-  map: Map;
-  lineLayer: VectorSource;
   destinations: Destinations;
   exitFunction: () => void;
 };

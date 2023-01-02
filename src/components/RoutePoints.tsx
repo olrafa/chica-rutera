@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Feature, Map } from "ol";
+import React, { useContext, useEffect, useState } from "react";
+import { Feature } from "ol";
 import { Coordinate } from "ol/coordinate";
 import { fromLonLat, toLonLat } from "ol/proj";
 
 import { addressSearch } from "../requests/geoapify/input";
 import { AddressResult } from "../requests/geoapify/types";
+
+import MapContext from "./MapComponent/MapContext";
 
 type RoutePointsProps = {
   updateStartFunction: (location: AddressResult) => void;
@@ -14,7 +16,6 @@ type RoutePointsProps = {
   stops: Feature[];
   currentStart: string;
   currentEnd: string;
-  map: Map;
   copyEndFromStart: () => void;
   clearStopsFunction: () => void;
 };
@@ -25,12 +26,13 @@ export const RoutePoints = ({
   addStopsFunction,
   removeStopsFunction,
   stops,
-  map,
   currentStart,
   currentEnd,
   copyEndFromStart,
   clearStopsFunction,
 }: RoutePointsProps) => {
+  const { map } = useContext(MapContext);
+
   const handleAddressInput = (e: { key: string; target: any }, item: string) =>
     e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
 

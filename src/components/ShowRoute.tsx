@@ -1,20 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Feature from "ol/Feature";
 import Polyline from "ol/format/Polyline";
 import Geometry from "ol/geom/Geometry";
 
 import { RouteDetail, RouteInfo, RouteStep } from "../types/route.types";
 
+import MapContext from "./MapComponent/MapContext";
 import { createStyle } from "./MapComponent/util";
 import { ShareRoute } from "./ShareRoute";
 
-export const ShowRoute = ({
-  route,
-  map,
-  lineLayer,
-  destinations,
-  exitFunction,
-}: RouteInfo) => {
+export const ShowRoute = ({ route, destinations, exitFunction }: RouteInfo) => {
+  const { map, routeLayer } = useContext(MapContext);
   const { routes } = route;
 
   const { startPoint, endPoint, stops } = destinations;
@@ -31,11 +27,11 @@ export const ShowRoute = ({
   });
 
   routeLines.forEach((line: Feature<Geometry>) => {
-    lineLayer.addFeature(line);
+    routeLayer.addFeature(line);
   });
 
   const zoomToRoute = () =>
-    map.getView().fit(lineLayer.getExtent(), {
+    map.getView().fit(routeLayer.getExtent(), {
       size: map.getSize(),
       padding: [50, 50, 50, 450],
     });
