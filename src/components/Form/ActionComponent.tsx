@@ -8,8 +8,8 @@ import { reverseGeocode } from "../../requests/geoapify/input";
 import { AddressResult } from "../../requests/geoapify/types";
 import { calculateRoute } from "../../requests/route";
 import { Destinations } from "../../types/route.types";
-import { MAP_SOURCES } from "../Map/layers";
-import { createRoutePoint } from "../Map/util";
+import { MAP_SOURCES } from "../MapComponent/layers";
+import { createRoutePoint } from "../MapComponent/util";
 import { RoutePoints } from "../RoutePoints";
 import { ShowRoute } from "../ShowRoute";
 

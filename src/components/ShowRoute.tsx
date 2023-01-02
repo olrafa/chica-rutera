@@ -5,7 +5,7 @@ import Geometry from "ol/geom/Geometry";
 
 import { RouteDetail, RouteInfo, RouteStep } from "../types/route.types";
 
-import { createStyle } from "./Map/util";
+import { createStyle } from "./MapComponent/util";
 import { ShareRoute } from "./ShareRoute";
 
 export const ShowRoute = ({
