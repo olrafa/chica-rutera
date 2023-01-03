@@ -2,14 +2,13 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { MapBrowserEvent } from "ol";
 import Feature from "ol/Feature";
 import { toLonLat } from "ol/proj";
-import { Vector as VectorSource } from "ol/source";
 
 import { reverseGeocode } from "../../requests/geoapify/input";
 import { AddressResult } from "../../requests/geoapify/types";
 import { calculateRoute } from "../../requests/route";
 import { Destinations } from "../../types/route.types";
+import { addPointToLayer } from "../MapComponent/addPointToLayer";
 import MapContext from "../MapComponent/MapContext";
-import { createRoutePoint } from "../MapComponent/util";
 import { RoutePoints } from "../RoutePoints";
 import { ShowRoute } from "../ShowRoute";
 
@@ -27,34 +26,19 @@ export const ActionComponent = () => {
 
   const [calculatedRoute, setCalculatedRoute] = useState(null);
 
-  const addFeatureFromSearch = (
-    searchResult: AddressResult,
-    layer: VectorSource
-  ) => {
-    const point = createRoutePoint(searchResult);
-    layer !== stopsLayer && layer.clear();
-    layer.addFeature(point);
-    return point;
-  };
-
   const addStartFromSearch = (searchResult: AddressResult) => {
-    const point = createRoutePoint(searchResult);
-    startLayer.clear();
-    startLayer.addFeature(point);
+    const point = addPointToLayer(searchResult, startLayer);
     setDestinations({ ...destinations, startPoint: point });
   };
 
   const addEndFromSearch = (searchResult: AddressResult) => {
-    const point = createRoutePoint(searchResult);
-    endLayer.clear();
-    endLayer.addFeature(point);
+    const point = addPointToLayer(searchResult, endLayer);
     setDestinations({ ...destinations, endPoint: point });
   };
 
   const addRoutePointFromSearch = (searchResult: AddressResult) => {
     if (destinations.stops.length < 48) {
-      const point = createRoutePoint(searchResult);
-      stopsLayer.addFeature(point);
+      const point = addPointToLayer(searchResult, stopsLayer, false);
       setDestinations({
         ...destinations,
         stops: [...destinations.stops, point],
@@ -88,20 +72,20 @@ export const ActionComponent = () => {
       reverseGeocode(toLonLat(coordinate)).then((searchResult) => {
         let point;
         if (!destinations.startPoint) {
-          point = addFeatureFromSearch(searchResult, startLayer);
+          point = addPointToLayer(searchResult, startLayer);
           setDestinations({
             ...destinations,
             startPoint: point,
           });
         } else if (!destinations.endPoint) {
-          point = addFeatureFromSearch(searchResult, endLayer);
+          point = addPointToLayer(searchResult, endLayer);
           setDestinations({
             ...destinations,
             endPoint: point,
           });
         } else {
           if (destinations.stops.length < 48) {
-            point = addFeatureFromSearch(searchResult, stopsLayer);
+            point = addPointToLayer(searchResult, stopsLayer, false);
             setDestinations({
               ...destinations,
               stops: [...destinations.stops, point],

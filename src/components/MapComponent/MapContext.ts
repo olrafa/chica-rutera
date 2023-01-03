@@ -13,7 +13,7 @@ import {
   MAP_CENTER,
   MAX_ZOOM,
 } from "./constants";
-import { createStyle } from "./util";
+import { createStyle } from "./createRoutePoint";
 
 /**
  * This module will start up the map, the layers and the style.
