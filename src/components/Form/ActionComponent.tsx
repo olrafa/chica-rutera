@@ -155,9 +155,7 @@ export const ActionComponent = () => {
               updateEndFunction={addEndFromSearch}
               addStopsFunction={addRoutePointFromSearch}
               removeStopsFunction={removeStopFromList}
-              stops={destinations.stops}
-              currentStart={destinations.startPoint?.get("name") || ""}
-              currentEnd={destinations.endPoint?.get("name") || ""}
+              destinations={destinations}
               copyEndFromStart={copyEndFromStart}
               clearStopsFunction={clearAllStops}
             />

@@ -5,6 +5,7 @@ import { fromLonLat, toLonLat } from "ol/proj";
 
 import { addressSearch } from "../requests/geoapify/input";
 import { AddressResult } from "../requests/geoapify/types";
+import { Destinations } from "../types/route.types";
 
 import MapContext from "./MapComponent/MapContext";
 
@@ -13,9 +14,7 @@ type RoutePointsProps = {
   updateEndFunction: (location: AddressResult) => void;
   addStopsFunction: (location: AddressResult) => void;
   removeStopsFunction: (stop: Feature) => void;
-  stops: Feature[];
-  currentStart: string;
-  currentEnd: string;
+  destinations: Destinations;
   copyEndFromStart: () => void;
   clearStopsFunction: () => void;
 };
@@ -25,13 +24,12 @@ export const RoutePoints = ({
   updateEndFunction,
   addStopsFunction,
   removeStopsFunction,
-  stops,
-  currentStart,
-  currentEnd,
+  destinations,
   copyEndFromStart,
   clearStopsFunction,
 }: RoutePointsProps) => {
   const { map } = useContext(MapContext);
+  const { stops, startPoint, endPoint } = destinations;
 
   const handleAddressInput = (e: { key: string; target: any }, item: string) =>
     e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
@@ -103,7 +101,7 @@ export const RoutePoints = ({
       const nextAddress = addressesFromFile.pop();
       setTimeout(() => searchForAddress(nextAddress as string, "stops"), 500);
     }
-  }, [stops, addressesFromFile]);
+  }, [addressesFromFile]);
 
   return (
     <div>
@@ -114,7 +112,7 @@ export const RoutePoints = ({
           type="text"
           onKeyDown={(e) => handleAddressInput(e, "start")}
           placeholder={placeHolderTxt}
-          defaultValue={currentStart || ""}
+          defaultValue={startPoint?.get("name") || ""}
         />
       </div>
       <div className="search-item">
@@ -124,9 +122,9 @@ export const RoutePoints = ({
           type="text"
           onKeyDown={(e) => handleAddressInput(e, "end")}
           placeholder={placeHolderTxt}
-          defaultValue={currentEnd || ""}
+          defaultValue={endPoint?.get("name" || "")}
         />
-        {currentStart && (
+        {startPoint && (
           <span className="repeat-start-btn" onClick={copyEndFromStart}>
             Same as start
           </span>
