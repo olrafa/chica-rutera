@@ -1,9 +1,12 @@
+import { useContext } from "react";
 import { Feature } from "ol";
 import { Coordinate } from "ol/coordinate";
 import Geometry from "ol/geom/Geometry";
 import Point from "ol/geom/Point";
 
-import { Destinations } from "../types/route.types";
+import { useMutation } from "@tanstack/react-query";
+
+import MapContext from "../components/MapComponent/MapContext";
 
 const orsUrl = "https://api.openrouteservice.org/";
 
@@ -23,7 +26,7 @@ const createStopsPoints = (stops: Feature[]) => {
   });
 };
 
-const getWgs84Coordinates = (point: any) => {
+const getWgs84Coordinates = (point: Feature<Geometry>) => {
   const pointGeo = point.getGeometry();
   if (!pointGeo) {
     return null;
@@ -35,7 +38,11 @@ const getWgs84Coordinates = (point: any) => {
   return coordinates;
 };
 
-export const calculateRoute = async ({ start, end, stops }: Destinations) => {
+const calculateRoute = async (
+  start: Feature<Geometry>,
+  end: Feature<Geometry>,
+  stops: Feature<Geometry>[]
+): Promise<any> => {
   const requestPoints = createStopsPoints(stops);
   const orsRequest = {
     jobs: requestPoints,
@@ -69,4 +76,15 @@ export const calculateRoute = async ({ start, end, stops }: Destinations) => {
   const orsRoute = await fetch(optimizationUrl, requestOptions);
   const routeResult = await orsRoute.json();
   return routeResult;
+};
+
+export const useCalculateRoute = () => {
+  const { startLayer, endLayer, stopsLayer } = useContext(MapContext);
+  const [start] = startLayer.getFeatures();
+  const [end] = endLayer.getFeatures();
+  const stops = stopsLayer.getFeatures();
+  return useMutation(["route"], () => calculateRoute(start, end, stops), {
+    onError: () =>
+      alert("Unable to create route. Please check your points and try again"),
+  });
 };

@@ -5,15 +5,19 @@ import Geometry from "ol/geom/Geometry";
 
 import { RouteDetail, RouteInfo, RouteStep } from "../types/route.types";
 
-import { createStyle } from "./MapComponent/createRoutePoint";
+import { createStyle } from "./MapComponent/createStyle";
 import MapContext from "./MapComponent/MapContext";
 import { ShareRoute } from "./ShareRoute";
 
-export const ShowRoute = ({ route, destinations, exitFunction }: RouteInfo) => {
-  const { map, routeLayer } = useContext(MapContext);
+export const ShowRoute = ({ route, exitFunction }: RouteInfo) => {
+  const { map, routeLayer, startLayer, stopsLayer, endLayer } =
+    useContext(MapContext);
+  const [start] = startLayer.getFeatures();
+  const [end] = endLayer.getFeatures();
+  const stops = stopsLayer.getFeatures();
   const { routes } = route;
 
-  const { start, end, stops } = destinations;
+  const canRouteBeCalculated = start && end && !!stops.length;
 
   const routeLines = routes.map(({ geometry }: any) => {
     const trace = new Polyline().readGeometry(geometry, {
@@ -26,9 +30,7 @@ export const ShowRoute = ({ route, destinations, exitFunction }: RouteInfo) => {
     });
   });
 
-  routeLines.forEach((line: Feature<Geometry>) => {
-    routeLayer.addFeature(line);
-  });
+  routeLines.forEach((line: Feature<Geometry>) => routeLayer.addFeature(line));
 
   const zoomToRoute = () =>
     map.getView().fit(routeLayer.getExtent(), {
@@ -71,6 +73,10 @@ export const ShowRoute = ({ route, destinations, exitFunction }: RouteInfo) => {
     const mDisplay = m ? m + (m === 1 ? " minute, " : " minutes ") : "";
     return hDisplay + mDisplay;
   };
+
+  if (!canRouteBeCalculated) {
+    return null;
+  }
 
   return (
     <div>

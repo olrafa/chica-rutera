@@ -5,38 +5,46 @@ import { fromLonLat, toLonLat } from "ol/proj";
 
 import { addressSearch } from "../requests/geoapify/input";
 import { AddressResult } from "../requests/geoapify/types";
-import { Destinations } from "../types/route.types";
+import { DestinationType } from "../types/route.types";
 
+import { addPointToLayer } from "./MapComponent/addPointToLayer";
 import MapContext from "./MapComponent/MapContext";
 
 type RoutePointsProps = {
-  updateStartFunction: (location: AddressResult) => void;
-  updateEndFunction: (location: AddressResult) => void;
-  addStopsFunction: (location: AddressResult) => void;
   removeStopsFunction: (stop: Feature) => void;
-  destinations: Destinations;
   copyEndFromStart: () => void;
   clearStopsFunction: () => void;
 };
 
 export const RoutePoints = ({
-  updateStartFunction,
-  updateEndFunction,
-  addStopsFunction,
   removeStopsFunction,
-  destinations,
   copyEndFromStart,
   clearStopsFunction,
 }: RoutePointsProps) => {
-  const { map } = useContext(MapContext);
-  const { stops, start, end } = destinations;
+  const { map, startLayer, endLayer, stopsLayer } = useContext(MapContext);
 
-  const handleAddressInput = (e: { key: string; target: any }, item: string) =>
-    e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
+  const destinationLayers = {
+    start: startLayer,
+    end: endLayer,
+    stops: stopsLayer,
+  };
+
+  const [startValue, endValue] = [startLayer, endLayer].map((layer) => {
+    const [feature] = layer.getFeatures();
+    return feature?.get("name") || "";
+  });
+
+  const [start] = startLayer.getFeatures();
+  const stops = stopsLayer.getFeatures();
+
+  const handleAddressInput = (
+    e: { key: string; target: any },
+    item: DestinationType
+  ) => e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
 
   const searchForAddress = (
     value: string,
-    item: string,
+    item: DestinationType,
     elementToUpdate?: { value: string } | undefined
   ) => {
     let mapCenter = [0, 0];
@@ -51,9 +59,9 @@ export const RoutePoints = ({
         if (elementToUpdate) {
           elementToUpdate.value = item === "stops" ? "" : r.formatted;
         }
-        updateState(r, item);
-        const point = [r.lon, r.lat];
-        map.getView().setCenter(fromLonLat(point) as Coordinate);
+        const mapCenter = [r.lon, r.lat];
+        addPointToLayer(r, destinationLayers[item], item !== "stops");
+        map.getView().setCenter(fromLonLat(mapCenter) as Coordinate);
         map.getView().setZoom(15);
       } else {
         alert(
@@ -61,16 +69,6 @@ export const RoutePoints = ({
         );
       }
     });
-  };
-
-  const updateState = (r: AddressResult, item: string) => {
-    if (item === "start") {
-      updateStartFunction(r);
-    } else if (item === "end") {
-      updateEndFunction(r);
-    } else if (item === "stops") {
-      addStopsFunction(r);
-    }
   };
 
   const placeHolderTxt = "Search for an address and press 'Enter'";
@@ -112,7 +110,7 @@ export const RoutePoints = ({
           type="text"
           onKeyDown={(e) => handleAddressInput(e, "start")}
           placeholder={placeHolderTxt}
-          defaultValue={start?.get("name") || ""}
+          defaultValue={startValue}
         />
       </div>
       <div className="search-item">
@@ -122,7 +120,7 @@ export const RoutePoints = ({
           type="text"
           onKeyDown={(e) => handleAddressInput(e, "end")}
           placeholder={placeHolderTxt}
-          defaultValue={end?.get("name" || "")}
+          defaultValue={endValue}
         />
         {start && (
           <span className="repeat-start-btn" onClick={copyEndFromStart}>

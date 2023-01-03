@@ -11,7 +11,6 @@ export type DestinationType = keyof Destinations;
 
 export type RouteInfo = {
   route: any;
-  destinations: Destinations;
   exitFunction: () => void;
 };
 
