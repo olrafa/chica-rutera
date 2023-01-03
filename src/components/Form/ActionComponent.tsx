@@ -6,7 +6,7 @@ import { toLonLat } from "ol/proj";
 import { reverseGeocode } from "../../requests/geoapify/input";
 import { AddressResult } from "../../requests/geoapify/types";
 import { calculateRoute } from "../../requests/route";
-import { Destinations } from "../../types/route.types";
+import { Destinations, DestinationType } from "../../types/route.types";
 import { addPointToLayer } from "../MapComponent/addPointToLayer";
 import MapContext from "../MapComponent/MapContext";
 import { RoutePoints } from "../RoutePoints";
@@ -19,21 +19,40 @@ export const ActionComponent = () => {
     useContext(MapContext);
 
   const [destinations, setDestinations] = useState<Destinations>({
-    startPoint: undefined,
-    endPoint: undefined,
+    start: undefined,
+    end: undefined,
     stops: [],
   });
+
+  const destinationLayers = {
+    start: startLayer,
+    end: endLayer,
+    stops: stopsLayer,
+  };
+
+  const updateDestinations = (
+    searchResult: AddressResult,
+    pointType: DestinationType
+  ) => {
+    const point = addPointToLayer(searchResult, destinationLayers[pointType]);
+    setDestinations({
+      ...destinations,
+      ...(pointType === "start" && { start: point }),
+      ...(pointType === "end" && { end: point }),
+      ...(pointType === "stops" && { stops: [...destinations.stops, point] }),
+    });
+  };
 
   const [calculatedRoute, setCalculatedRoute] = useState(null);
 
   const addStartFromSearch = (searchResult: AddressResult) => {
     const point = addPointToLayer(searchResult, startLayer);
-    setDestinations({ ...destinations, startPoint: point });
+    setDestinations({ ...destinations, start: point });
   };
 
   const addEndFromSearch = (searchResult: AddressResult) => {
     const point = addPointToLayer(searchResult, endLayer);
-    setDestinations({ ...destinations, endPoint: point });
+    setDestinations({ ...destinations, end: point });
   };
 
   const addRoutePointFromSearch = (searchResult: AddressResult) => {
@@ -55,13 +74,13 @@ export const ActionComponent = () => {
   };
 
   const copyEndFromStart = () => {
-    const { startPoint } = destinations;
-    if (startPoint !== undefined) {
+    const { start } = destinations;
+    if (start) {
       endLayer.clear();
-      endLayer.addFeature(startPoint);
+      endLayer.addFeature(start);
       setDestinations({
         ...destinations,
-        endPoint: startPoint,
+        end: start,
       });
     }
   };
@@ -71,17 +90,17 @@ export const ActionComponent = () => {
       const { coordinate } = e;
       reverseGeocode(toLonLat(coordinate)).then((searchResult) => {
         let point;
-        if (!destinations.startPoint) {
+        if (!destinations.start) {
           point = addPointToLayer(searchResult, startLayer);
           setDestinations({
             ...destinations,
-            startPoint: point,
+            start: point,
           });
-        } else if (!destinations.endPoint) {
+        } else if (!destinations.end) {
           point = addPointToLayer(searchResult, endLayer);
           setDestinations({
             ...destinations,
-            endPoint: point,
+            end: point,
           });
         } else {
           if (destinations.stops.length < 48) {
@@ -146,8 +165,8 @@ export const ActionComponent = () => {
           </div>
         )}
         {!calculatedRoute &&
-          destinations.startPoint &&
-          destinations.endPoint &&
+          destinations.start &&
+          destinations.end &&
           !!destinations.stops.length && (
             <div className="option-btn route" onClick={optimize}>
               Calculate Route
@@ -162,8 +181,8 @@ export const ActionComponent = () => {
           </div>
         )}
         {calculatedRoute &&
-          destinations.startPoint &&
-          destinations.endPoint &&
+          destinations.start &&
+          destinations.end &&
           !!destinations.stops.length && (
             <ShowRoute
               route={calculatedRoute}

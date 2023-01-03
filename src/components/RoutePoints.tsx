@@ -29,7 +29,7 @@ export const RoutePoints = ({
   clearStopsFunction,
 }: RoutePointsProps) => {
   const { map } = useContext(MapContext);
-  const { stops, startPoint, endPoint } = destinations;
+  const { stops, start, end } = destinations;
 
   const handleAddressInput = (e: { key: string; target: any }, item: string) =>
     e.key === "Enter" && searchForAddress(e.target.value, item, e.target);
@@ -112,7 +112,7 @@ export const RoutePoints = ({
           type="text"
           onKeyDown={(e) => handleAddressInput(e, "start")}
           placeholder={placeHolderTxt}
-          defaultValue={startPoint?.get("name") || ""}
+          defaultValue={start?.get("name") || ""}
         />
       </div>
       <div className="search-item">
@@ -122,9 +122,9 @@ export const RoutePoints = ({
           type="text"
           onKeyDown={(e) => handleAddressInput(e, "end")}
           placeholder={placeHolderTxt}
-          defaultValue={endPoint?.get("name" || "")}
+          defaultValue={end?.get("name" || "")}
         />
-        {startPoint && (
+        {start && (
           <span className="repeat-start-btn" onClick={copyEndFromStart}>
             Same as start
           </span>

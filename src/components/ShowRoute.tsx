@@ -13,7 +13,7 @@ export const ShowRoute = ({ route, destinations, exitFunction }: RouteInfo) => {
   const { map, routeLayer } = useContext(MapContext);
   const { routes } = route;
 
-  const { startPoint, endPoint, stops } = destinations;
+  const { start, end, stops } = destinations;
 
   const routeLines = routes.map(({ geometry }: any) => {
     const trace = new Polyline().readGeometry(geometry, {
@@ -81,11 +81,10 @@ export const ShowRoute = ({ route, destinations, exitFunction }: RouteInfo) => {
             {/* Route {i + 1} */}
             <div
               className="route-address"
-              onMouseEnter={() => changeFeatureStyle(startPoint, true)}
-              onMouseLeave={() => changeFeatureStyle(startPoint)}
+              onMouseEnter={() => changeFeatureStyle(start, true)}
+              onMouseLeave={() => changeFeatureStyle(start)}
             >
-              <b>Start:</b>{" "}
-              {startPoint ? startPoint.get("name") : "Starting point"}
+              <b>Start:</b> {start ? start.get("name") : "Starting point"}
             </div>
             {rd.steps.map((s: RouteStep, i: number) => {
               const mapFeature = stops.find((f) => s.id === f.getId());
@@ -102,10 +101,10 @@ export const ShowRoute = ({ route, destinations, exitFunction }: RouteInfo) => {
             })}
             <div
               className="route-address"
-              onMouseEnter={() => changeFeatureStyle(endPoint, true)}
-              onMouseLeave={() => changeFeatureStyle(endPoint)}
+              onMouseEnter={() => changeFeatureStyle(end, true)}
+              onMouseLeave={() => changeFeatureStyle(end)}
             >
-              <b>End:</b> {endPoint ? endPoint.get("name") : "Ending point"}
+              <b>End:</b> {end ? end.get("name") : "Ending point"}
             </div>
             <div>Distance: {(rd.distance / 1000).toFixed(1)} km</div>
             <div>Travel time: {secondsToHours(rd.duration)}</div>

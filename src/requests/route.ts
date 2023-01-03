@@ -3,6 +3,8 @@ import { Coordinate } from "ol/coordinate";
 import Geometry from "ol/geom/Geometry";
 import Point from "ol/geom/Point";
 
+import { Destinations } from "../types/route.types";
+
 const orsUrl = "https://api.openrouteservice.org/";
 
 const createStopsPoints = (stops: Feature[]) => {
@@ -25,26 +27,15 @@ const getWgs84Coordinates = (point: any) => {
   const pointGeo = point.getGeometry();
   if (!pointGeo) {
     return null;
-  } 
-    const copiedGeo = pointGeo.clone();
-    const wgs84geo: Geometry = copiedGeo.transform("EPSG:3857", "EPSG:4326");
-    const castGeo: Point = wgs84geo as Point;
-    const coordinates: Coordinate = castGeo.getCoordinates();
-    return coordinates;
-  
+  }
+  const copiedGeo = pointGeo.clone();
+  const wgs84geo: Geometry = copiedGeo.transform("EPSG:3857", "EPSG:4326");
+  const castGeo: Point = wgs84geo as Point;
+  const coordinates: Coordinate = castGeo.getCoordinates();
+  return coordinates;
 };
 
-type RouteInfoProps = {
-  startPoint: Feature | undefined;
-  endPoint: Feature | undefined;
-  stops: Feature[];
-};
-
-export const calculateRoute = async ({
-  startPoint,
-  endPoint,
-  stops,
-}: RouteInfoProps) => {
+export const calculateRoute = async ({ start, end, stops }: Destinations) => {
   const requestPoints = createStopsPoints(stops);
   const orsRequest = {
     jobs: requestPoints,
@@ -52,8 +43,8 @@ export const calculateRoute = async ({
       {
         id: 1,
         profile: "driving-car",
-        start: getWgs84Coordinates(startPoint),
-        end: getWgs84Coordinates(endPoint),
+        start: getWgs84Coordinates(start),
+        end: getWgs84Coordinates(end),
       },
     ],
     options: {

@@ -2,10 +2,12 @@ import { Coordinate } from "ol/coordinate";
 import Feature from "ol/Feature";
 
 export type Destinations = {
-  startPoint: Feature | undefined;
-  endPoint: Feature | undefined;
+  start: Feature | undefined;
+  end: Feature | undefined;
   stops: Feature[];
 };
+
+export type DestinationType = keyof Destinations;
 
 export type RouteInfo = {
   route: any;
