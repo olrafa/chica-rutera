@@ -42,16 +42,6 @@ export const ActionComponent = () => {
     }
   };
 
-  // Utilities for route points
-
-  const copyEndFromStart = () => {
-    if (start) {
-      endLayer.clear();
-      endLayer.addFeature(start);
-      updateRoutePoints("end");
-    }
-  };
-
   // Add points via click
   const addPointOnClick = useCallback(
     (e: MapBrowserEvent) => {
@@ -104,7 +94,6 @@ export const ActionComponent = () => {
               start={start}
               end={end}
               updateRoute={updateRoutePoints}
-              copyEndFromStart={copyEndFromStart}
             />
             <FileUploader updateFunction={updateRoutePoints} />
             <StopsList stops={stops} updateFunction={updateRoutePoints} />

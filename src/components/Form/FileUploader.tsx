@@ -1,4 +1,4 @@
-import { ReactElement, useContext, useEffect, useState } from "react";
+import { ReactElement, useContext } from "react";
 
 import { DestinationType } from "../../types/route.types";
 import MapContext from "../MapComponent/MapContext";
@@ -23,32 +23,24 @@ const FileUploader = ({ updateFunction }: FileUploaderProps): ReactElement => {
     }
   };
 
-  const [addressesFromFile, setAddressesFromFile] = useState<string[]>([]);
-
   const addPointsFromFile = (text: string) => {
     const addresses = text
       .split("\n")
       .filter((a) => a)
       .map((a) => a.replace(/;/g, ", "));
-    setAddressesFromFile(Array.from(new Set(addresses)));
+    const addressList = Array.from(new Set(addresses));
+    searchAddressesArray(addressList);
   };
 
-  useEffect(() => {
-    if (addressesFromFile.length) {
-      const nextAddress = addressesFromFile.pop() || "";
+  const searchAddressesArray = (addresses: string[]) => {
+    for (const address of addresses) {
       setTimeout(
         () =>
-          searchForAddress(
-            nextAddress,
-            "stops",
-            map,
-            stopsLayer,
-            updateFunction
-          ),
+          searchForAddress(address, "stops", map, stopsLayer, updateFunction),
         500
       );
     }
-  }, [addressesFromFile]);
+  };
 
   return (
     <div className="search-item">

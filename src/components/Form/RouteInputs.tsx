@@ -5,20 +5,18 @@ import MapContext from "../MapComponent/MapContext";
 
 import searchForAddress from "./searchAndAddPoint";
 
-const placeHolderTxt = "Search for an address and press 'Enter'";
+const PLACEHOLDER = "Search for an address and press 'Enter'";
 
 type RouteInputsProps = {
   start: RoutePoint | undefined;
   end: RoutePoint | undefined;
   updateRoute: (destination: DestinationType) => void;
-  copyEndFromStart: () => void;
 };
 
 const RouteInputs = ({
   start,
   end,
   updateRoute,
-  copyEndFromStart,
 }: RouteInputsProps): ReactElement => {
   const { map, startLayer, endLayer, stopsLayer } = useContext(MapContext);
   const startValue = start?.get("name");
@@ -44,6 +42,14 @@ const RouteInputs = ({
       updateRoute
     );
 
+  const copyEndFromStart = () => {
+    if (start) {
+      endLayer.clear();
+      endLayer.addFeature(start);
+      updateRoute("end");
+    }
+  };
+
   return (
     <div>
       <div className="search-item">
@@ -52,7 +58,7 @@ const RouteInputs = ({
           id="search-start"
           type="text"
           onKeyDown={(e) => handleAddressInput(e, "start")}
-          placeholder={placeHolderTxt}
+          placeholder={PLACEHOLDER}
           defaultValue={startValue}
         />
       </div>
@@ -62,7 +68,7 @@ const RouteInputs = ({
           id="search-end"
           type="text"
           onKeyDown={(e) => handleAddressInput(e, "end")}
-          placeholder={placeHolderTxt}
+          placeholder={PLACEHOLDER}
           defaultValue={endValue}
         />
         {start && (
@@ -77,7 +83,7 @@ const RouteInputs = ({
           id="search-stops"
           type="text"
           onKeyDown={(e) => handleAddressInput(e, "stops")}
-          placeholder={placeHolderTxt}
+          placeholder={PLACEHOLDER}
         />
       </div>
     </div>
