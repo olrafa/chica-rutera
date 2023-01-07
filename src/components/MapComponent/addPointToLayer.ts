@@ -22,9 +22,8 @@ export const addPointToLayer = (
   searchResult: AddressResult,
   layer: VectorSource,
   clearLayer = true
-) => {
+): void => {
   const point = createRoutePoint(searchResult);
   clearLayer && layer.clear();
   layer.addFeature(point);
-  return point;
 };

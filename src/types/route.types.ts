@@ -1,11 +1,15 @@
 import { Coordinate } from "ol/coordinate";
 import Feature from "ol/Feature";
+import Geometry from "ol/geom/Geometry";
 
 export type Destinations = {
   start: Feature | undefined;
   end: Feature | undefined;
   stops: Feature[];
 };
+
+export type RoutePoint = Feature<Geometry>;
+export type RouteStops = RoutePoint[];
 
 export type DestinationType = keyof Destinations;
 

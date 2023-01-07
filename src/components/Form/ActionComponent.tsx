@@ -1,49 +1,78 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { MapBrowserEvent } from "ol";
-import Feature from "ol/Feature";
 import { toLonLat } from "ol/proj";
 
 import { reverseGeocode } from "../../requests/geoapify/input";
+import {
+  DestinationType,
+  RoutePoint,
+  RouteStops,
+} from "../../types/route.types";
 import { addPointToLayer } from "../MapComponent/addPointToLayer";
 import CalculateRouteButton from "../MapComponent/CalculateRouteButton";
 import MapContext from "../MapComponent/MapContext";
-import { RoutePoints } from "../RoutePoints";
 import { ShowRoute } from "../ShowRoute";
+
+import FileUploader from "./FileUploader";
+import RouteInputs from "./RouteInputs";
+import StopsList from "./StopsList";
 
 import "../components.css";
 
 export const ActionComponent = () => {
+  // Get layers from context
   const { map, startLayer, endLayer, stopsLayer, routeLayer } =
     useContext(MapContext);
 
-  const [calculatedRoute, setCalculatedRoute] = useState(null);
+  // Use state to determine the route points, so we can call setState to refresh them.
+  const [start, setStart] = useState<RoutePoint>();
+  const [end, setEnd] = useState<RoutePoint>();
+  const [stops, setStops] = useState<RouteStops>([]);
 
-  const removeStopFromList = (stop: Feature) => {
-    stopsLayer.removeFeature(stop);
-  };
-
-  const copyEndFromStart = () => {
-    const [startPoint] = startLayer.getFeatures();
-    if (startPoint) {
-      endLayer.clear();
-      endLayer.addFeature(startPoint);
+  // Callback to setState using the layers
+  const updateRoutePoints = (destinationType: DestinationType) => {
+    if (destinationType === "start") {
+      setStart(startLayer.getFeatures()[0]);
+    }
+    if (destinationType === "end") {
+      setEnd(endLayer.getFeatures()[0]);
+    }
+    if (destinationType === "stops") {
+      setStops(stopsLayer.getFeatures());
     }
   };
 
+  // Utilities for route points
+
+  const copyEndFromStart = () => {
+    if (start) {
+      endLayer.clear();
+      endLayer.addFeature(start);
+      updateRoutePoints("end");
+    }
+  };
+
+  // Add points via click
   const addPointOnClick = useCallback(
     (e: MapBrowserEvent) => {
       const { coordinate } = e;
       reverseGeocode(toLonLat(coordinate)).then((searchResult) => {
+        if (!searchResult) {
+          return;
+        }
         const [startPoint] = startLayer.getFeatures();
         if (!startPoint) {
           addPointToLayer(searchResult, startLayer);
+          updateRoutePoints("start");
         }
         const [endPoint] = endLayer.getFeatures();
         if (startPoint && !endPoint) {
           addPointToLayer(searchResult, endLayer);
+          updateRoutePoints("end");
         }
         if (startPoint && endPoint) {
           addPointToLayer(searchResult, stopsLayer, false);
+          updateRoutePoints("stops");
         }
       });
     },
@@ -57,12 +86,12 @@ export const ActionComponent = () => {
     return () => map.un("singleclick", addPointOnClick);
   }, [map, addPointOnClick, clickActive]);
 
+  // state to see if calculation is in progress (TODO: remove in favor of useQuery)
+  const [calculatedRoute, setCalculatedRoute] = useState(null);
+
   const cancelRoute = () => {
     routeLayer.clear();
     setCalculatedRoute(null);
-  };
-  const clearAllStops = () => {
-    stopsLayer.clear();
   };
 
   return (
@@ -71,11 +100,14 @@ export const ActionComponent = () => {
         {!calculatedRoute && (
           <div>
             Create your best driving route between multiple points
-            <RoutePoints
-              removeStopsFunction={removeStopFromList}
+            <RouteInputs
+              start={start}
+              end={end}
+              updateRoute={updateRoutePoints}
               copyEndFromStart={copyEndFromStart}
-              clearStopsFunction={clearAllStops}
             />
+            <FileUploader updateFunction={updateRoutePoints} />
+            <StopsList stops={stops} updateFunction={updateRoutePoints} />
           </div>
         )}
         {!calculatedRoute && (

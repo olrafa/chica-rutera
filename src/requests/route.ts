@@ -7,6 +7,7 @@ import Point from "ol/geom/Point";
 import { useMutation } from "@tanstack/react-query";
 
 import MapContext from "../components/MapComponent/MapContext";
+import { RoutePoint, RouteStops } from "../types/route.types";
 
 const orsUrl = "https://api.openrouteservice.org/";
 
@@ -26,7 +27,7 @@ const createStopsPoints = (stops: Feature[]) => {
   });
 };
 
-const getWgs84Coordinates = (point: Feature<Geometry>) => {
+const getWgs84Coordinates = (point: RoutePoint) => {
   const pointGeo = point.getGeometry();
   if (!pointGeo) {
     return null;
@@ -39,9 +40,9 @@ const getWgs84Coordinates = (point: Feature<Geometry>) => {
 };
 
 const calculateRoute = async (
-  start: Feature<Geometry>,
-  end: Feature<Geometry>,
-  stops: Feature<Geometry>[]
+  start: RoutePoint,
+  end: RoutePoint,
+  stops: RouteStops
 ): Promise<any> => {
   const requestPoints = createStopsPoints(stops);
   const orsRequest = {
