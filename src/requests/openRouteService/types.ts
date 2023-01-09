@@ -6,8 +6,7 @@ type RouteStep = {
   duration: number;
   location: Coordinate;
   type: "start" | "end" | "job";
-  displayName?: string;
-  id?: number;
+  id: number;
 };
 
 export type RouteDetail = {

@@ -17,8 +17,6 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo) => {
   const stops = stopsLayer.getFeatures();
   const { routes } = route;
 
-  console.log(route);
-
   const canRouteBeCalculated = start && end && !!stops.length;
 
   const routeLines = routes.map(({ geometry }) => {
@@ -41,24 +39,6 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo) => {
     });
 
   zoomToRoute();
-
-  /* const routesDisplay = routes.map((r) => {
-    const { cost, distance, duration, service, steps } = r;
-    return {
-      cost,
-      distance,
-      duration,
-      service,
-      start: steps.find((s) => s.type === "start"),
-      end: steps.find((s) => s.type === "end"),
-      steps: steps
-        .filter((s) => s.type === "job")
-        .map((s) => {
-          s.displayName = stops.find((f) => s.id === f.getId())?.get("name");
-          return s;
-        }),
-    };
-  }); */
 
   const changeFeatureStyle = (
     mapFeature: Feature | undefined,
@@ -83,51 +63,51 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo) => {
   return (
     <div>
       <div>Route ready</div>
-      {routes.map((rd, i: number) => {
-        return (
-          <div key={i}>
-            {/* Route {i + 1} */}
-            <div
-              className="route-address"
-              onMouseEnter={() => changeFeatureStyle(start, true)}
-              onMouseLeave={() => changeFeatureStyle(start)}
-            >
-              <b>Start:</b> {start?.get("name") || "Starting point"}
-            </div>
-            {rd.steps
-              .filter((step) => step.type === "job")
-              .map((s, i: number) => {
-                const mapFeature = stops.find((f) => s.id === f.getId());
-                return (
-                  <div
-                    key={i + 1}
-                    className="route-address"
-                    onMouseEnter={() => changeFeatureStyle(mapFeature, true)}
-                    onMouseLeave={() => changeFeatureStyle(mapFeature)}
-                  >
-                    <b>Stop {i + 1}</b>: {s.displayName}
-                  </div>
-                );
-              })}
-            <div
-              className="route-address"
-              onMouseEnter={() => changeFeatureStyle(end, true)}
-              onMouseLeave={() => changeFeatureStyle(end)}
-            >
-              <b>End:</b> {end?.get("name") || "Ending point"}
-            </div>
-            <div>Distance: {(rd.distance / 1000).toFixed(1)} km</div>
-            <div>Travel time: {secondsToHours(rd.duration)}</div>
-            <div className="option-btn" onClick={zoomToRoute}>
-              Zoom to route
-            </div>
-            <ShareRoute route={rd} />
-            <div className="option-btn" onClick={exitFunction}>
-              Return
-            </div>
+      {routes.map((rd) => (
+        <div key="main-route">
+          <div
+            className="route-address"
+            onMouseEnter={() => changeFeatureStyle(start, true)}
+            onMouseLeave={() => changeFeatureStyle(start)}
+          >
+            <b>Start:</b> {start?.get("name") || "Starting point"}
           </div>
-        );
-      })}
+          {rd.steps
+            .filter((step) => step.type === "job")
+            .map((s, i: number) => {
+              const mapFeature = stops.find((f) => s.id === f.getId());
+              const displayName = stops
+                .find((f) => s.id === f.getId())
+                ?.get("name");
+              return (
+                <div
+                  key={s.id}
+                  className="route-address"
+                  onMouseEnter={() => changeFeatureStyle(mapFeature, true)}
+                  onMouseLeave={() => changeFeatureStyle(mapFeature)}
+                >
+                  <b>Stop {i + 1}</b>: {displayName}
+                </div>
+              );
+            })}
+          <div
+            className="route-address"
+            onMouseEnter={() => changeFeatureStyle(end, true)}
+            onMouseLeave={() => changeFeatureStyle(end)}
+          >
+            <b>End:</b> {end?.get("name") || "Ending point"}
+          </div>
+          <div>Distance: {(rd.distance / 1000).toFixed(1)} km</div>
+          <div>Travel time: {secondsToHours(rd.duration)}</div>
+          <div className="option-btn" onClick={zoomToRoute}>
+            Zoom to route
+          </div>
+          <ShareRoute route={rd} />
+          <div className="option-btn" onClick={exitFunction}>
+            Return
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

@@ -2,7 +2,10 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { MapBrowserEvent } from "ol";
 import { toLonLat } from "ol/proj";
 
+import { useQueryClient } from "@tanstack/react-query";
+
 import { reverseGeocode } from "../../requests/geoapify/input";
+import { useCalculateRoute } from "../../requests/openRouteService/useCalculateRoute";
 import {
   DestinationType,
   RoutePoint,
@@ -25,9 +28,9 @@ export const ActionComponent = () => {
     useContext(MapContext);
 
   // Use state to determine the route points, so we can call setState to refresh them.
-  const [start, setStart] = useState<RoutePoint>();
-  const [end, setEnd] = useState<RoutePoint>();
-  const [stops, setStops] = useState<RouteStops>([]);
+  const [start, setStart] = useState<RoutePoint>(startLayer.getFeatures()[0]);
+  const [end, setEnd] = useState<RoutePoint>(endLayer.getFeatures()[0]);
+  const [stops, setStops] = useState<RouteStops>(stopsLayer.getFeatures());
 
   // Callback to setState using the layers
   const updateRoutePoints = (destinationType: DestinationType) => {
@@ -76,15 +79,20 @@ export const ActionComponent = () => {
     return () => map.un("singleclick", addPointOnClick);
   }, [map, addPointOnClick, clickActive]);
 
-  // state to see if calculation is in progress (TODO: remove in favor of useQuery)
-  const [calculatedRoute, setCalculatedRoute] = useState(null);
+  const {
+    mutate: createRoute,
+    data: calculatedRoute,
+    isLoading,
+  } = useCalculateRoute({ start, end, stops });
+
+  const callback = () => createRoute();
+
+  const queryClient = useQueryClient();
 
   const cancelRoute = () => {
     routeLayer.clear();
-    setCalculatedRoute(null);
+    queryClient.invalidateQueries(["route"]);
   };
-
-  console.log("calculatedRoute", calculatedRoute);
 
   return (
     <div className="action-component">
@@ -102,7 +110,10 @@ export const ActionComponent = () => {
           </div>
         )}
         {!calculatedRoute && (
-          <CalculateRouteButton callback={setCalculatedRoute} />
+          <CalculateRouteButton
+            enabled={start && end && !!stops.length}
+            callback={callback}
+          />
         )}
         {!calculatedRoute && (
           <div
@@ -112,9 +123,9 @@ export const ActionComponent = () => {
             {clickActive ? "Disable" : "Enable"} adding points from map click
           </div>
         )}
-        {/*  {calculatedRoute && (
+        {calculatedRoute && (
           <ShowRoute route={calculatedRoute} exitFunction={cancelRoute} />
-        )} */}
+        )}
       </div>
     </div>
   );
