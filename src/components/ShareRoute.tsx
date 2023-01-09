@@ -1,12 +1,15 @@
 import waLogo from "../images/WhatsApp_Logo.png";
-import { RouteDetail } from "../types/route.types";
+import { RouteDetail } from "../requests/openRouteService/types";
 
 type ShareRouteProps = {
   route: RouteDetail;
 };
 
 export const ShareRoute = ({ route }: ShareRouteProps) => {
-  const { start, end, steps } = route;
+  const { steps } = route;
+
+  const [start] = route.steps;
+  const end = route.steps[route.steps.length - 1];
 
   const [startLon, startLat] = start.location;
   const [endLon, endLat] = end.location;

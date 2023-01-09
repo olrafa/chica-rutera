@@ -3,7 +3,7 @@ import Feature from "ol/Feature";
 import Polyline from "ol/format/Polyline";
 import Geometry from "ol/geom/Geometry";
 
-import { RouteDetail, RouteInfo, RouteStep } from "../types/route.types";
+import { RouteInfo } from "../types/route.types";
 
 import { createStyle } from "./MapComponent/createStyle";
 import MapContext from "./MapComponent/MapContext";
@@ -17,9 +17,11 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo) => {
   const stops = stopsLayer.getFeatures();
   const { routes } = route;
 
+  console.log(route);
+
   const canRouteBeCalculated = start && end && !!stops.length;
 
-  const routeLines = routes.map(({ geometry }: any) => {
+  const routeLines = routes.map(({ geometry }) => {
     const trace = new Polyline().readGeometry(geometry, {
       dataProjection: "EPSG:4326",
       featureProjection: "EPSG:3857",
@@ -40,7 +42,7 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo) => {
 
   zoomToRoute();
 
-  const routesDisplay = routes.map((r: RouteDetail) => {
+  /* const routesDisplay = routes.map((r) => {
     const { cost, distance, duration, service, steps } = r;
     return {
       cost,
@@ -56,7 +58,7 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo) => {
           return s;
         }),
     };
-  });
+  }); */
 
   const changeFeatureStyle = (
     mapFeature: Feature | undefined,
@@ -81,7 +83,7 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo) => {
   return (
     <div>
       <div>Route ready</div>
-      {routesDisplay.map((rd: RouteDetail, i: number) => {
+      {routes.map((rd, i: number) => {
         return (
           <div key={i}>
             {/* Route {i + 1} */}
@@ -90,27 +92,29 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo) => {
               onMouseEnter={() => changeFeatureStyle(start, true)}
               onMouseLeave={() => changeFeatureStyle(start)}
             >
-              <b>Start:</b> {start ? start.get("name") : "Starting point"}
+              <b>Start:</b> {start?.get("name") || "Starting point"}
             </div>
-            {rd.steps.map((s: RouteStep, i: number) => {
-              const mapFeature = stops.find((f) => s.id === f.getId());
-              return (
-                <div
-                  key={i + 1}
-                  className="route-address"
-                  onMouseEnter={() => changeFeatureStyle(mapFeature, true)}
-                  onMouseLeave={() => changeFeatureStyle(mapFeature)}
-                >
-                  <b>Stop {i + 1}</b>: {s.displayName}
-                </div>
-              );
-            })}
+            {rd.steps
+              .filter((step) => step.type === "job")
+              .map((s, i: number) => {
+                const mapFeature = stops.find((f) => s.id === f.getId());
+                return (
+                  <div
+                    key={i + 1}
+                    className="route-address"
+                    onMouseEnter={() => changeFeatureStyle(mapFeature, true)}
+                    onMouseLeave={() => changeFeatureStyle(mapFeature)}
+                  >
+                    <b>Stop {i + 1}</b>: {s.displayName}
+                  </div>
+                );
+              })}
             <div
               className="route-address"
               onMouseEnter={() => changeFeatureStyle(end, true)}
               onMouseLeave={() => changeFeatureStyle(end)}
             >
-              <b>End:</b> {end ? end.get("name") : "Ending point"}
+              <b>End:</b> {end?.get("name") || "Ending point"}
             </div>
             <div>Distance: {(rd.distance / 1000).toFixed(1)} km</div>
             <div>Travel time: {secondsToHours(rd.duration)}</div>

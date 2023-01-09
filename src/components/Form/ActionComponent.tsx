@@ -84,6 +84,8 @@ export const ActionComponent = () => {
     setCalculatedRoute(null);
   };
 
+  console.log("calculatedRoute", calculatedRoute);
+
   return (
     <div className="action-component">
       <div className="action-component-wrapper">
@@ -110,9 +112,9 @@ export const ActionComponent = () => {
             {clickActive ? "Disable" : "Enable"} adding points from map click
           </div>
         )}
-        {calculatedRoute && (
+        {/*  {calculatedRoute && (
           <ShowRoute route={calculatedRoute} exitFunction={cancelRoute} />
-        )}
+        )} */}
       </div>
     </div>
   );

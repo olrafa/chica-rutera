@@ -1,6 +1,6 @@
 import { ReactElement, useContext } from "react";
 
-import { useCalculateRoute } from "../../requests/route";
+import { useCalculateRoute } from "../../requests/openRouteService/useCalculateRoute";
 
 import MapContext from "./MapContext";
 
@@ -18,12 +18,22 @@ const CalculateRouteButton = ({
 
   const canRouteBeCalculated = start && end && !!stops.length;
 
-  const { mutate: calculateRoute, data: route } = useCalculateRoute();
+  const {
+    mutate: createRoute,
+    data: route,
+    isLoading,
+  } = useCalculateRoute({
+    start,
+    end,
+    stops,
+  });
 
   const handleClick = () => {
-    calculateRoute();
-    callback(route);
+    createRoute();
+    !isLoading && callback(route);
   };
+
+  console.log(route);
 
   if (canRouteBeCalculated) {
     return (
