@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { ReactElement, useContext } from "react";
 import Feature from "ol/Feature";
 import Polyline from "ol/format/Polyline";
 import Geometry from "ol/geom/Geometry";
@@ -9,13 +9,15 @@ import { createStyle } from "./MapComponent/createStyle";
 import MapContext from "./MapComponent/MapContext";
 import { ShareRoute } from "./ShareRoute";
 
-export const ShowRoute = ({ route, exitFunction }: RouteInfo) => {
+export const ShowRoute = ({ route, exitFunction }: RouteInfo): ReactElement => {
   const { map, routeLayer, startLayer, stopsLayer, endLayer } =
     useContext(MapContext);
   const [start] = startLayer.getFeatures();
   const [end] = endLayer.getFeatures();
   const stops = stopsLayer.getFeatures();
   const { routes } = route;
+
+  routeLayer.clear();
 
   const routeLines = routes.map(({ geometry }) => {
     const trace = new Polyline().readGeometry(geometry, {

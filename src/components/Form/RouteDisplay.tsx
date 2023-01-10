@@ -22,16 +22,10 @@ const RouteDisplay = ({
 }: RouteDisplayProps): ReactElement => {
   const { routeLayer } = useContext(MapContext);
 
-  const {
-    mutate: createRoute,
-    data: calculatedRoute,
-    isLoading,
-  } = useCalculateRoute({ start, end, stops });
-
-  const handleClick = () => {
-    createRoute();
-    toggleFunction();
-  };
+  const { data: calculatedRoute, isLoading } = useCalculateRoute(
+    { start, end, stops },
+    showRoute
+  );
 
   const exitRoute = () => {
     toggleFunction();
@@ -47,7 +41,7 @@ const RouteDisplay = ({
   }
 
   return (
-    <div className="option-btn route" onClick={handleClick}>
+    <div className="option-btn route" onClick={toggleFunction}>
       Calculate Route
     </div>
   );

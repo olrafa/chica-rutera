@@ -5,7 +5,6 @@ import { toLonLat } from "ol/proj";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { reverseGeocode } from "../../requests/geoapify/input";
-import { useCalculateRoute } from "../../requests/openRouteService/useCalculateRoute";
 import {
   DestinationType,
   RoutePoint,
@@ -13,7 +12,6 @@ import {
 } from "../../types/route.types";
 import { addPointToLayer } from "../MapComponent/addPointToLayer";
 import MapContext from "../MapComponent/MapContext";
-import { ShowRoute } from "../ShowRoute";
 
 import FileUploader from "./FileUploader";
 import RouteDisplay from "./RouteDisplay";
@@ -32,6 +30,8 @@ export const ActionComponent = () => {
   const [end, setEnd] = useState<RoutePoint>(endLayer.getFeatures()[0]);
   const [stops, setStops] = useState<RouteStops>(stopsLayer.getFeatures());
 
+  const queryClient = useQueryClient();
+
   // Callback to setState using the layers
   const updateRoutePoints = (destinationType: DestinationType) => {
     if (destinationType === "start") {
@@ -43,6 +43,9 @@ export const ActionComponent = () => {
     if (destinationType === "stops") {
       setStops(stopsLayer.getFeatures());
     }
+    // Clear the previous route when points change.
+    queryClient.invalidateQueries(["route"]);
+    routeLayer.clear();
   };
 
   // Add points via click
@@ -78,21 +81,6 @@ export const ActionComponent = () => {
     clickActive && map.on("singleclick", addPointOnClick);
     return () => map.un("singleclick", addPointOnClick);
   }, [map, addPointOnClick, clickActive]);
-
-  const {
-    mutate: createRoute,
-    data: calculatedRoute,
-    isLoading,
-  } = useCalculateRoute({ start, end, stops });
-
-  const callback = () => createRoute();
-
-  const queryClient = useQueryClient();
-
-  const cancelRoute = () => {
-    routeLayer.clear();
-    queryClient.invalidateQueries(["route"]);
-  };
 
   const canCreateRoute = start && end && !!stops.length;
 

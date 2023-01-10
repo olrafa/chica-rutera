@@ -3,9 +3,10 @@ import { Coordinate } from "ol/coordinate";
 import Geometry from "ol/geom/Geometry";
 import Point from "ol/geom/Point";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { Destinations, RoutePoint, RouteStops } from "../../types/route.types";
+import convertTimeToMilliseconds from "../../util/convertTimeToMilliseconds";
 
 import { RouteResponse } from "./types";
 
@@ -79,11 +80,13 @@ const calculateRoute = async (
   return routeResult;
 };
 
-export const useCalculateRoute = ({ start, end, stops }: Destinations) => {
-  const queryClient = useQueryClient();
-  return useMutation(["route"], () => calculateRoute(start, end, stops), {
-    onSuccess: (data) => queryClient.setQueryData(["route"], data),
+export const useCalculateRoute = (
+  { start, end, stops }: Destinations,
+  enabled: boolean
+) =>
+  useQuery(["route"], () => calculateRoute(start, end, stops), {
+    enabled,
+    staleTime: convertTimeToMilliseconds(10, "minutes"),
     onError: () =>
       alert("Unable to create route. Please check your points and try again"),
   });
-};
