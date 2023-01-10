@@ -23,17 +23,18 @@ const RouteDisplay = ({
 }: RouteDisplayProps): ReactElement => {
   const { routeLayer } = useContext(MapContext);
 
-  const { data: calculatedRoute, isLoading } = useCalculateRoute(
-    { start, end, stops },
-    showRoute
-  );
+  const {
+    data: calculatedRoute,
+    isLoading,
+    isFetching,
+  } = useCalculateRoute({ start, end, stops }, showRoute);
 
   const exitRoute = () => {
     toggleFunction();
     routeLayer.clear();
   };
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return <div>Loading...</div>;
   }
 
