@@ -5,9 +5,11 @@ import { AddressResult } from "./types";
  * @param url the address, plus bias from location.
  * @returns only the first result.
  */
-export const geoApifyFetcher = async (url: string): Promise<AddressResult> => {
+export const geoApifyFetcher = async (
+  url: string
+): Promise<AddressResult | undefined> => {
   const data = await fetch(url, { method: "GET" });
   const response = await data.json();
   const [address] = response.features;
-  return address.properties;
+  return address?.properties || undefined;
 };

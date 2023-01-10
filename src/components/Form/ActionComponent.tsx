@@ -1,116 +1,74 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { MapBrowserEvent } from "ol";
-import Feature from "ol/Feature";
 import { toLonLat } from "ol/proj";
-import { Vector as VectorSource } from "ol/source";
+
+import { useQueryClient } from "@tanstack/react-query";
 
 import { reverseGeocode } from "../../requests/geoapify/input";
-import { AddressResult } from "../../requests/geoapify/types";
-import { calculateRoute } from "../../requests/route";
-import { Destinations } from "../../types/route.types";
+import { addPointToLayer } from "../MapComponent/addPointToLayer";
 import MapContext from "../MapComponent/MapContext";
-import { createRoutePoint } from "../MapComponent/util";
-import { RoutePoints } from "../RoutePoints";
-import { ShowRoute } from "../ShowRoute";
+
+import FileUploader from "./FileUploader";
+import RouteDisplay from "./RouteDisplay";
+import RouteInputs from "./RouteInputs";
+import StopsList from "./StopsList";
+import { DestinationType, RoutePoint, RouteStops } from "./types";
 
 import "../components.css";
 
 export const ActionComponent = () => {
+  // Get layers from context
   const { map, startLayer, endLayer, stopsLayer, routeLayer } =
     useContext(MapContext);
 
-  const [destinations, setDestinations] = useState<Destinations>({
-    startPoint: undefined,
-    endPoint: undefined,
-    stops: [],
-  });
+  // Use state to determine the route points, so we can call setState to refresh them.
+  const [start, setStart] = useState<RoutePoint>(startLayer.getFeatures()[0]);
+  const [end, setEnd] = useState<RoutePoint>(endLayer.getFeatures()[0]);
+  const [stops, setStops] = useState<RouteStops>(stopsLayer.getFeatures());
 
-  const [calculatedRoute, setCalculatedRoute] = useState(null);
+  const queryClient = useQueryClient();
 
-  const addFeatureFromSearch = (
-    searchResult: AddressResult,
-    layer: VectorSource
-  ) => {
-    const point = createRoutePoint(searchResult);
-    layer !== stopsLayer && layer.clear();
-    layer.addFeature(point);
-    return point;
-  };
-
-  const addStartFromSearch = (searchResult: AddressResult) => {
-    const point = createRoutePoint(searchResult);
-    startLayer.clear();
-    startLayer.addFeature(point);
-    setDestinations({ ...destinations, startPoint: point });
-  };
-
-  const addEndFromSearch = (searchResult: AddressResult) => {
-    const point = createRoutePoint(searchResult);
-    endLayer.clear();
-    endLayer.addFeature(point);
-    setDestinations({ ...destinations, endPoint: point });
-  };
-
-  const addRoutePointFromSearch = (searchResult: AddressResult) => {
-    if (destinations.stops.length < 48) {
-      const point = createRoutePoint(searchResult);
-      stopsLayer.addFeature(point);
-      setDestinations({
-        ...destinations,
-        stops: [...destinations.stops, point],
-      });
+  // Callback to setState using the layers
+  const updateRoutePoints = (destinationType: DestinationType) => {
+    if (destinationType === "start") {
+      setStart(startLayer.getFeatures()[0]);
     }
-  };
-
-  const removeStopFromList = (stop: Feature) => {
-    stopsLayer.removeFeature(stop);
-    setDestinations({
-      ...destinations,
-      stops: destinations.stops.filter((s) => s !== stop),
-    });
-  };
-
-  const copyEndFromStart = () => {
-    const { startPoint } = destinations;
-    if (startPoint !== undefined) {
-      endLayer.clear();
-      endLayer.addFeature(startPoint);
-      setDestinations({
-        ...destinations,
-        endPoint: startPoint,
-      });
+    if (destinationType === "end") {
+      setEnd(endLayer.getFeatures()[0]);
     }
+    if (destinationType === "stops") {
+      setStops(stopsLayer.getFeatures());
+    }
+    // Clear the previous route when points change.
+    queryClient.invalidateQueries(["route"]);
+    routeLayer.clear();
   };
 
+  // Add points via click
   const addPointOnClick = useCallback(
     (e: MapBrowserEvent) => {
       const { coordinate } = e;
       reverseGeocode(toLonLat(coordinate)).then((searchResult) => {
-        let point;
-        if (!destinations.startPoint) {
-          point = addFeatureFromSearch(searchResult, startLayer);
-          setDestinations({
-            ...destinations,
-            startPoint: point,
-          });
-        } else if (!destinations.endPoint) {
-          point = addFeatureFromSearch(searchResult, endLayer);
-          setDestinations({
-            ...destinations,
-            endPoint: point,
-          });
-        } else {
-          if (destinations.stops.length < 48) {
-            point = addFeatureFromSearch(searchResult, stopsLayer);
-            setDestinations({
-              ...destinations,
-              stops: [...destinations.stops, point],
-            });
-          }
+        if (!searchResult) {
+          return;
+        }
+        const [startPoint] = startLayer.getFeatures();
+        if (!startPoint) {
+          addPointToLayer(searchResult, startLayer);
+          updateRoutePoints("start");
+        }
+        const [endPoint] = endLayer.getFeatures();
+        if (startPoint && !endPoint) {
+          addPointToLayer(searchResult, endLayer);
+          updateRoutePoints("end");
+        }
+        if (startPoint && endPoint) {
+          addPointToLayer(searchResult, stopsLayer, false);
+          updateRoutePoints("stops");
         }
       });
     },
-    [endLayer, destinations, startLayer, stopsLayer]
+    [endLayer, startLayer, stopsLayer]
   );
 
   const [clickActive, setClickActive] = useState(false);
@@ -120,75 +78,43 @@ export const ActionComponent = () => {
     return () => map.un("singleclick", addPointOnClick);
   }, [map, addPointOnClick, clickActive]);
 
-  const optimize = async () => {
-    setClickActive(false);
-    routeLayer.clear();
-    const route = await calculateRoute(destinations);
-    const validRoute = !route.code;
-    if (validRoute) {
-      setCalculatedRoute(route);
-    } else {
-      alert("Unable to create route. Please check your points and try again");
-    }
-  };
+  const canCreateRoute = start && end && !!stops.length;
 
-  const cancelRoute = () => {
-    routeLayer.clear();
-    setCalculatedRoute(null);
-  };
-  const clearAllStops = () => {
-    stopsLayer.clear();
-    setDestinations({
-      ...destinations,
-      stops: [],
-    });
-  };
+  const [isShowingForm, setIsShowingForm] = useState(true);
+  const toggleForm = () => setIsShowingForm((_isShowing) => !_isShowing);
 
   return (
     <div className="action-component">
       <div className="action-component-wrapper">
-        {!calculatedRoute && (
-          <div>
-            Create your best driving route between multiple points
-            <RoutePoints
-              updateStartFunction={addStartFromSearch}
-              updateEndFunction={addEndFromSearch}
-              addStopsFunction={addRoutePointFromSearch}
-              removeStopsFunction={removeStopFromList}
-              stops={destinations.stops}
-              currentStart={destinations.startPoint?.get("name") || ""}
-              currentEnd={destinations.endPoint?.get("name") || ""}
-              copyEndFromStart={copyEndFromStart}
-              clearStopsFunction={clearAllStops}
-            />
-          </div>
-        )}
-        {!calculatedRoute &&
-          destinations.startPoint &&
-          destinations.endPoint &&
-          !!destinations.stops.length && (
-            <div className="option-btn route" onClick={optimize}>
-              Calculate Route
+        {isShowingForm && (
+          <>
+            <div>
+              Create your best driving route between multiple points
+              <RouteInputs
+                start={start}
+                end={end}
+                updateRoute={updateRoutePoints}
+              />
+              <FileUploader updateFunction={updateRoutePoints} />
+              <StopsList stops={stops} updateFunction={updateRoutePoints} />
             </div>
-          )}
-        {!calculatedRoute && (
-          <div
-            onClick={() => setClickActive(!clickActive)}
-            className="map-click-btn"
-          >
-            {clickActive ? "Disable" : "Enable"} adding points from map click
-          </div>
+            <div
+              onClick={() => setClickActive(!clickActive)}
+              className="map-click-btn"
+            >
+              {clickActive ? "Disable" : "Enable"} adding points from map click
+            </div>
+          </>
         )}
-        {calculatedRoute &&
-          destinations.startPoint &&
-          destinations.endPoint &&
-          !!destinations.stops.length && (
-            <ShowRoute
-              route={calculatedRoute}
-              destinations={destinations}
-              exitFunction={cancelRoute}
-            />
-          )}
+        {canCreateRoute && (
+          <RouteDisplay
+            start={start}
+            end={end}
+            stops={stops}
+            showRoute={!isShowingForm}
+            toggleFunction={toggleForm}
+          />
+        )}
       </div>
     </div>
   );

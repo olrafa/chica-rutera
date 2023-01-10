@@ -3,6 +3,17 @@ import { Coordinate } from "ol/coordinate";
 import Geometry from "ol/geom/Geometry";
 import Point from "ol/geom/Point";
 
+import { useQuery } from "@tanstack/react-query";
+
+import {
+  Destinations,
+  RoutePoint,
+  RouteStops,
+} from "../../components/Form/types";
+import convertTimeToMilliseconds from "../../util/convertTimeToMilliseconds";
+
+import { RouteResponse } from "./types";
+
 const orsUrl = "https://api.openrouteservice.org/";
 
 const createStopsPoints = (stops: Feature[]) => {
@@ -21,30 +32,23 @@ const createStopsPoints = (stops: Feature[]) => {
   });
 };
 
-const getWgs84Coordinates = (point: any) => {
+const getWgs84Coordinates = (point: RoutePoint) => {
   const pointGeo = point.getGeometry();
   if (!pointGeo) {
     return null;
-  } 
-    const copiedGeo = pointGeo.clone();
-    const wgs84geo: Geometry = copiedGeo.transform("EPSG:3857", "EPSG:4326");
-    const castGeo: Point = wgs84geo as Point;
-    const coordinates: Coordinate = castGeo.getCoordinates();
-    return coordinates;
-  
+  }
+  const copiedGeo = pointGeo.clone();
+  const wgs84geo: Geometry = copiedGeo.transform("EPSG:3857", "EPSG:4326");
+  const castGeo: Point = wgs84geo as Point;
+  const coordinates: Coordinate = castGeo.getCoordinates();
+  return coordinates;
 };
 
-type RouteInfoProps = {
-  startPoint: Feature | undefined;
-  endPoint: Feature | undefined;
-  stops: Feature[];
-};
-
-export const calculateRoute = async ({
-  startPoint,
-  endPoint,
-  stops,
-}: RouteInfoProps) => {
+const calculateRoute = async (
+  start: RoutePoint,
+  end: RoutePoint,
+  stops: RouteStops
+): Promise<RouteResponse> => {
   const requestPoints = createStopsPoints(stops);
   const orsRequest = {
     jobs: requestPoints,
@@ -52,8 +56,8 @@ export const calculateRoute = async ({
       {
         id: 1,
         profile: "driving-car",
-        start: getWgs84Coordinates(startPoint),
-        end: getWgs84Coordinates(endPoint),
+        start: getWgs84Coordinates(start),
+        end: getWgs84Coordinates(end),
       },
     ],
     options: {
@@ -79,3 +83,14 @@ export const calculateRoute = async ({
   const routeResult = await orsRoute.json();
   return routeResult;
 };
+
+export const useCalculateRoute = (
+  { start, end, stops }: Destinations,
+  enabled: boolean
+) =>
+  useQuery(["route"], () => calculateRoute(start, end, stops), {
+    enabled,
+    staleTime: convertTimeToMilliseconds(10, "minutes"),
+    onError: () =>
+      alert("Unable to create route. Please check your points and try again"),
+  });

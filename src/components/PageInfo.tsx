@@ -12,7 +12,7 @@ export const PageInfo = () => {
           <br /> This page is meant as a study for myself. The code is available
           on{" "}
           <a
-            href="https://github.com/rafaelrolivares/chica-rutera"
+            href="https://github.com/olrafa/chica-rutera"
             target="_blank"
             rel="noopener noreferrer"
           >

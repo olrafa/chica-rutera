@@ -1,33 +1,10 @@
+import { Map } from "ol";
 import { Coordinate } from "ol/coordinate";
-import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
 import { fromLonLat } from "ol/proj";
-import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
 
-import { AddressResult } from "../../requests/geoapify/types";
+const MAP_ZOOM_TO_RESULT = 15;
 
-import { STROKE_COLOR, STROKE_WIDTH } from "./constants";
-
-const createPoint = (coordinate: Coordinate, formatted?: string) =>
-  new Feature({
-    type: "geoMarker",
-    geometry: new Point(coordinate),
-    name: formatted,
-  });
-
-export const createRoutePoint = ({ formatted, lon, lat }: AddressResult) => {
-  const coordinate = fromLonLat([lon, lat]);
-  return createPoint(coordinate, formatted);
+export const updateMapView = (map: Map, coords: Coordinate): void => {
+  map.getView().setCenter(fromLonLat(coords));
+  map.getView().setZoom(MAP_ZOOM_TO_RESULT);
 };
-
-export const createStyle = (color: string) =>
-  new Style({
-    image: new CircleStyle({
-      radius: 7,
-      fill: new Fill({ color }),
-      stroke: new Stroke({
-        color: STROKE_COLOR,
-        width: STROKE_WIDTH,
-      }),
-    }),
-  });
