@@ -3,10 +3,9 @@ import { ReactElement, useContext } from "react";
 import MapContext from "../MapComponent/MapContext";
 
 import searchForAddress from "./searchAndAddPoint";
-import { DestinationType } from "./types";
 
 type FileUploaderProps = {
-  updateFunction: (destinationType: DestinationType) => void;
+  updateFunction: () => void;
 };
 
 const FileUploader = ({ updateFunction }: FileUploaderProps): ReactElement => {

@@ -3,20 +3,15 @@ import { ReactElement, useContext } from "react";
 import MapContext from "../MapComponent/MapContext";
 
 import InputField from "./InputField";
-import { DestinationType, RoutePoint } from "./types";
+import useGetRoutePoints from "./useGetRoutePoints";
 
 type RouteInputsProps = {
-  start: RoutePoint | undefined;
-  end: RoutePoint | undefined;
-  updateRoute: (destination: DestinationType) => void;
+  updateRoute: () => void;
 };
 
-const RouteInputs = ({
-  start,
-  end,
-  updateRoute,
-}: RouteInputsProps): ReactElement => {
+const RouteInputs = ({ updateRoute }: RouteInputsProps): ReactElement => {
   const { endLayer, stopsLayer } = useContext(MapContext);
+  const { start, end } = useGetRoutePoints();
   const startValue = start?.get("name") || "";
   const endValue = end?.get("name") || "";
 
@@ -26,7 +21,7 @@ const RouteInputs = ({
     if (start) {
       endLayer.clear();
       endLayer.addFeature(start);
-      updateRoute("end");
+      updateRoute();
     }
   };
 

@@ -4,23 +4,18 @@ import { useCalculateRoute } from "../../requests/openRouteService/useCalculateR
 import MapContext from "../MapComponent/MapContext";
 
 import { ShowRoute } from "./ShowRoute";
-import { RoutePoint, RouteStops } from "./types";
+import useGetRoutePoints from "./useGetRoutePoints";
 
 type RouteDisplayProps = {
-  start: RoutePoint;
-  end: RoutePoint;
-  stops: RouteStops;
   showRoute: boolean;
   toggleFunction: () => void;
 };
 
 const RouteDisplay = ({
-  start,
-  end,
-  stops,
   showRoute,
   toggleFunction,
 }: RouteDisplayProps): ReactElement => {
+  const { start, end, stops } = useGetRoutePoints();
   const { routeLayer } = useContext(MapContext);
 
   const {

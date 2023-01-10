@@ -1,4 +1,6 @@
 import { ReactElement, useContext, useEffect, useRef, useState } from "react";
+import Geometry from "ol/geom/Geometry";
+import VectorSource from "ol/source/Vector";
 
 import MapContext from "../MapComponent/MapContext";
 
@@ -10,7 +12,7 @@ const PLACEHOLDER = "Search for an address and press 'Enter'";
 type InputFieldProps = {
   label: string;
   destination: DestinationType;
-  callback: (destination: DestinationType) => void;
+  callback: () => void;
   value?: string;
   stops?: RouteStops;
 };
@@ -36,14 +38,19 @@ const InputField = ({
 
   const handleAddressInput = (e: { key: string }) =>
     e.key === "Enter" &&
-    inputValue &&
-    searchForAddress(
-      inputValue,
-      destination,
-      map,
-      destinationLayers[destination],
-      callback
-    );
+    (inputValue
+      ? searchForAddress(
+          inputValue,
+          destination,
+          map,
+          destinationLayers[destination],
+          callback
+        )
+      : clearStartOrEnd(destinationLayers[destination]));
+
+  // Clear start or end input when field is cleared then "Enter"'d
+  const clearStartOrEnd = (layer: VectorSource<Geometry>) =>
+    (layer === startLayer || layer === endLayer) && layer.clear();
 
   useEffect(() => {
     if (fieldRef.current) {
