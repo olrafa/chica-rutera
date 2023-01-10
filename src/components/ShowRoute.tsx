@@ -17,8 +17,6 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo) => {
   const stops = stopsLayer.getFeatures();
   const { routes } = route;
 
-  const canRouteBeCalculated = start && end && !!stops.length;
-
   const routeLines = routes.map(({ geometry }) => {
     const trace = new Polyline().readGeometry(geometry, {
       dataProjection: "EPSG:4326",
@@ -55,10 +53,6 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo) => {
     const mDisplay = m ? m + (m === 1 ? " minute, " : " minutes ") : "";
     return hDisplay + mDisplay;
   };
-
-  if (!canRouteBeCalculated) {
-    return null;
-  }
 
   return (
     <div>

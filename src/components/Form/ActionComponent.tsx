@@ -12,11 +12,11 @@ import {
   RouteStops,
 } from "../../types/route.types";
 import { addPointToLayer } from "../MapComponent/addPointToLayer";
-import CalculateRouteButton from "../MapComponent/CalculateRouteButton";
 import MapContext from "../MapComponent/MapContext";
 import { ShowRoute } from "../ShowRoute";
 
 import FileUploader from "./FileUploader";
+import RouteDisplay from "./RouteDisplay";
 import RouteInputs from "./RouteInputs";
 import StopsList from "./StopsList";
 
@@ -94,37 +94,42 @@ export const ActionComponent = () => {
     queryClient.invalidateQueries(["route"]);
   };
 
+  const canCreateRoute = start && end && !!stops.length;
+
+  const [isShowingForm, setIsShowingForm] = useState(true);
+  const toggleForm = () => setIsShowingForm((_isShowing) => !_isShowing);
+
   return (
     <div className="action-component">
       <div className="action-component-wrapper">
-        {!calculatedRoute && (
-          <div>
-            Create your best driving route between multiple points
-            <RouteInputs
-              start={start}
-              end={end}
-              updateRoute={updateRoutePoints}
-            />
-            <FileUploader updateFunction={updateRoutePoints} />
-            <StopsList stops={stops} updateFunction={updateRoutePoints} />
-          </div>
+        {isShowingForm && (
+          <>
+            <div>
+              Create your best driving route between multiple points
+              <RouteInputs
+                start={start}
+                end={end}
+                updateRoute={updateRoutePoints}
+              />
+              <FileUploader updateFunction={updateRoutePoints} />
+              <StopsList stops={stops} updateFunction={updateRoutePoints} />
+            </div>
+            <div
+              onClick={() => setClickActive(!clickActive)}
+              className="map-click-btn"
+            >
+              {clickActive ? "Disable" : "Enable"} adding points from map click
+            </div>
+          </>
         )}
-        {!calculatedRoute && (
-          <CalculateRouteButton
-            enabled={start && end && !!stops.length}
-            callback={callback}
+        {canCreateRoute && (
+          <RouteDisplay
+            start={start}
+            end={end}
+            stops={stops}
+            showRoute={!isShowingForm}
+            toggleFunction={toggleForm}
           />
-        )}
-        {!calculatedRoute && (
-          <div
-            onClick={() => setClickActive(!clickActive)}
-            className="map-click-btn"
-          >
-            {clickActive ? "Disable" : "Enable"} adding points from map click
-          </div>
-        )}
-        {calculatedRoute && (
-          <ShowRoute route={calculatedRoute} exitFunction={cancelRoute} />
         )}
       </div>
     </div>
