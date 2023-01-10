@@ -1,15 +1,16 @@
 .action-component {
-  width: 400px;
   position: fixed;
   background-color: white;
   color: #222;
   max-height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
-}
-
-.action-component-wrapper {
-  padding: 15px;
+  left: 8px;
+  top: 8px;
+  border: 1px solid darkcyan;
+  width: 25rem;
+  opacity: 0.95;
+  padding: 0.5rem 1.5rem;
 }
 
 .route-address {
@@ -25,11 +26,12 @@
 }
 
 .repeat-start-btn {
-  font-size: 10px;
+  font-size: 0.8rem;
   background-color: darkcyan;
   color: white;
-  margin-left: 5px;
   cursor: pointer;
+  padding: 0.3rem;
+  margin: 0.3rem;
 }
 
 input[type="text"] {
@@ -70,13 +72,8 @@ input[type="text"] {
 }
 
 .page-info {
-  position: absolute;
-  top: 6px;
-  width: 120px;
-  right: 25px;
   border-radius: 4px;
-  padding: 7px;
-  box-sizing: border-box;
+  padding: 0.5rem 0;
 }
 
 .page-info .closed {
@@ -89,13 +86,13 @@ input[type="text"] {
 }
 
 .page-info .open {
-  width: 350px;
   text-align: left;
   background-color: white;
   color: #222;
   opacity: 0.95;
   border: 1px solid darkcyan;
   font-size: 1em;
+  padding: 0.5rem;
 }
 
 .close-info {
