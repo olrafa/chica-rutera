@@ -48,6 +48,7 @@ const InputField = ({
         )
       : clearStartOrEnd(destinationLayers[destination]));
 
+  // Clear start or end input when field is cleared then "Enter"'d
   const clearStartOrEnd = (layer: VectorSource<Geometry>) =>
     (layer === startLayer || layer === endLayer) && layer.clear();
 

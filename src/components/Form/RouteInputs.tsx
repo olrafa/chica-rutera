@@ -3,7 +3,6 @@ import { ReactElement, useContext } from "react";
 import MapContext from "../MapComponent/MapContext";
 
 import InputField from "./InputField";
-import { RoutePoint } from "./types";
 import useGetRoutePoints from "./useGetRoutePoints";
 
 type RouteInputsProps = {
