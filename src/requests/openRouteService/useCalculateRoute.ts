@@ -5,7 +5,11 @@ import Point from "ol/geom/Point";
 
 import { useQuery } from "@tanstack/react-query";
 
-import { Destinations, RoutePoint, RouteStops } from "../../types/route.types";
+import {
+  Destinations,
+  RoutePoint,
+  RouteStops,
+} from "../../components/Form/types";
 import convertTimeToMilliseconds from "../../util/convertTimeToMilliseconds";
 
 import { RouteResponse } from "./types";

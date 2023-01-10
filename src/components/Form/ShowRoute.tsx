@@ -3,11 +3,11 @@ import Feature from "ol/Feature";
 import Polyline from "ol/format/Polyline";
 import Geometry from "ol/geom/Geometry";
 
-import { RouteInfo } from "../types/route.types";
+import { createStyle } from "../MapComponent/createStyle";
+import MapContext from "../MapComponent/MapContext";
+import { ShareRoute } from "../ShareRoute";
 
-import { createStyle } from "./MapComponent/createStyle";
-import MapContext from "./MapComponent/MapContext";
-import { ShareRoute } from "./ShareRoute";
+import { RouteInfo } from "./types";
 
 export const ShowRoute = ({ route, exitFunction }: RouteInfo): ReactElement => {
   const { map, routeLayer, startLayer, stopsLayer, endLayer } =

@@ -1,9 +1,9 @@
 import { ReactElement, useContext } from "react";
 
-import { DestinationType } from "../../types/route.types";
 import MapContext from "../MapComponent/MapContext";
 
 import searchForAddress from "./searchAndAddPoint";
+import { DestinationType } from "./types";
 
 type FileUploaderProps = {
   updateFunction: (destinationType: DestinationType) => void;

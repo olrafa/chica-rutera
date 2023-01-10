@@ -1,9 +1,10 @@
 import { ReactElement, useContext } from "react";
 
 import { useCalculateRoute } from "../../requests/openRouteService/useCalculateRoute";
-import { RoutePoint, RouteStops } from "../../types/route.types";
 import MapContext from "../MapComponent/MapContext";
-import { ShowRoute } from "../ShowRoute";
+
+import { ShowRoute } from "./ShowRoute";
+import { RoutePoint, RouteStops } from "./types";
 
 type RouteDisplayProps = {
   start: RoutePoint;

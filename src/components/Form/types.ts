@@ -1,12 +1,12 @@
 import Feature from "ol/Feature";
 import Geometry from "ol/geom/Geometry";
 
-import { RouteResponse } from "../requests/openRouteService/types";
+import { RouteResponse } from "../../requests/openRouteService/types";
 
 export type Destinations = {
-  start: Feature;
-  end: Feature;
-  stops: Feature[];
+  start: RoutePoint;
+  end: RoutePoint;
+  stops: RouteStops;
 };
 
 export type RoutePoint = Feature<Geometry>;

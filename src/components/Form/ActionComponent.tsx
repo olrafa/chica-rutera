@@ -5,11 +5,6 @@ import { toLonLat } from "ol/proj";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { reverseGeocode } from "../../requests/geoapify/input";
-import {
-  DestinationType,
-  RoutePoint,
-  RouteStops,
-} from "../../types/route.types";
 import { addPointToLayer } from "../MapComponent/addPointToLayer";
 import MapContext from "../MapComponent/MapContext";
 
@@ -17,6 +12,7 @@ import FileUploader from "./FileUploader";
 import RouteDisplay from "./RouteDisplay";
 import RouteInputs from "./RouteInputs";
 import StopsList from "./StopsList";
+import { DestinationType, RoutePoint, RouteStops } from "./types";
 
 import "../components.css";
 

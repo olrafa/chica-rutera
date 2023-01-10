@@ -1,9 +1,9 @@
 import { ReactElement, useContext, useEffect, useRef, useState } from "react";
 
-import { DestinationType, RouteStops } from "../../types/route.types";
 import MapContext from "../MapComponent/MapContext";
 
 import searchForAddress from "./searchAndAddPoint";
+import { DestinationType, RouteStops } from "./types";
 
 const PLACEHOLDER = "Search for an address and press 'Enter'";
 

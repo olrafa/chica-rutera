@@ -1,9 +1,9 @@
 import { ReactElement, useContext } from "react";
 
-import { DestinationType, RoutePoint } from "../../types/route.types";
 import MapContext from "../MapComponent/MapContext";
 
 import InputField from "./InputField";
+import { DestinationType, RoutePoint } from "./types";
 
 type RouteInputsProps = {
   start: RoutePoint | undefined;

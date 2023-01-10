@@ -1,11 +1,8 @@
 import { ReactElement, useContext } from "react";
 
-import {
-  DestinationType,
-  RoutePoint,
-  RouteStops,
-} from "../../types/route.types";
 import MapContext from "../MapComponent/MapContext";
+
+import { DestinationType, RoutePoint, RouteStops } from "./types";
 
 type StopsListProps = {
   stops: RouteStops;
