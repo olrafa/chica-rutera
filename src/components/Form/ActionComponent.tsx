@@ -12,7 +12,7 @@ import FileUploader from "./FileUploader";
 import RouteDisplay from "./RouteDisplay";
 import RouteInputs from "./RouteInputs";
 import StopsList from "./StopsList";
-import { DestinationType, RoutePoint, RouteStops } from "./types";
+import useGetRoutePoints from "./useGetRoutePoints";
 
 import "../components.css";
 
@@ -21,24 +21,15 @@ export const ActionComponent = () => {
   const { map, startLayer, endLayer, stopsLayer, routeLayer } =
     useContext(MapContext);
 
-  // Use state to determine the route points, so we can call setState to refresh them.
-  const [start, setStart] = useState<RoutePoint>(startLayer.getFeatures()[0]);
-  const [end, setEnd] = useState<RoutePoint>(endLayer.getFeatures()[0]);
-  const [stops, setStops] = useState<RouteStops>(stopsLayer.getFeatures());
+  const { start, end, stops } = useGetRoutePoints();
+
+  // We use setState to make the hook above refresh whenever a point changes
+  const [, setRouteUpdated] = useState(0);
 
   const queryClient = useQueryClient();
 
-  // Callback to setState using the layers
-  const updateRoutePoints = (destinationType: DestinationType) => {
-    if (destinationType === "start") {
-      setStart(startLayer.getFeatures()[0]);
-    }
-    if (destinationType === "end") {
-      setEnd(endLayer.getFeatures()[0]);
-    }
-    if (destinationType === "stops") {
-      setStops(stopsLayer.getFeatures());
-    }
+  const updateRoutePoints = () => {
+    setRouteUpdated((_routeUpdated) => _routeUpdated + 1);
     // Clear the previous route when points change.
     queryClient.invalidateQueries(["route"]);
     routeLayer.clear();
@@ -52,19 +43,18 @@ export const ActionComponent = () => {
         if (!searchResult) {
           return;
         }
-        const [startPoint] = startLayer.getFeatures();
-        if (!startPoint) {
+        if (!start) {
           addPointToLayer(searchResult, startLayer);
-          updateRoutePoints("start");
+          updateRoutePoints();
         }
-        const [endPoint] = endLayer.getFeatures();
-        if (startPoint && !endPoint) {
+
+        if (start && !end) {
           addPointToLayer(searchResult, endLayer);
-          updateRoutePoints("end");
+          updateRoutePoints();
         }
-        if (startPoint && endPoint) {
+        if (start && end) {
           addPointToLayer(searchResult, stopsLayer, false);
-          updateRoutePoints("stops");
+          updateRoutePoints();
         }
       });
     },
@@ -90,13 +80,9 @@ export const ActionComponent = () => {
           <>
             <div>
               Create your best driving route between multiple points
-              <RouteInputs
-                start={start}
-                end={end}
-                updateRoute={updateRoutePoints}
-              />
+              <RouteInputs updateRoute={updateRoutePoints} />
               <FileUploader updateFunction={updateRoutePoints} />
-              <StopsList stops={stops} updateFunction={updateRoutePoints} />
+              <StopsList updateFunction={updateRoutePoints} />
             </div>
             <div
               onClick={() => setClickActive(!clickActive)}
@@ -108,9 +94,6 @@ export const ActionComponent = () => {
         )}
         {canCreateRoute && (
           <RouteDisplay
-            start={start}
-            end={end}
-            stops={stops}
             showRoute={!isShowingForm}
             toggleFunction={toggleForm}
           />

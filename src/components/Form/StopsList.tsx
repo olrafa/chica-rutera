@@ -2,24 +2,24 @@ import { ReactElement, useContext } from "react";
 
 import MapContext from "../MapComponent/MapContext";
 
-import { DestinationType, RoutePoint, RouteStops } from "./types";
+import { RoutePoint } from "./types";
 
 type StopsListProps = {
-  stops: RouteStops;
-  updateFunction: (destinationType: DestinationType) => void;
+  updateFunction: () => void;
 };
 
-const StopsList = ({ stops, updateFunction }: StopsListProps): ReactElement => {
+const StopsList = ({ updateFunction }: StopsListProps): ReactElement => {
   const { stopsLayer } = useContext(MapContext);
+  const stops = stopsLayer.getFeatures();
 
   const clearAllStops = () => {
     stopsLayer.clear();
-    updateFunction("stops");
+    updateFunction();
   };
 
   const removeStopFromList = (stop: RoutePoint) => {
     stopsLayer.removeFeature(stop);
-    updateFunction("stops");
+    updateFunction();
   };
 
   return (

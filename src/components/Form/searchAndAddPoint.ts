@@ -14,7 +14,7 @@ const searchForAddress = (
   item: DestinationType,
   map: Map,
   layer: VectorSource<Geometry>,
-  callback: (item: DestinationType) => void
+  callback: () => void
 ) => {
   const viewCenter = map.getView().getCenter();
   const [lon, lat] = toLonLat(viewCenter || [0, 0]);
@@ -22,7 +22,7 @@ const searchForAddress = (
     if (result) {
       addPointToLayer(result, layer, item !== "stops");
       updateMapView(map, [result.lon, result.lat]);
-      callback(item);
+      callback();
     } else {
       alert(
         "No address found. Please check for typos and/or add details (city, region, country)"
