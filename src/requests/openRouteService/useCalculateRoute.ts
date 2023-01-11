@@ -17,19 +17,14 @@ import { RouteResponse } from "./types";
 const orsUrl = "https://api.openrouteservice.org/";
 
 const createStopsPoints = (stops: Feature[]) => {
-  stops.forEach((s, i) => s.setId(i + 73));
-  const wgs84points = stops.map((s) => {
-    return {
-      coords: getWgs84Coordinates(s),
-      pointId: s.getId(),
-    };
-  });
-  return wgs84points.map((s, i) => {
-    return {
-      id: s.pointId,
-      location: s.coords,
-    };
-  });
+  const wgs84points = stops.map((s) => ({
+    coords: getWgs84Coordinates(s),
+    pointId: s.getId(),
+  }));
+  return wgs84points.map((s) => ({
+    id: s.pointId,
+    location: s.coords,
+  }));
 };
 
 const getWgs84Coordinates = (point: RoutePoint) => {
@@ -90,7 +85,7 @@ export const useCalculateRoute = (
 ) =>
   useQuery(["route"], () => calculateRoute(start, end, stops), {
     enabled,
-    staleTime: convertTimeToMilliseconds(10, "minutes"),
+    staleTime: convertTimeToMilliseconds(30, "minutes"),
     onError: () =>
       alert("Unable to create route. Please check your points and try again"),
   });

@@ -41,7 +41,9 @@ export const ActionComponent = () => {
       {isShowingForm && (
         <>
           <PageInfo />
-          Create your best driving route between multiple points
+          <div className="sub-title">
+            Create your best driving route between multiple points
+          </div>
           <RouteInputs updateRoute={updateRoutePoints} />
           <FileUploader updateFunction={updateRoutePoints} />
           <StopsList updateFunction={updateRoutePoints} />

@@ -8,13 +8,12 @@ import MapContext from "../MapComponent/MapContext";
 import { ShareRoute } from "../ShareRoute";
 
 import { RouteInfo } from "./types";
+import useGetRoutePoints from "./useGetRoutePoints";
 
 export const ShowRoute = ({ route, exitFunction }: RouteInfo): ReactElement => {
-  const { map, routeLayer, startLayer, stopsLayer, endLayer } =
-    useContext(MapContext);
-  const [start] = startLayer.getFeatures();
-  const [end] = endLayer.getFeatures();
-  const stops = stopsLayer.getFeatures();
+  const { map, routeLayer } = useContext(MapContext);
+  const { start, end, stops } = useGetRoutePoints();
+
   const { routes } = route;
 
   routeLayer.clear();

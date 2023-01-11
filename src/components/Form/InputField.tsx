@@ -60,7 +60,7 @@ const InputField = ({
 
   return (
     <label className="search-item">
-      <div>{label}:</div>
+      <div className="field-title">{label}</div>
       <input
         type="text"
         onKeyDown={(e) => handleAddressInput(e)}

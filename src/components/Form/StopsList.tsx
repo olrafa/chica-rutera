@@ -25,9 +25,9 @@ const StopsList = ({ updateFunction }: StopsListProps): ReactElement => {
   return (
     <>
       {stops.length === 48 && <div>Maximum number of points (48) reached.</div>}
-      {stops.map((stop, i) => {
+      {stops.map((stop) => {
         return (
-          <div key={i + 1}>
+          <div key={stop.getId()} className="route-stops">
             <input type="text" value={stop.get("name")} disabled={true} />
             <span onClick={() => removeStopFromList(stop)}>&times;</span>
           </div>

@@ -42,11 +42,11 @@ const FileUploader = ({ updateFunction }: FileUploaderProps): ReactElement => {
   };
 
   return (
-    <div className="search-item">
-      <label htmlFor="uploader">Or upload a file (txt/csv):</label>
+    <label className="search-item">
+      <div className="field-title">Or upload a file (txt/csv):</div>
       <input
-        id="uploader"
         type="file"
+        className="file-upload"
         multiple={false}
         accept={
           ".csv, text/plain," +
@@ -55,7 +55,7 @@ const FileUploader = ({ updateFunction }: FileUploaderProps): ReactElement => {
         }
         onChange={(e) => fileHandler(e.target.files)}
       />
-    </div>
+    </label>
   );
 };
 

@@ -2,7 +2,7 @@
   position: fixed;
   background-color: white;
   color: #222;
-  max-height: 100vh;
+  max-height: calc(100vh - 35px);
   overflow-y: auto;
   overflow-x: hidden;
   left: 8px;
@@ -31,21 +31,20 @@
   color: white;
   cursor: pointer;
   padding: 0.3rem;
-  margin: 0.3rem;
 }
 
-input[type="text"] {
+input {
   font-family: "Noto Sans JP", sans-serif;
   font-size: 12px;
-  width: 250px;
-  flex-grow: 1;
+  width: 100%;
+  margin-top: 0.2rem;
 }
 
 .search-item {
-  display: flex;
-  flex-direction: row;
+  display: block;
   width: 100%;
   margin: 10px 0;
+  text-align: justify;
 }
 
 .search-item label {
@@ -117,4 +116,29 @@ input[type="text"] {
   cursor: pointer;
   width: fit-content;
   margin: 10px auto;
+}
+
+.sub-title {
+  margin: 0.5rem 0;
+}
+
+.inputs-section {
+  margin-top: 1rem;
+}
+
+.field-title {
+  text-align: left;
+}
+
+.file-upload {
+  padding: 0.5rem;
+  width: 50%;
+  margin-top: 0.5rem;
+  border: 1px solid darkgrey;
+  background-color: ghostwhite;
+}
+
+.route-stops {
+  display: flex;
+  flex-direction: row;
 }
