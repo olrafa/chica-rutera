@@ -183,6 +183,7 @@ input {
   justify-content: center;
   display: flex;
   padding: 1rem;
+  padding-bottom: 0.5rem;
 }
 
 .loader {
