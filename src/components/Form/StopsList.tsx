@@ -3,14 +3,15 @@ import { ReactElement, useContext } from "react";
 import MapContext from "../MapComponent/MapContext";
 
 import { RoutePoint } from "./types";
+import useGetRoutePoints from "./useGetRoutePoints";
 
 type StopsListProps = {
   updateFunction: () => void;
 };
 
 const StopsList = ({ updateFunction }: StopsListProps): ReactElement => {
+  const { stops } = useGetRoutePoints();
   const { stopsLayer } = useContext(MapContext);
-  const stops = stopsLayer.getFeatures();
 
   const clearAllStops = () => {
     stopsLayer.clear();

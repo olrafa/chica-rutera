@@ -3,19 +3,28 @@ import Feature from "ol/Feature";
 import Geometry from "ol/geom/Geometry";
 
 import { secondsToHours } from "../../requests/geoapify/util";
+import { RouteResponse } from "../../requests/openRouteService/types";
 import MapContext from "../MapComponent/MapContext";
 import { getRoutesAsLines } from "../MapComponent/util";
 
 import GoogleButton from "./GoogleButton";
 import RouteStepBox from "./RouteStepBox";
 import RouteStepList from "./RouteStepList";
-import { RouteInfo } from "./types";
 import useGetRoutePoints from "./useGetRoutePoints";
 
-export const ShowRoute = ({ route, exitFunction }: RouteInfo): ReactElement => {
+type ShowRouteProps = {
+  route: RouteResponse;
+  exitFunction: () => void;
+};
+
+export const ShowRoute = ({
+  route,
+  exitFunction,
+}: ShowRouteProps): ReactElement => {
   const { map, routeLayer } = useContext(MapContext);
   const { start, end } = useGetRoutePoints();
-  const { routes } = route;
+
+  const { routes, error } = route;
 
   // As of now we're only doing one route at a time,
   // so YAGNI for multiple routes atm.
@@ -39,6 +48,23 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo): ReactElement => {
 
   const { steps, distance, duration } = mainRoute;
 
+  const ReturnButton = () => (
+    <div className="option-btn" onClick={exitFunction}>
+      Return
+    </div>
+  );
+
+  if (error) {
+    return (
+      <div>
+        <div className="route-summary">
+          The following error occurred: {error}
+        </div>
+        <ReturnButton />
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="route-summary route-ready">Route ready</div>
@@ -58,9 +84,7 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo): ReactElement => {
           Zoom to route
         </div>
         <GoogleButton route={mainRoute} />
-        <div className="option-btn" onClick={exitFunction}>
-          Return
-        </div>
+        <ReturnButton />
       </div>
     </div>
   );

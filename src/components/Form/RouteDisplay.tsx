@@ -37,6 +37,10 @@ const RouteDisplay = ({
     );
   }
 
+  if (showRoute && calculatedRoute?.code) {
+    return <>Error</>;
+  }
+
   if (showRoute && calculatedRoute) {
     return <ShowRoute route={calculatedRoute} exitFunction={exitRoute} />;
   }
