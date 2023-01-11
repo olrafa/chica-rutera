@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useEffect, useRef } from "react";
 import { fromLonLat } from "ol/proj";
 
-import { ActionComponent } from "../Form/ActionComponent";
+import { MainForm } from "../Form/MainForm";
 
 import { IP_ZOOM } from "./constants";
 import MapContext from "./MapContext";
@@ -38,7 +38,7 @@ const MapComponent = (): ReactElement => {
   return (
     <>
       <div ref={mapElement} className="ol-map" />
-      <ActionComponent />
+      <MainForm />
     </>
   );
 };

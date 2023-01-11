@@ -10,12 +10,10 @@ type RouteInputsProps = {
 };
 
 const RouteInputs = ({ updateRoute }: RouteInputsProps): ReactElement => {
-  const { endLayer, stopsLayer } = useContext(MapContext);
-  const { start, end } = useGetRoutePoints();
+  const { endLayer } = useContext(MapContext);
+  const { start, end, stops } = useGetRoutePoints();
   const startValue = start?.get("name") || "";
   const endValue = end?.get("name") || "";
-
-  const stops = stopsLayer.getFeatures();
 
   const copyEndFromStart = () => {
     if (start) {

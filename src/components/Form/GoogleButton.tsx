@@ -9,7 +9,7 @@ type GoogleButtonProps = {
 };
 
 const GoogleButton = ({ route }: GoogleButtonProps): ReactElement => (
-  <div className="option-btn">
+  <div className="option-btn google">
     <a
       className="google-link"
       href={createGoogleMapsUrl(route)}

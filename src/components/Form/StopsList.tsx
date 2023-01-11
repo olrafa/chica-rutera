@@ -3,14 +3,15 @@ import { ReactElement, useContext } from "react";
 import MapContext from "../MapComponent/MapContext";
 
 import { RoutePoint } from "./types";
+import useGetRoutePoints from "./useGetRoutePoints";
 
 type StopsListProps = {
   updateFunction: () => void;
 };
 
 const StopsList = ({ updateFunction }: StopsListProps): ReactElement => {
+  const { stops } = useGetRoutePoints();
   const { stopsLayer } = useContext(MapContext);
-  const stops = stopsLayer.getFeatures();
 
   const clearAllStops = () => {
     stopsLayer.clear();
@@ -24,6 +25,9 @@ const StopsList = ({ updateFunction }: StopsListProps): ReactElement => {
 
   return (
     <div className="stops-list">
+      {!!stops.length && (
+        <div className="route-summary">{`Current stops (${stops.length})`}</div>
+      )}
       {stops.length === 48 && <div>Maximum number of points (48) reached.</div>}
       {stops.map((stop) => {
         return (

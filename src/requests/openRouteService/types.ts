@@ -39,4 +39,5 @@ export type RouteResponse = {
   routes: RouteDetail[];
   summary: RouteSummary;
   unassigned: number[];
+  error?: string;
 };

@@ -19,12 +19,18 @@ export const PageInfo = () => {
             GitHub
           </a>
           .
-          <div className="close-info" onClick={() => setOpen(!open)}>
+          <div
+            className="close-info"
+            onClick={() => setOpen((_open) => !_open)}
+          >
             Close [&times;]
           </div>
         </div>
       ) : (
-        <div className="page-info closed" onClick={() => setOpen(!open)}>
+        <div
+          className="page-info closed"
+          onClick={() => setOpen((_open) => !_open)}
+        >
           Chica Rutera{" "}
         </div>
       )}

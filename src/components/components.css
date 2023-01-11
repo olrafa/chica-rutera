@@ -18,13 +18,29 @@
 .route-address {
   text-align: left;
   padding: 0.3em;
-  margin: 0.3em;
-  border: 1px solid whitesmoke;
+  margin: 0.5em 0;
+  border: 1px solid lightgray;
   cursor: pointer;
 }
 
 .route-address:hover {
   background-color: whitesmoke;
+}
+
+.route-summary {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem;
+  color: darkcyan;
+  font-weight: bold;
+}
+
+.route-ready {
+  font-size: larger;
+}
+
+.route-buttons {
+  display: flex;
 }
 
 .repeat-start-btn {
@@ -50,11 +66,13 @@ input {
 
 .option-btn {
   cursor: pointer;
-  margin: 0.5em auto;
+  margin: 0.5em 0;
   border: 1px solid gainsboro;
   padding: 0.5em;
   width: fit-content;
   display: flex;
+  justify-content: center;
+  flex: 1;
 }
 
 .option-btn.route {
@@ -64,10 +82,12 @@ input {
   width: auto;
   justify-content: center;
   font-size: large;
+  display: flex;
 }
 
-.option-btn.social {
-  cursor: default;
+.option-btn.google {
+  flex: 1.5;
+  margin: 0.5rem;
 }
 
 .page-info {
@@ -163,6 +183,7 @@ input {
   justify-content: center;
   display: flex;
   padding: 1rem;
+  padding-bottom: 0.5rem;
 }
 
 .loader {
