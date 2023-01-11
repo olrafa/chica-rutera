@@ -23,13 +23,18 @@ const StopsList = ({ updateFunction }: StopsListProps): ReactElement => {
   };
 
   return (
-    <>
+    <div className="stops-list">
       {stops.length === 48 && <div>Maximum number of points (48) reached.</div>}
       {stops.map((stop) => {
         return (
           <div key={stop.getId()} className="route-stops">
             <input type="text" value={stop.get("name")} disabled={true} />
-            <span onClick={() => removeStopFromList(stop)}>&times;</span>
+            <span
+              className="remove-stop"
+              onClick={() => removeStopFromList(stop)}
+            >
+              &times;
+            </span>
           </div>
         );
       })}
@@ -38,7 +43,7 @@ const StopsList = ({ updateFunction }: StopsListProps): ReactElement => {
           Clear all stops
         </div>
       )}
-    </>
+    </div>
   );
 };
 

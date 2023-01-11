@@ -37,8 +37,8 @@ const createPointVector = (color: string, zIndex: number): VectorLayer =>
     zIndex,
   });
 
-const startVector = createPointVector("#5FA", 12);
-const endVector = createPointVector("#F08", 11);
+const startVector = createPointVector("#5FA", 11);
+const endVector = createPointVector("#F08", 12);
 const stopsVector = createPointVector("#0AA", 10);
 const routeVector = createRouteVector();
 

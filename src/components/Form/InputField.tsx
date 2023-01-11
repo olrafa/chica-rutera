@@ -7,7 +7,7 @@ import MapContext from "../MapComponent/MapContext";
 import searchForAddress from "./searchAndAddPoint";
 import { DestinationType, RouteStops } from "./types";
 
-const PLACEHOLDER = "Search for an address and press 'Enter'";
+const PLACEHOLDER = "Search for an address and hit 'Enter'";
 
 type InputFieldProps = {
   label: string;

@@ -33,7 +33,7 @@ const RouteInputs = ({ updateRoute }: RouteInputsProps): ReactElement => {
         callback={updateRoute}
         value={startValue}
       />
-      <div style={{ textAlign: "justify" }}>
+      <div>
         <InputField
           label="Ending point:"
           destination="end"
