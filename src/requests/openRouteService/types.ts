@@ -1,6 +1,6 @@
 import { Coordinate } from "ol/coordinate";
 
-type RouteStep = {
+export type RouteStep = {
   arrival: number;
   distance: number;
   duration: number;

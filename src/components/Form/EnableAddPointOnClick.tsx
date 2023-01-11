@@ -56,10 +56,29 @@ const EnableAddPointOnClick = ({
     return () => map.un("singleclick", addPointOnClick);
   }, [map, addPointOnClick, clickActive]);
 
+  const getText = () => {
+    const clickText = "Click on the map to";
+    if (!start) {
+      return `${clickText} set a starting point`;
+    }
+    if (!end) {
+      return `${clickText} set an ending point`;
+    }
+    return `${clickText} add a stop`;
+  };
+
   return (
-    <div onClick={() => setClickActive(!clickActive)} className="map-click-btn">
-      {clickActive ? "Disable" : "Enable"} adding points from map click
-    </div>
+    <>
+      <div
+        onClick={() => setClickActive(!clickActive)}
+        className="map-click-btn"
+      >
+        {clickActive ? "Disable" : "Enable"} adding points from map click
+      </div>
+      {clickActive && (
+        <div className="click-instruction">{clickActive && getText()}</div>
+      )}
+    </>
   );
 };
 

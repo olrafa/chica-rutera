@@ -7,7 +7,7 @@ import MapContext from "../MapComponent/MapContext";
 import searchForAddress from "./searchAndAddPoint";
 import { DestinationType, RouteStops } from "./types";
 
-const PLACEHOLDER = "Search for an address and press 'Enter'";
+const PLACEHOLDER = "Search for an address and hit 'Enter'";
 
 type InputFieldProps = {
   label: string;
@@ -60,7 +60,7 @@ const InputField = ({
 
   return (
     <label className="search-item">
-      <div>{label}:</div>
+      <div className="field-title">{label}</div>
       <input
         type="text"
         onKeyDown={(e) => handleAddressInput(e)}

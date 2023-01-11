@@ -19,7 +19,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Installation
 
 ```
-git clone git@github.com:rafaelrolivares/chica-rutera.git
+git clone git@github.com:olrafa/chica-rutera.git
 cd chica-rutera
 npm install
 ```

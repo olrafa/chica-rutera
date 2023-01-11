@@ -30,7 +30,11 @@ const RouteDisplay = ({
   };
 
   if (isLoading || isFetching) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loader-wrapper">
+        <div className="loader" />
+      </div>
+    );
   }
 
   if (showRoute && calculatedRoute) {
@@ -39,7 +43,7 @@ const RouteDisplay = ({
 
   return (
     <div className="option-btn route" onClick={toggleFunction}>
-      Calculate Route
+      Create Route
     </div>
   );
 };

@@ -24,6 +24,7 @@ export const addPointToLayer = (
   clearLayer = true
 ): void => {
   const point = createRoutePoint(searchResult);
+  point.setId(Date.now());
   clearLayer && layer.clear();
   layer.addFeature(point);
 };

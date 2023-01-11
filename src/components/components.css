@@ -1,15 +1,18 @@
 .action-component {
-  width: 400px;
   position: fixed;
   background-color: white;
   color: #222;
-  max-height: 100vh;
+  max-height: calc(100vh - 35px);
   overflow-y: auto;
   overflow-x: hidden;
-}
-
-.action-component-wrapper {
-  padding: 15px;
+  left: 8px;
+  top: 8px;
+  border: 1px solid darkcyan;
+  width: 25rem;
+  opacity: 0.95;
+  padding: 0.5rem 1.5rem;
+  padding-bottom: 1rem;
+  text-align: justify;
 }
 
 .route-address {
@@ -25,29 +28,24 @@
 }
 
 .repeat-start-btn {
-  font-size: 10px;
+  font-size: 0.8rem;
   background-color: darkcyan;
   color: white;
-  margin-left: 5px;
   cursor: pointer;
+  padding: 0.3rem;
 }
 
-input[type="text"] {
+input {
   font-family: "Noto Sans JP", sans-serif;
   font-size: 12px;
-  width: 250px;
-  flex-grow: 1;
+  width: 98%;
+  margin-top: 0.2rem;
 }
 
 .search-item {
-  display: flex;
-  flex-direction: row;
+  display: block;
   width: 100%;
   margin: 10px 0;
-}
-
-.search-item label {
-  width: 150px;
 }
 
 .option-btn {
@@ -63,6 +61,9 @@ input[type="text"] {
   background-color: darkcyan;
   color: white;
   font-weight: bold;
+  width: auto;
+  justify-content: center;
+  font-size: large;
 }
 
 .option-btn.social {
@@ -70,13 +71,8 @@ input[type="text"] {
 }
 
 .page-info {
-  position: absolute;
-  top: 6px;
-  width: 120px;
-  right: 25px;
   border-radius: 4px;
-  padding: 7px;
-  box-sizing: border-box;
+  padding: 0.5rem 0;
 }
 
 .page-info .closed {
@@ -86,16 +82,17 @@ input[type="text"] {
   background-color: darkcyan;
   color: white;
   opacity: 0.9;
+  text-align: center;
 }
 
 .page-info .open {
-  width: 350px;
   text-align: left;
   background-color: white;
   color: #222;
   opacity: 0.95;
   border: 1px solid darkcyan;
   font-size: 1em;
+  padding: 0.5rem;
 }
 
 .close-info {
@@ -120,4 +117,116 @@ input[type="text"] {
   cursor: pointer;
   width: fit-content;
   margin: 10px auto;
+}
+
+.sub-title {
+  margin: 0.5rem 0;
+}
+
+.inputs-section {
+  margin-top: 1rem;
+}
+
+.field-title {
+  text-align: left;
+}
+
+.file-upload {
+  padding: 0.5rem;
+  width: 50%;
+  margin: 0.5rem 0;
+  border: 1px solid darkgrey;
+  background-color: ghostwhite;
+}
+
+.route-stops {
+  display: flex;
+  flex-direction: row;
+}
+
+.click-instruction {
+  padding: 0.4rem;
+  text-align: center;
+  font-weight: 600;
+  color: darkcyan;
+}
+
+.stops-list {
+  margin: 1rem 0;
+}
+
+.remove-stop {
+  cursor: pointer;
+}
+
+.loader-wrapper {
+  justify-content: center;
+  display: flex;
+  padding: 1rem;
+}
+
+.loader {
+  width: 16px;
+  height: 16px;
+  position: relative;
+  left: -32px;
+  border-radius: 50%;
+  color: darkcyan;
+  background: darkcyan;
+  box-shadow: 32px 0, -32px 0, 64px 0;
+}
+
+.loader::after {
+  content: "";
+  position: absolute;
+  left: -32px;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 10px;
+  background: #ff3d00;
+  animation: move 3s linear infinite alternate;
+}
+
+@keyframes move {
+  0%,
+  5% {
+    left: -32px;
+    width: 16px;
+  }
+  15%,
+  20% {
+    left: -32px;
+    width: 48px;
+  }
+  30%,
+  35% {
+    left: 0px;
+    width: 16px;
+  }
+  45%,
+  50% {
+    left: 0px;
+    width: 48px;
+  }
+  60%,
+  65% {
+    left: 32px;
+    width: 16px;
+  }
+
+  75%,
+  80% {
+    left: 32px;
+    width: 48px;
+  }
+  95%,
+  100% {
+    left: 64px;
+    width: 16px;
+  }
+}
+
+.google-link {
+  text-decoration: none;
 }

@@ -1,37 +1,30 @@
 import React, { ReactElement, useContext } from "react";
 import Feature from "ol/Feature";
-import Polyline from "ol/format/Polyline";
 import Geometry from "ol/geom/Geometry";
 
-import { createStyle } from "../MapComponent/createStyle";
+import { secondsToHours } from "../../requests/geoapify/util";
 import MapContext from "../MapComponent/MapContext";
-import { ShareRoute } from "../ShareRoute";
+import { getRoutesAsLines } from "../MapComponent/util";
 
+import GoogleButton from "./GoogleButton";
+import RouteStepBox from "./RouteStepBox";
+import RouteStepList from "./RouteStepList";
 import { RouteInfo } from "./types";
+import useGetRoutePoints from "./useGetRoutePoints";
 
 export const ShowRoute = ({ route, exitFunction }: RouteInfo): ReactElement => {
-  const { map, routeLayer, startLayer, stopsLayer, endLayer } =
-    useContext(MapContext);
-  const [start] = startLayer.getFeatures();
-  const [end] = endLayer.getFeatures();
-  const stops = stopsLayer.getFeatures();
+  const { map, routeLayer } = useContext(MapContext);
+  const { start, end } = useGetRoutePoints();
   const { routes } = route;
 
+  // Clear existing features;
   routeLayer.clear();
 
-  const routeLines = routes.map(({ geometry }) => {
-    const trace = new Polyline().readGeometry(geometry, {
-      dataProjection: "EPSG:4326",
-      featureProjection: "EPSG:3857",
-    });
-    return new Feature({
-      type: "route",
-      geometry: trace,
-    });
-  });
-
+  // Add new line features
+  const routeLines = getRoutesAsLines(routes);
   routeLines.forEach((line: Feature<Geometry>) => routeLayer.addFeature(line));
 
+  // Zoom to new features
   const zoomToRoute = () =>
     map.getView().fit(routeLayer.getExtent(), {
       size: map.getSize(),
@@ -40,65 +33,24 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo): ReactElement => {
 
   zoomToRoute();
 
-  const changeFeatureStyle = (
-    mapFeature: Feature | undefined,
-    add?: boolean
-  ) => {
-    mapFeature?.setStyle(add ? createStyle("yellow") : undefined);
-  };
-
-  const secondsToHours = (seconds: number) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-
-    const hDisplay = h ? h + (h === 1 ? " hour, " : " hours, ") : "";
-    const mDisplay = m ? m + (m === 1 ? " minute, " : " minutes ") : "";
-    return hDisplay + mDisplay;
-  };
-
   return (
     <div>
       <div>Route ready</div>
-      {routes.map((rd) => (
+      {routes.map((route) => (
         <div key="main-route">
-          <div
-            className="route-address"
-            onMouseEnter={() => changeFeatureStyle(start, true)}
-            onMouseLeave={() => changeFeatureStyle(start)}
-          >
+          <RouteStepBox mapFeature={start}>
             <b>Start:</b> {start?.get("name") || "Starting point"}
-          </div>
-          {rd.steps
-            .filter((step) => step.type === "job")
-            .map((s, i: number) => {
-              const mapFeature = stops.find((f) => s.id === f.getId());
-              const displayName = stops
-                .find((f) => s.id === f.getId())
-                ?.get("name");
-              return (
-                <div
-                  key={s.id}
-                  className="route-address"
-                  onMouseEnter={() => changeFeatureStyle(mapFeature, true)}
-                  onMouseLeave={() => changeFeatureStyle(mapFeature)}
-                >
-                  <b>Stop {i + 1}</b>: {displayName}
-                </div>
-              );
-            })}
-          <div
-            className="route-address"
-            onMouseEnter={() => changeFeatureStyle(end, true)}
-            onMouseLeave={() => changeFeatureStyle(end)}
-          >
+          </RouteStepBox>
+          <RouteStepList routeSteps={route.steps} />
+          <RouteStepBox mapFeature={end}>
             <b>End:</b> {end?.get("name") || "Ending point"}
-          </div>
-          <div>Distance: {(rd.distance / 1000).toFixed(1)} km</div>
-          <div>Travel time: {secondsToHours(rd.duration)}</div>
+          </RouteStepBox>
+          <div>Distance: {(route.distance / 1000).toFixed(1)} km</div>
+          <div>Travel time: {secondsToHours(route.duration)}</div>
           <div className="option-btn" onClick={zoomToRoute}>
             Zoom to route
           </div>
-          <ShareRoute route={rd} />
+          <GoogleButton route={route} />
           <div className="option-btn" onClick={exitFunction}>
             Return
           </div>

@@ -18,3 +18,12 @@ export const createAddressParams = ({
 
   return text + limit + bias;
 };
+
+export const secondsToHours = (seconds: number) => {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+
+  const hDisplay = h ? h + (h === 1 ? " hour, " : " hours, ") : "";
+  const mDisplay = m ? m + (m === 1 ? " minute, " : " minutes ") : "";
+  return hDisplay + mDisplay;
+};

@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import MapContext from "../MapComponent/MapContext";
+import { PageInfo } from "../PageInfo";
 
 import EnableAddPointOnClick from "./EnableAddPointOnClick";
 import FileUploader from "./FileUploader";
@@ -37,23 +38,21 @@ export const ActionComponent = () => {
 
   return (
     <div className="action-component">
-      <div className="action-component-wrapper">
-        {isShowingForm && (
-          <>
+      {isShowingForm && (
+        <>
+          <PageInfo />
+          <div className="sub-title">
             Create your best driving route between multiple points
-            <RouteInputs updateRoute={updateRoutePoints} />
-            <FileUploader updateFunction={updateRoutePoints} />
-            <StopsList updateFunction={updateRoutePoints} />
-            <EnableAddPointOnClick refreshLayerCallback={updateRoutePoints} />
-          </>
-        )}
-        {canCreateRoute && (
-          <RouteDisplay
-            showRoute={!isShowingForm}
-            toggleFunction={toggleForm}
-          />
-        )}
-      </div>
+          </div>
+          <RouteInputs updateRoute={updateRoutePoints} />
+          <FileUploader updateFunction={updateRoutePoints} />
+          <StopsList updateFunction={updateRoutePoints} />
+          <EnableAddPointOnClick refreshLayerCallback={updateRoutePoints} />
+        </>
+      )}
+      {canCreateRoute && (
+        <RouteDisplay showRoute={!isShowingForm} toggleFunction={toggleForm} />
+      )}
     </div>
   );
 };

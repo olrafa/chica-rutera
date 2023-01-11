@@ -26,28 +26,28 @@ const RouteInputs = ({ updateRoute }: RouteInputsProps): ReactElement => {
   };
 
   return (
-    <div>
+    <div className="inputs-section">
       <InputField
-        label="Starting point"
+        label="Starting point:"
         destination="start"
         callback={updateRoute}
         value={startValue}
       />
       <div>
         <InputField
-          label="Ending point"
+          label="Ending point:"
           destination="end"
           callback={updateRoute}
           value={endValue}
         />
         {start && (
           <span className="repeat-start-btn" onClick={copyEndFromStart}>
-            Same as start
+            Make end the same as start
           </span>
         )}
       </div>
       <InputField
-        label="Add stops"
+        label="Add stops:"
         destination="stops"
         callback={updateRoute}
         stops={stops}
