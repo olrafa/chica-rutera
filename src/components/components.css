@@ -226,3 +226,7 @@ input {
     width: 16px;
   }
 }
+
+.google-link {
+  text-decoration: none;
+}

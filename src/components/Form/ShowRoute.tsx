@@ -6,11 +6,11 @@ import { secondsToHours } from "../../requests/geoapify/util";
 import MapContext from "../MapComponent/MapContext";
 import { getRoutesAsLines } from "../MapComponent/util";
 
+import GoogleButton from "./GoogleButton";
 import RouteStepBox from "./RouteStepBox";
 import RouteStepList from "./RouteStepList";
 import { RouteInfo } from "./types";
 import useGetRoutePoints from "./useGetRoutePoints";
-import { createGoogleMapsUrl } from "./util";
 
 export const ShowRoute = ({ route, exitFunction }: RouteInfo): ReactElement => {
   const { map, routeLayer } = useContext(MapContext);
@@ -50,12 +50,7 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo): ReactElement => {
           <div className="option-btn" onClick={zoomToRoute}>
             Zoom to route
           </div>
-          <div
-            className="option-btn"
-            onClick={() => window.open(createGoogleMapsUrl(route))}
-          >
-            Open route in GoogleMaps
-          </div>
+          <GoogleButton route={route} />
           <div className="option-btn" onClick={exitFunction}>
             Return
           </div>
