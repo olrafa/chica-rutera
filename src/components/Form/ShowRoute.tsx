@@ -17,6 +17,10 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo): ReactElement => {
   const { start, end } = useGetRoutePoints();
   const { routes } = route;
 
+  // As of now we're only doing one route at a time,
+  // so YAGNI for multiple routes atm.
+  const [mainRoute] = routes;
+
   // Clear existing features;
   routeLayer.clear();
 
@@ -28,34 +32,36 @@ export const ShowRoute = ({ route, exitFunction }: RouteInfo): ReactElement => {
   const zoomToRoute = () =>
     map.getView().fit(routeLayer.getExtent(), {
       size: map.getSize(),
-      padding: [50, 50, 50, 450],
+      padding: [50, 50, 50, 500],
     });
 
   zoomToRoute();
 
+  const { steps, distance, duration } = mainRoute;
+
   return (
     <div>
-      <div>Route ready</div>
-      {routes.map((route) => (
-        <div key="main-route">
-          <RouteStepBox mapFeature={start}>
-            <b>Start:</b> {start?.get("name") || "Starting point"}
-          </RouteStepBox>
-          <RouteStepList routeSteps={route.steps} />
-          <RouteStepBox mapFeature={end}>
-            <b>End:</b> {end?.get("name") || "Ending point"}
-          </RouteStepBox>
-          <div>Distance: {(route.distance / 1000).toFixed(1)} km</div>
-          <div>Travel time: {secondsToHours(route.duration)}</div>
-          <div className="option-btn" onClick={zoomToRoute}>
-            Zoom to route
-          </div>
-          <GoogleButton route={route} />
-          <div className="option-btn" onClick={exitFunction}>
-            Return
-          </div>
+      <div className="route-summary route-ready">Route ready</div>
+      <RouteStepBox mapFeature={start}>
+        <b>Start:</b> {start?.get("name") || "Starting point"}
+      </RouteStepBox>
+      <RouteStepList routeSteps={steps} />
+      <RouteStepBox mapFeature={end}>
+        <b>End:</b> {end?.get("name") || "Ending point"}
+      </RouteStepBox>
+      <div className="route-summary">
+        <div>Distance: {(distance / 1000).toFixed(1)} km</div>
+        <div>Travel time: {secondsToHours(duration)}</div>
+      </div>
+      <div className="route-buttons">
+        <div className="option-btn" onClick={zoomToRoute}>
+          Zoom to route
         </div>
-      ))}
+        <GoogleButton route={mainRoute} />
+        <div className="option-btn" onClick={exitFunction}>
+          Return
+        </div>
+      </div>
     </div>
   );
 };

@@ -14,7 +14,7 @@ import useGetRoutePoints from "./useGetRoutePoints";
 
 import "../components.css";
 
-export const ActionComponent = () => {
+export const MainForm = () => {
   // Get layers from context
   const { routeLayer } = useContext(MapContext);
   const { start, end, stops } = useGetRoutePoints();
