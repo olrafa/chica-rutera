@@ -1,4 +1,5 @@
 import React from "react";
+import { ToastContainer } from "react-toastify";
 
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { QueryClient } from "@tanstack/react-query";
@@ -7,6 +8,7 @@ import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client
 
 import MapComponent from "./components/MapComponent";
 
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 function App() {
@@ -29,6 +31,7 @@ function App() {
         persistOptions={{ persister }}
       >
         <MapComponent />
+        <ToastContainer />
         <ReactQueryDevtools initialIsOpen={false} />
       </PersistQueryClientProvider>
     </div>

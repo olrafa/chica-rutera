@@ -1,4 +1,5 @@
 import { ReactElement, useContext } from "react";
+import { toast } from "react-toastify";
 
 import MapContext from "../MapComponent/MapContext";
 import searchForAddress from "../MapComponent/searchAndAddPoint";
@@ -17,7 +18,7 @@ const FileUploader = ({ updateFunction }: FileUploaderProps): ReactElement => {
       reader.readAsText(file, "UTF-8");
       reader.onload = (e) =>
         e && e.target && addPointsFromFile(e.target.result as string);
-      reader.onerror = () => console.log("error reading file");
+      reader.onerror = () => toast("error reading file");
     }
   };
 
