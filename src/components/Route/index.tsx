@@ -2,25 +2,22 @@ import React, { ReactElement, useContext } from "react";
 import Feature from "ol/Feature";
 import Geometry from "ol/geom/Geometry";
 
+import { RouteResponse } from "../../api/openRouteService/types";
 import useGetRoutePoints from "../../hooks/useGetRoutePoints";
-import { secondsToHours } from "../../requests/geoapify/util";
-import { RouteResponse } from "../../requests/openRouteService/types";
 import MapContext from "../MapComponent/MapContext";
 import { getRoutesAsLines } from "../MapComponent/util";
 
 import GoogleButton from "./GoogleButton";
 import RouteStepBox from "./RouteStepBox";
 import RouteStepList from "./RouteStepList";
+import { secondsToHours } from "./util";
 
-type ShowRouteProps = {
+type RouteProps = {
   route: RouteResponse;
   exitFunction: () => void;
 };
 
-export const ShowRoute = ({
-  route,
-  exitFunction,
-}: ShowRouteProps): ReactElement => {
+const Route = ({ route, exitFunction }: RouteProps): ReactElement => {
   const { map, routeLayer } = useContext(MapContext);
   const { start, end } = useGetRoutePoints();
 
@@ -89,3 +86,5 @@ export const ShowRoute = ({
     </div>
   );
 };
+
+export default Route;

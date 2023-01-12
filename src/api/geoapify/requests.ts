@@ -1,7 +1,6 @@
 import { Coordinate } from "ol/coordinate";
 
 import { GeoapifyAPI } from "./constants";
-import { geoApifyFetcher } from "./output";
 import { AddressResult, AddressSearchParams } from "./types";
 import { createAddressParams, getFetcherUrl } from "./util";
 
@@ -22,4 +21,18 @@ export const reverseGeocode = async ([lon, lat]: Coordinate): Promise<
   const point = `?lat=${lat}&lon=${lon}`;
   const url = getFetcherUrl(point, GeoapifyAPI.REVERSE);
   return await geoApifyFetcher(url);
+};
+
+/**
+ * Given a text query, search for the address in Geoapify.
+ * @param url the address, plus bias from location.
+ * @returns only the first result.
+ */
+export const geoApifyFetcher = async (
+  url: string
+): Promise<AddressResult | undefined> => {
+  const data = await fetch(url, { method: "GET" });
+  const response = await data.json();
+  const [address] = response.features;
+  return address?.properties || undefined;
 };

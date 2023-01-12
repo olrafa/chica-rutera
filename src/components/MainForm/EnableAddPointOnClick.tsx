@@ -8,8 +8,8 @@ import {
 import { MapBrowserEvent } from "ol";
 import { toLonLat } from "ol/proj";
 
+import { reverseGeocode } from "../../api/geoapify/requests";
 import useGetRoutePoints from "../../hooks/useGetRoutePoints";
-import { reverseGeocode } from "../../requests/geoapify/input";
 import MapContext from "../MapComponent/MapContext";
 import { addPointToLayer } from "../MapComponent/util";
 

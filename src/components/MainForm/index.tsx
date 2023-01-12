@@ -6,9 +6,9 @@ import useGetRoutePoints from "../../hooks/useGetRoutePoints";
 import MapContext from "../MapComponent/MapContext";
 import { PageInfo } from "../PageInfo";
 
+import CreateRoute from "./CreateRoute";
 import EnableAddPointOnClick from "./EnableAddPointOnClick";
 import FileUploader from "./FileUploader";
-import RouteDisplay from "./RouteDisplay";
 import RouteInputs from "./RouteInputs";
 import StopsList from "./StopsList";
 
@@ -51,7 +51,7 @@ export const MainForm = () => {
         </>
       )}
       {canCreateRoute && (
-        <RouteDisplay showRoute={!isShowingForm} toggleFunction={toggleForm} />
+        <CreateRoute showRoute={!isShowingForm} toggleFunction={toggleForm} />
       )}
     </div>
   );
