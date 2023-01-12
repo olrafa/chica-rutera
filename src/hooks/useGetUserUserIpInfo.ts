@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { GEOAPIFY_IP_INFO } from "../requests/geoapify/constants";
-import { IpInfoResponse } from "../requests/geoapify/types";
+import { GEOAPIFY_IP_INFO } from "../api/geoapify/constants";
+import { IpInfoResponse } from "../api/geoapify/types";
 import convertTimeToMilliseconds from "../util/convertTimeToMilliseconds";
 
 const useGetUserIpInfo = () =>
