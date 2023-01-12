@@ -1,19 +1,19 @@
 import { ReactElement, useContext } from "react";
 
+import { useCalculateRoute } from "../../hooks/useCalculateRoute";
 import useGetRoutePoints from "../../hooks/useGetRoutePoints";
-import { useCalculateRoute } from "../../requests/openRouteService/useCalculateRoute";
 import MapContext from "../MapComponent/MapContext";
-import { ShowRoute } from "../Route/ShowRoute";
+import Route from "../Route";
 
-type RouteDisplayProps = {
+type CreateRouteProps = {
   showRoute: boolean;
   toggleFunction: () => void;
 };
 
-const RouteDisplay = ({
+const CreateRoute = ({
   showRoute,
   toggleFunction,
-}: RouteDisplayProps): ReactElement => {
+}: CreateRouteProps): ReactElement => {
   const { start, end, stops } = useGetRoutePoints();
   const { routeLayer } = useContext(MapContext);
 
@@ -28,16 +28,18 @@ const RouteDisplay = ({
     routeLayer.clear();
   };
 
-  if (isLoading || isFetching) {
-    return (
-      <div className="loader-wrapper">
-        <div className="loader" />
-      </div>
-    );
-  }
+  if (showRoute) {
+    if (isLoading || isFetching) {
+      return (
+        <div className="loader-wrapper">
+          <div className="loader" />
+        </div>
+      );
+    }
 
-  if (showRoute && calculatedRoute) {
-    return <ShowRoute route={calculatedRoute} exitFunction={exitRoute} />;
+    if (calculatedRoute) {
+      return <Route route={calculatedRoute} exitFunction={exitRoute} />;
+    }
   }
 
   return (
@@ -47,4 +49,4 @@ const RouteDisplay = ({
   );
 };
 
-export default RouteDisplay;
+export default CreateRoute;

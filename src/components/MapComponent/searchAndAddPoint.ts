@@ -1,33 +1,35 @@
 import { Map } from "ol";
+import { Coordinate } from "ol/coordinate";
 import Geometry from "ol/geom/Geometry";
 import { toLonLat } from "ol/proj";
 import VectorSource from "ol/source/Vector";
 
-import { addressSearch } from "../../requests/geoapify/input";
+import { addressSearch } from "../../api/geoapify/requests";
 import { DestinationType } from "../MainForm/types";
 
 import { addPointToLayer, updateMapView } from "./util";
 
-const searchForAddress = (
+const getViewPortCoordinates = (map: Map): Coordinate =>
+  toLonLat(map.getView().getCenter() || [0, 0]);
+
+const searchForAddress = async (
   value: string,
   item: DestinationType,
   map: Map,
   layer: VectorSource<Geometry>,
   callback: () => void
 ) => {
-  const viewCenter = map.getView().getCenter();
-  const [lon, lat] = toLonLat(viewCenter || [0, 0]);
-  addressSearch({ address: value, lon, lat }).then((result) => {
-    if (result) {
-      addPointToLayer(result, layer, item !== "stops");
-      updateMapView(map, [result.lon, result.lat]);
-      callback();
-    } else {
-      alert(
-        "No address found. Please check for typos and/or add details (city, region, country)"
-      );
-    }
-  });
+  const [lon, lat] = getViewPortCoordinates(map);
+  const addressResult = await addressSearch({ address: value, lon, lat });
+  if (addressResult) {
+    addPointToLayer(addressResult, layer, item !== "stops");
+    updateMapView(map, [addressResult.lon, addressResult.lat]);
+    callback();
+  } else {
+    alert(
+      "No address found. Please check for typos and/or add details (city, region, country)"
+    );
+  }
 };
 
 export default searchForAddress;

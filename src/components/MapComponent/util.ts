@@ -7,8 +7,8 @@ import VectorSource from "ol/source/Vector";
 import { Fill, Stroke, Style } from "ol/style";
 import CircleStyle from "ol/style/Circle";
 
-import { AddressResult } from "../../requests/geoapify/types";
-import { RouteDetail } from "../../requests/openRouteService/types";
+import { AddressResult } from "../../api/geoapify/types";
+import { RouteDetail } from "../../api/openRouteService/types";
 
 import { STROKE_COLOR, STROKE_WIDTH } from "./constants";
 

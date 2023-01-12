@@ -1,4 +1,4 @@
-import { RouteDetail } from "../../requests/openRouteService/types";
+import { RouteDetail } from "../../api/openRouteService/types";
 
 export const createGoogleMapsUrl = (route: RouteDetail) => {
   const { steps } = route;
@@ -24,4 +24,13 @@ export const createGoogleMapsUrl = (route: RouteDetail) => {
       .join("%7C");
 
   return googleUrl + origin + destination + travelmode + waypoints;
+};
+
+export const secondsToHours = (seconds: number) => {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+
+  const hDisplay = h ? h + (h === 1 ? " hour, " : " hours, ") : "";
+  const mDisplay = m ? m + (m === 1 ? " minute, " : " minutes ") : "";
+  return hDisplay + mDisplay;
 };

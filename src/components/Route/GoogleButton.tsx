@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-import { RouteDetail } from "../../requests/openRouteService/types";
+import { RouteDetail } from "../../api/openRouteService/types";
 
 import { createGoogleMapsUrl } from "./util";
 

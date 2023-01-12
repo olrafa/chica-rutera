@@ -5,14 +5,13 @@ import Point from "ol/geom/Point";
 
 import { useQuery } from "@tanstack/react-query";
 
+import { RouteResponse } from "../api/openRouteService/types";
 import {
   Destinations,
   RoutePoint,
   RouteStops,
-} from "../../components/MainForm/types";
-import convertTimeToMilliseconds from "../../util/convertTimeToMilliseconds";
-
-import { RouteResponse } from "./types";
+} from "../components/MainForm/types";
+import convertTimeToMilliseconds from "../util/convertTimeToMilliseconds";
 
 const orsUrl = "https://api.openrouteservice.org/";
 
