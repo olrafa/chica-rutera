@@ -1,11 +1,11 @@
 import React, { ReactElement, useContext, useEffect, useRef } from "react";
 import { fromLonLat } from "ol/proj";
 
-import { MainForm } from "../Form/MainForm";
+import useGetUserIpInfo from "../../hooks/useGetUserUserIpInfo";
+import { MainForm } from "../MainForm";
 
 import { IP_ZOOM } from "./constants";
 import MapContext from "./MapContext";
-import useGetUserIpInfo from "./useGetUserUserIpInfo";
 
 import "ol/ol.css";
 import "./index.css";

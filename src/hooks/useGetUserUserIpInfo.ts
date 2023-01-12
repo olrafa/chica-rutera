@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { GEOAPIFY_IP_INFO } from "../../requests/geoapify/constants";
-import { IpInfoResponse } from "../../requests/geoapify/types";
-import convertTimeToMilliseconds from "../../util/convertTimeToMilliseconds";
+import { GEOAPIFY_IP_INFO } from "../requests/geoapify/constants";
+import { IpInfoResponse } from "../requests/geoapify/types";
+import convertTimeToMilliseconds from "../util/convertTimeToMilliseconds";
 
 const useGetUserIpInfo = () =>
   useQuery(["ipInfo"], getIpInfo, {

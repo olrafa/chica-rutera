@@ -2,6 +2,7 @@ import React, { ReactElement, useContext } from "react";
 import Feature from "ol/Feature";
 import Geometry from "ol/geom/Geometry";
 
+import useGetRoutePoints from "../../hooks/useGetRoutePoints";
 import { secondsToHours } from "../../requests/geoapify/util";
 import { RouteResponse } from "../../requests/openRouteService/types";
 import MapContext from "../MapComponent/MapContext";
@@ -10,7 +11,6 @@ import { getRoutesAsLines } from "../MapComponent/util";
 import GoogleButton from "./GoogleButton";
 import RouteStepBox from "./RouteStepBox";
 import RouteStepList from "./RouteStepList";
-import useGetRoutePoints from "./useGetRoutePoints";
 
 type ShowRouteProps = {
   route: RouteResponse;

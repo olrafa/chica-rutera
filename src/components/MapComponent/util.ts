@@ -1,11 +1,16 @@
 import { Feature, Map } from "ol";
 import { Coordinate } from "ol/coordinate";
 import Polyline from "ol/format/Polyline";
+import Point from "ol/geom/Point";
 import { fromLonLat } from "ol/proj";
+import VectorSource from "ol/source/Vector";
+import { Fill, Stroke, Style } from "ol/style";
+import CircleStyle from "ol/style/Circle";
 
+import { AddressResult } from "../../requests/geoapify/types";
 import { RouteDetail } from "../../requests/openRouteService/types";
 
-import { createStyle } from "./createStyle";
+import { STROKE_COLOR, STROKE_WIDTH } from "./constants";
 
 const MAP_ZOOM_TO_RESULT = 15;
 
@@ -28,3 +33,38 @@ export const getRoutesAsLines = (routes: RouteDetail[]) =>
         }),
       })
   );
+
+export const createStyle = (color: string) =>
+  new Style({
+    image: new CircleStyle({
+      radius: 7,
+      fill: new Fill({ color }),
+      stroke: new Stroke({
+        color: STROKE_COLOR,
+        width: STROKE_WIDTH,
+      }),
+    }),
+  });
+
+const createPoint = (coordinate: Coordinate, formatted?: string) =>
+  new Feature({
+    type: "geoMarker",
+    geometry: new Point(coordinate),
+    name: formatted,
+  });
+
+const createRoutePoint = ({ formatted, lon, lat }: AddressResult) => {
+  const coordinate = fromLonLat([lon, lat]);
+  return createPoint(coordinate, formatted);
+};
+
+export const addPointToLayer = (
+  searchResult: AddressResult,
+  layer: VectorSource,
+  clearLayer = true
+): void => {
+  const point = createRoutePoint(searchResult);
+  point.setId(Date.now());
+  clearLayer && layer.clear();
+  layer.addFeature(point);
+};

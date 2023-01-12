@@ -1,9 +1,9 @@
 import { ReactElement, useContext } from "react";
 
+import useGetRoutePoints from "../../hooks/useGetRoutePoints";
 import MapContext from "../MapComponent/MapContext";
 
 import { RoutePoint } from "./types";
-import useGetRoutePoints from "./useGetRoutePoints";
 
 type StopsListProps = {
   updateFunction: () => void;

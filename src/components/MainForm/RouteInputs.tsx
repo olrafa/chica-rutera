@@ -1,9 +1,9 @@
 import { ReactElement, useContext } from "react";
 
+import useGetRoutePoints from "../../hooks/useGetRoutePoints";
 import MapContext from "../MapComponent/MapContext";
 
 import InputField from "./InputField";
-import useGetRoutePoints from "./useGetRoutePoints";
 
 type RouteInputsProps = {
   updateRoute: () => void;

@@ -8,11 +8,10 @@ import {
 import { MapBrowserEvent } from "ol";
 import { toLonLat } from "ol/proj";
 
+import useGetRoutePoints from "../../hooks/useGetRoutePoints";
 import { reverseGeocode } from "../../requests/geoapify/input";
-import { addPointToLayer } from "../MapComponent/addPointToLayer";
 import MapContext from "../MapComponent/MapContext";
-
-import useGetRoutePoints from "./useGetRoutePoints";
+import { addPointToLayer } from "../MapComponent/util";
 
 type EnableAddPointOnClickProps = {
   refreshLayerCallback: () => void;

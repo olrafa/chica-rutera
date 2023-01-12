@@ -13,7 +13,7 @@ import {
   MAP_CENTER,
   MAX_ZOOM,
 } from "./constants";
-import { createStyle } from "./createStyle";
+import { createStyle } from "./util";
 
 /**
  * This module will start up the map, the layers and the style.

@@ -9,7 +9,7 @@ import {
   Destinations,
   RoutePoint,
   RouteStops,
-} from "../../components/Form/types";
+} from "../../components/MainForm/types";
 import convertTimeToMilliseconds from "../../util/convertTimeToMilliseconds";
 
 import { RouteResponse } from "./types";
