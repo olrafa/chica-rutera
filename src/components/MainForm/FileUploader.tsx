@@ -1,8 +1,7 @@
 import { ReactElement, useContext } from "react";
 
 import MapContext from "../MapComponent/MapContext";
-
-import searchForAddress from "./searchAndAddPoint";
+import searchForAddress from "../MapComponent/searchAndAddPoint";
 
 type FileUploaderProps = {
   updateFunction: () => void;

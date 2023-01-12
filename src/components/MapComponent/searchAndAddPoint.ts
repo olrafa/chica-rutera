@@ -4,10 +4,9 @@ import { toLonLat } from "ol/proj";
 import VectorSource from "ol/source/Vector";
 
 import { addressSearch } from "../../requests/geoapify/input";
-import { addPointToLayer } from "../MapComponent/addPointToLayer";
-import { updateMapView } from "../MapComponent/util";
+import { DestinationType } from "../MainForm/types";
 
-import { DestinationType } from "./types";
+import { addPointToLayer, updateMapView } from "./util";
 
 const searchForAddress = (
   value: string,

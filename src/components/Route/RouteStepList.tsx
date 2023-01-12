@@ -1,9 +1,9 @@
 import { ReactElement } from "react";
 
+import useGetRoutePoints from "../../hooks/useGetRoutePoints";
 import { RouteStep } from "../../requests/openRouteService/types";
 
 import RouteStepBox from "./RouteStepBox";
-import useGetRoutePoints from "./useGetRoutePoints";
 
 type RouteStepListProps = {
   routeSteps: RouteStep[];

@@ -1,10 +1,9 @@
 import { ReactElement, useContext } from "react";
 
+import useGetRoutePoints from "../../hooks/useGetRoutePoints";
 import { useCalculateRoute } from "../../requests/openRouteService/useCalculateRoute";
 import MapContext from "../MapComponent/MapContext";
-
-import { ShowRoute } from "./ShowRoute";
-import useGetRoutePoints from "./useGetRoutePoints";
+import { ShowRoute } from "../Route/ShowRoute";
 
 type RouteDisplayProps = {
   showRoute: boolean;

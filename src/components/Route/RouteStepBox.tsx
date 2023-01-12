@@ -1,8 +1,7 @@
 import { ReactElement, ReactNode } from "react";
 
+import { RoutePoint } from "../MainForm/types";
 import { changeFeatureStyle } from "../MapComponent/util";
-
-import { RoutePoint } from "./types";
 
 type RouteStepBoxProps = {
   mapFeature: RoutePoint;

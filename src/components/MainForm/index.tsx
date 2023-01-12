@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
 
+import useGetRoutePoints from "../../hooks/useGetRoutePoints";
 import MapContext from "../MapComponent/MapContext";
 import { PageInfo } from "../PageInfo";
 
@@ -10,9 +11,8 @@ import FileUploader from "./FileUploader";
 import RouteDisplay from "./RouteDisplay";
 import RouteInputs from "./RouteInputs";
 import StopsList from "./StopsList";
-import useGetRoutePoints from "./useGetRoutePoints";
 
-import "../components.css";
+import "../index.css";
 
 export const MainForm = () => {
   // Get layers from context

@@ -3,8 +3,8 @@ import Geometry from "ol/geom/Geometry";
 import VectorSource from "ol/source/Vector";
 
 import MapContext from "../MapComponent/MapContext";
+import searchForAddress from "../MapComponent/searchAndAddPoint";
 
-import searchForAddress from "./searchAndAddPoint";
 import { DestinationType, RouteStops } from "./types";
 
 const PLACEHOLDER = "Search for an address and hit 'Enter'";

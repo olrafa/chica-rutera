@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import MapContext from "../MapComponent/MapContext";
+import MapContext from "../components/MapComponent/MapContext";
 
 const useGetRoutePoints = () => {
   const { startLayer, endLayer, stopsLayer } = useContext(MapContext);
