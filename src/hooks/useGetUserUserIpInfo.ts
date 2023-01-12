@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 import { useQuery } from "@tanstack/react-query";
 
 import { GEOAPIFY_IP_INFO } from "../api/geoapify/constants";
@@ -6,7 +8,7 @@ import convertTimeToMilliseconds from "../util/convertTimeToMilliseconds";
 
 const useGetUserIpInfo = () =>
   useQuery(["ipInfo"], getIpInfo, {
-    onError: (error) => console.log("Error getting IP Info", error),
+    onError: (error) => toast(`Error getting IP Info: ${error}`),
     staleTime: convertTimeToMilliseconds(2, "hours"),
   });
 

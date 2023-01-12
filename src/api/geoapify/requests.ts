@@ -1,4 +1,5 @@
 import { Coordinate } from "ol/coordinate";
+import { toast } from "react-toastify";
 
 import { GeoapifyAPI } from "./constants";
 import { AddressResult, AddressSearchParams } from "./types";
@@ -31,8 +32,12 @@ export const reverseGeocode = async ([lon, lat]: Coordinate): Promise<
 export const geoApifyFetcher = async (
   url: string
 ): Promise<AddressResult | undefined> => {
-  const data = await fetch(url, { method: "GET" });
-  const response = await data.json();
-  const [address] = response.features;
-  return address?.properties || undefined;
+  try {
+    const data = await fetch(url, { method: "GET" });
+    const response = await data.json();
+    const [address] = response.features;
+    return address.properties;
+  } catch (error) {
+    toast.error(error);
+  }
 };

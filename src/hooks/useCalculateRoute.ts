@@ -2,6 +2,7 @@ import { Feature } from "ol";
 import { Coordinate } from "ol/coordinate";
 import Geometry from "ol/geom/Geometry";
 import Point from "ol/geom/Point";
+import { toast } from "react-toastify";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -86,5 +87,7 @@ export const useCalculateRoute = (
     enabled,
     staleTime: convertTimeToMilliseconds(30, "minutes"),
     onError: () =>
-      alert("Unable to create route. Please check your points and try again"),
+      toast.error(
+        "Unable to create route. Please check your points and try again"
+      ),
   });
