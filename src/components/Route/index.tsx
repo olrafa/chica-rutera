@@ -22,6 +22,22 @@ const Route = ({ route, exitFunction }: RouteProps): ReactElement => {
   const { start, end } = useGetRoutePoints();
 
   const { routes, error } = route;
+  const ReturnButton = () => (
+    <div className="option-btn" onClick={exitFunction}>
+      Return
+    </div>
+  );
+
+  if (error) {
+    return (
+      <div>
+        <div className="route-summary">
+          The following error occurred: {error}
+        </div>
+        <ReturnButton />
+      </div>
+    );
+  }
 
   // As of now we're only doing one route at a time,
   // so YAGNI for multiple routes atm.
@@ -45,23 +61,6 @@ const Route = ({ route, exitFunction }: RouteProps): ReactElement => {
 
   const { steps, distance, duration } = mainRoute;
 
-  const ReturnButton = () => (
-    <div className="option-btn" onClick={exitFunction}>
-      Return
-    </div>
-  );
-
-  if (error) {
-    return (
-      <div>
-        <div className="route-summary">
-          The following error occurred: {error}
-        </div>
-        <ReturnButton />
-      </div>
-    );
-  }
-
   return (
     <div>
       <div className="route-summary route-ready">Route ready</div>
@@ -80,7 +79,7 @@ const Route = ({ route, exitFunction }: RouteProps): ReactElement => {
         <div className="option-btn" onClick={zoomToRoute}>
           Zoom to route
         </div>
-        <GoogleButton route={mainRoute} />
+        <GoogleButton routeSteps={mainRoute.steps} />
         <ReturnButton />
       </div>
     </div>

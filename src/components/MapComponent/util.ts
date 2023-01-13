@@ -10,7 +10,7 @@ import CircleStyle from "ol/style/Circle";
 import { AddressResult } from "../../api/geoapify/types";
 import { RouteDetail } from "../../api/openRouteService/types";
 
-import { STROKE_COLOR, STROKE_WIDTH } from "./constants";
+import { STROKE_COLOR, STROKE_WIDTH, WEB_MERCATOR, WGS84 } from "./constants";
 
 const MAP_ZOOM_TO_RESULT = 15;
 
@@ -28,8 +28,8 @@ export const getRoutesAsLines = (routes: RouteDetail[]) =>
       new Feature({
         type: "route",
         geometry: new Polyline().readGeometry(geometry, {
-          dataProjection: "EPSG:4326",
-          featureProjection: "EPSG:3857",
+          dataProjection: WGS84,
+          featureProjection: WEB_MERCATOR,
         }),
       })
   );

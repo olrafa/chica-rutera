@@ -9,3 +9,5 @@ export enum GeoapifyAPI {
   SEARCH = "search",
   REVERSE = "reverse",
 }
+
+export const MAX_JOBS = 40;

@@ -8,7 +8,6 @@ import { PageInfo } from "../PageInfo";
 
 import CreateRoute from "./CreateRoute";
 import EnableAddPointOnClick from "./EnableAddPointOnClick";
-import FileUploader from "./FileUploader";
 import RouteInputs from "./RouteInputs";
 import StopsList from "./StopsList";
 
@@ -45,7 +44,6 @@ export const MainForm = () => {
             Create your best driving route between multiple points
           </div>
           <RouteInputs updateRoute={updateRoutePoints} />
-          <FileUploader updateFunction={updateRoutePoints} />
           <StopsList updateFunction={updateRoutePoints} />
           <EnableAddPointOnClick refreshLayerCallback={updateRoutePoints} />
         </>

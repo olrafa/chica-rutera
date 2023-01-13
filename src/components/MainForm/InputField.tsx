@@ -15,6 +15,7 @@ type InputFieldProps = {
   callback: () => void;
   value?: string;
   stops?: RouteStops;
+  disabled?: boolean;
 };
 
 const InputField = ({
@@ -23,6 +24,7 @@ const InputField = ({
   callback,
   value,
   stops,
+  disabled,
 }: InputFieldProps): ReactElement => {
   const { map, startLayer, endLayer, stopsLayer } = useContext(MapContext);
 
@@ -67,6 +69,7 @@ const InputField = ({
         onChange={(e) => setInputValue(e.target.value)}
         placeholder={PLACEHOLDER}
         ref={fieldRef}
+        disabled={disabled}
       />
     </label>
   );

@@ -12,18 +12,19 @@ import {
   RoutePoint,
   RouteStops,
 } from "../components/MainForm/types";
+import { WEB_MERCATOR, WGS84 } from "../components/MapComponent/constants";
 import convertTimeToMilliseconds from "../util/convertTimeToMilliseconds";
 
 const orsUrl = "https://api.openrouteservice.org/";
 
 const createStopsPoints = (stops: Feature[]) => {
-  const wgs84points = stops.map((s) => ({
-    coords: getWgs84Coordinates(s),
-    pointId: s.getId(),
+  const wgs84points = stops.map((stop) => ({
+    coords: getWgs84Coordinates(stop),
+    pointId: stop.getId(),
   }));
-  return wgs84points.map((s) => ({
-    id: s.pointId,
-    location: s.coords,
+  return wgs84points.map((stop) => ({
+    id: stop.pointId,
+    location: stop.coords,
   }));
 };
 
@@ -33,7 +34,7 @@ const getWgs84Coordinates = (point: RoutePoint) => {
     return null;
   }
   const copiedGeo = pointGeo.clone();
-  const wgs84geo: Geometry = copiedGeo.transform("EPSG:3857", "EPSG:4326");
+  const wgs84geo: Geometry = copiedGeo.transform(WEB_MERCATOR, WGS84);
   const castGeo: Point = wgs84geo as Point;
   const coordinates: Coordinate = castGeo.getCoordinates();
   return coordinates;
@@ -85,7 +86,7 @@ export const useCalculateRoute = (
 ) =>
   useQuery(["route"], () => calculateRoute(start, end, stops), {
     enabled,
-    staleTime: convertTimeToMilliseconds(30, "minutes"),
+    staleTime: convertTimeToMilliseconds(4, "hours"),
     onError: () =>
       toast.error(
         "Unable to create route. Please check your points and try again"

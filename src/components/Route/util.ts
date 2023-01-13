@@ -1,10 +1,8 @@
-import { RouteDetail } from "../../api/openRouteService/types";
+import { RouteStep } from "../../api/openRouteService/types";
 
-export const createGoogleMapsUrl = (route: RouteDetail) => {
-  const { steps } = route;
-
-  const [start] = route.steps;
-  const end = route.steps[route.steps.length - 1];
+export const createGoogleMapsUrl = (steps: RouteStep[]) => {
+  const [start] = steps;
+  const end = steps[steps.length - 1];
 
   const [startLon, startLat] = start.location;
   const [endLon, endLat] = end.location;
@@ -17,8 +15,9 @@ export const createGoogleMapsUrl = (route: RouteDetail) => {
   const waypoints =
     "&waypoints=" +
     steps
-      .map((s) => {
-        const [lon, lat] = s.location;
+      .filter(({ type }) => type === "job")
+      .map(({ location }) => {
+        const [lon, lat] = location;
         return `${lat},${lon}`;
       })
       .join("%7C");
