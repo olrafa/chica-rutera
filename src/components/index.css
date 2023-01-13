@@ -35,6 +35,12 @@
   font-weight: bold;
 }
 
+.max {
+  background-color: #ff3d00;
+  color: white;
+  margin: 1rem 0;
+}
+
 .route-ready {
   font-size: larger;
 }
@@ -250,4 +256,8 @@ input {
 
 .google-link {
   text-decoration: none;
+}
+
+.empty-btn {
+  margin-left: 1rem;
 }

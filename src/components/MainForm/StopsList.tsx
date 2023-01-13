@@ -28,7 +28,6 @@ const StopsList = ({ updateFunction }: StopsListProps): ReactElement => {
       {!!stops.length && (
         <div className="route-summary">{`Current stops (${stops.length})`}</div>
       )}
-      {stops.length === 48 && <div>Maximum number of points (48) reached.</div>}
       {stops.map((stop) => {
         return (
           <div key={stop.getId()} className="route-stops">

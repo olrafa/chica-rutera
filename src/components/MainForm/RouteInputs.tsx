@@ -1,8 +1,10 @@
 import { ReactElement, useContext } from "react";
 
+import useCanAddMoreStops from "../../hooks/useCanAddMoreStops";
 import useGetRoutePoints from "../../hooks/useGetRoutePoints";
 import MapContext from "../MapComponent/MapContext";
 
+import FileUploader from "./FileUploader";
 import InputField from "./InputField";
 
 type RouteInputsProps = {
@@ -14,6 +16,8 @@ const RouteInputs = ({ updateRoute }: RouteInputsProps): ReactElement => {
   const { start, end, stops } = useGetRoutePoints();
   const startValue = start?.get("name") || "";
   const endValue = end?.get("name") || "";
+
+  const canAddMoreStops = useCanAddMoreStops();
 
   const copyEndFromStart = () => {
     if (start) {
@@ -44,12 +48,21 @@ const RouteInputs = ({ updateRoute }: RouteInputsProps): ReactElement => {
           </span>
         )}
       </div>
-      <InputField
-        label="Add stops:"
-        destination="stops"
-        callback={updateRoute}
-        stops={stops}
-      />
+      {canAddMoreStops ? (
+        <>
+          <InputField
+            label="Add stops:"
+            destination="stops"
+            callback={updateRoute}
+            stops={stops}
+          />
+          <FileUploader updateFunction={updateRoute} />
+        </>
+      ) : (
+        <div className="route-summary max">
+          Maximum number of stops reached.
+        </div>
+      )}
     </div>
   );
 };

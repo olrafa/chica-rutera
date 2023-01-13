@@ -9,6 +9,7 @@ import { MapBrowserEvent } from "ol";
 import { toLonLat } from "ol/proj";
 
 import { reverseGeocode } from "../../api/geoapify/requests";
+import useCanAddMoreStops from "../../hooks/useCanAddMoreStops";
 import useGetRoutePoints from "../../hooks/useGetRoutePoints";
 import MapContext from "../MapComponent/MapContext";
 import { addPointToLayer } from "../MapComponent/util";
@@ -24,9 +25,14 @@ const EnableAddPointOnClick = ({
   const { start, end } = useGetRoutePoints();
   const [clickActive, setClickActive] = useState(false);
 
+  const canAddMoreStops = useCanAddMoreStops();
+
   // Add points via click
   const addPointOnClick = useCallback(
     (e: MapBrowserEvent) => {
+      if (!canAddMoreStops) {
+        return;
+      }
       const { coordinate } = e;
       reverseGeocode(toLonLat(coordinate)).then((searchResult) => {
         if (!searchResult) {
@@ -47,7 +53,15 @@ const EnableAddPointOnClick = ({
         }
       });
     },
-    [start, startLayer, end, endLayer, stopsLayer, refreshLayerCallback]
+    [
+      canAddMoreStops,
+      start,
+      end,
+      startLayer,
+      refreshLayerCallback,
+      endLayer,
+      stopsLayer,
+    ]
   );
 
   useEffect(() => {

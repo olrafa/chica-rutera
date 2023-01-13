@@ -14,16 +14,16 @@ const RouteStepList = ({ routeSteps }: RouteStepListProps): ReactElement => {
   return (
     <>
       {routeSteps
-        .filter((routeStep) => routeStep.type === "job")
-        .map((routeStep, i: number) => {
+        .filter(({ type }) => type === "job")
+        .map(({ id }, i: number) => {
           const mapFeature =
-            userStops.find((userStop) => routeStep.id === userStop.getId()) ||
+            userStops.find((userStop) => id === userStop.getId()) ||
             userStops[0];
           const displayName = userStops
-            .find((userStop) => routeStep.id === userStop.getId())
+            .find((userStop) => id === userStop.getId())
             ?.get("name");
           return (
-            <RouteStepBox mapFeature={mapFeature} key={routeStep.id}>
+            <RouteStepBox mapFeature={mapFeature} key={id}>
               <b>Stop {i + 1}</b>: {displayName}
             </RouteStepBox>
           );
