@@ -55,7 +55,6 @@ const RouteInputs = ({ updateRoute }: RouteInputsProps): ReactElement => {
             destination="stops"
             callback={updateRoute}
             stops={stops}
-            disabled={!canAddMoreStops}
           />
           <FileUploader updateFunction={updateRoute} />
         </>
