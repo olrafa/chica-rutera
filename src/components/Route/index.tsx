@@ -5,7 +5,7 @@ import Geometry from "ol/geom/Geometry";
 import { RouteResponse } from "../../api/openRouteService/types";
 import useGetRoutePoints from "../../hooks/useGetRoutePoints";
 import MapContext from "../MapComponent/MapContext";
-import { getRoutesAsLines } from "../MapComponent/util";
+import { getRoutesAsLines, zoomToLayer } from "../MapComponent/util";
 
 import GoogleButton from "./GoogleButton";
 import RouteStepBox from "./RouteStepBox";
@@ -51,13 +51,7 @@ const Route = ({ route, exitFunction }: RouteProps): ReactElement => {
   routeLines.forEach((line: Feature<Geometry>) => routeLayer.addFeature(line));
 
   // Zoom to new features
-  const zoomToRoute = () =>
-    map.getView().fit(routeLayer.getExtent(), {
-      size: map.getSize(),
-      padding: [50, 50, 50, 500],
-    });
-
-  zoomToRoute();
+  zoomToLayer(map, routeLayer);
 
   const { steps, distance, duration } = mainRoute;
 
@@ -76,7 +70,10 @@ const Route = ({ route, exitFunction }: RouteProps): ReactElement => {
         <div>Travel time: {secondsToHours(duration)}</div>
       </div>
       <div className="route-buttons">
-        <div className="option-btn" onClick={zoomToRoute}>
+        <div
+          className="option-btn"
+          onClick={() => zoomToLayer(map, routeLayer)}
+        >
           Zoom to route
         </div>
         <GoogleButton routeSteps={mainRoute.steps} />

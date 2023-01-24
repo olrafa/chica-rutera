@@ -1,8 +1,11 @@
 import { ReactElement, useContext } from "react";
 import { toast } from "react-toastify";
 
+import { MAX_JOBS } from "../../api/geoapify/constants";
+import useGetRoutePoints from "../../hooks/useGetRoutePoints";
 import MapContext from "../MapComponent/MapContext";
 import searchForAddress from "../MapComponent/searchAndAddPoint";
+import { zoomToLayer } from "../MapComponent/util";
 
 type FileUploaderProps = {
   updateFunction: () => void;
@@ -10,6 +13,9 @@ type FileUploaderProps = {
 
 const FileUploader = ({ updateFunction }: FileUploaderProps): ReactElement => {
   const { map, stopsLayer } = useContext(MapContext);
+  const { stops } = useGetRoutePoints();
+
+  const stopsSpots = MAX_JOBS - stops.length;
 
   const fileHandler = (files: FileList | null) => {
     const file = files && files[0];
@@ -18,7 +24,7 @@ const FileUploader = ({ updateFunction }: FileUploaderProps): ReactElement => {
       reader.readAsText(file, "UTF-8");
       reader.onload = (e) =>
         e && e.target && addPointsFromFile(e.target.result as string);
-      reader.onerror = () => toast("error reading file");
+      reader.onerror = () => toast("Error reading file");
     }
   };
 
@@ -27,18 +33,22 @@ const FileUploader = ({ updateFunction }: FileUploaderProps): ReactElement => {
       .split("\n")
       .filter((a) => a)
       .map((a) => a.replace(/;/g, ", "));
-    const addressList = Array.from(new Set(addresses));
-    searchAddressesArray(addressList);
+    const uniqueAddresses = Array.from(new Set(addresses));
+    const addressesToSearch = getAddressesToSearch(uniqueAddresses);
+    searchAddressesFromList(addressesToSearch);
   };
 
-  const searchAddressesArray = (addresses: string[]) => {
-    for (const address of addresses) {
-      setTimeout(
-        () =>
-          searchForAddress(address, "stops", map, stopsLayer, updateFunction),
-        500
-      );
-    }
+  const getAddressesToSearch = (allAddresses: string[]) =>
+    allAddresses.slice(1, stopsSpots + 1); // +1 assuming the first line on the file is the header (for now)
+
+  const searchAddressesFromList = (addresses: string[]) =>
+    addresses.map((address) =>
+      searchForAddress(address, "stops", map, stopsLayer, updateCallback)
+    );
+
+  const updateCallback = () => {
+    updateFunction();
+    zoomToLayer(map, stopsLayer);
   };
 
   return (

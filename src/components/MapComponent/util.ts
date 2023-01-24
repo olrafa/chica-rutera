@@ -1,6 +1,7 @@
 import { Feature, Map } from "ol";
 import { Coordinate } from "ol/coordinate";
 import Polyline from "ol/format/Polyline";
+import Geometry from "ol/geom/Geometry";
 import Point from "ol/geom/Point";
 import { fromLonLat } from "ol/proj";
 import VectorSource from "ol/source/Vector";
@@ -18,6 +19,12 @@ export const updateMapView = (map: Map, coords: Coordinate): void => {
   map.getView().setCenter(fromLonLat(coords));
   map.getView().setZoom(MAP_ZOOM_TO_RESULT);
 };
+
+export const zoomToLayer = (map: Map, layer: VectorSource<Geometry>) =>
+  map.getView().fit(layer.getExtent(), {
+    size: map.getSize(),
+    padding: [50, 50, 50, 500],
+  });
 
 export const changeFeatureStyle = (mapFeature: Feature, highlight?: boolean) =>
   mapFeature.setStyle(highlight ? createStyle("yellow") : undefined);
