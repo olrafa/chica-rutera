@@ -39,7 +39,7 @@ const FileUploader = ({ updateFunction }: FileUploaderProps): ReactElement => {
   };
 
   const getAddressesToSearch = (allAddresses: string[]) =>
-    allAddresses.slice(1, stopsSpots + 1);
+    allAddresses.slice(1, stopsSpots + 1); // +1 assuming the first line on the file is the header (for now)
 
   const searchAddressesFromList = (addresses: string[]) =>
     addresses.map((address) =>
