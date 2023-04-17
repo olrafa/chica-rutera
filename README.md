@@ -1,4 +1,6 @@
-# Chica Rutera
+# Chica Rutera - A Route Planning app
+
+> "Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city?"
 
 This app is meant as a study of the [Travelling Salesman Problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem) and the existing APIs meant to solve it.
 
@@ -9,6 +11,8 @@ You can see the app live [here](https://chicarutera.netlify.app/).
 ![app preview](/public/readme-img.png)
 
 At this moment it is possible to add one start, one finish and 48 points to a route. You can do so by either searching for an address, clicking on the map, or uploading a list of addresses from a text file.
+
+This is a React app created in 2021 with the `create-react-app` script, with the TypeScript template. 
 
 The address search and the reverse geocoding, as well as the map positioning based on the user's IP address, are done using the [Geoapify](https://www.geoapify.com/) APIs. The map engine is [OpenLayers](https://openlayers.org/), and the map style is by [Carto](https://github.com/CartoDB/basemap-styles).
 
@@ -24,7 +28,7 @@ cd chica-rutera
 npm install
 ```
 
-Keep in mind that you will need your own [Open Route Service](https://openrouteservice.org/) and [Geoapify](https://www.geoapify.com/) API keys to run it locally. Once you have them, you need to create a `.env` file (which is gitignored) in your local root folder, with the following structure:
+Keep in mind that you will need your own [Open Route Service](https://openrouteservice.org/) and [Geoapify](https://www.geoapify.com/) API keys to run it locally (both are free for this use case). Once you have them, you need to create a `.env` file (which is gitignored) in your local root folder, with the following structure:
 
 ```
 REACT_APP_ORS_KEY=YOUR_KEY
