@@ -21,4 +21,29 @@ export type AddressResult = {
   formatted: string;
   lon: number;
   lat: number;
+  city: string;
+  country: string;
+};
+
+type AddressFeature = {
+  type: string;
+  bbox: number[];
+  geometry: {
+    type: string;
+    coordinates: number[];
+  };
+  properties: AddressResult;
+};
+
+export type AddressResponse = {
+  type: string;
+  features: AddressFeature[];
+  query: {
+    text: string;
+    parsed: {
+      housenumber: string;
+      street: string;
+      expected_type: string;
+    };
+  };
 };

@@ -9,7 +9,7 @@ import convertTimeToMilliseconds from "../util/convertTimeToMilliseconds";
 const useGetUserIpInfo = () =>
   useQuery(["ipInfo"], getIpInfo, {
     onError: (error) => toast.error(`Error getting IP Info: ${error}`),
-    staleTime: convertTimeToMilliseconds(2, "hours"),
+    staleTime: convertTimeToMilliseconds(8, "hours"),
   });
 
 /**

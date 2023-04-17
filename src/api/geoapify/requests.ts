@@ -2,7 +2,7 @@ import { Coordinate } from "ol/coordinate";
 import { toast } from "react-toastify";
 
 import { GeoapifyAPI } from "./constants";
-import { AddressResult, AddressSearchParams } from "./types";
+import { AddressResponse, AddressResult, AddressSearchParams } from "./types";
 import { createAddressParams, getFetcherUrl } from "./util";
 
 /**
@@ -29,12 +29,12 @@ export const reverseGeocode = async ([lon, lat]: Coordinate): Promise<
  * @param url the address, plus bias from location.
  * @returns only the first result.
  */
-export const geoApifyFetcher = async (
+const geoApifyFetcher = async (
   url: string
 ): Promise<AddressResult | undefined> => {
   try {
     const data = await fetch(url, { method: "GET" });
-    const response = await data.json();
+    const response: AddressResponse = await data.json();
     const [address] = response.features;
     return address.properties;
   } catch (error) {
