@@ -14,6 +14,7 @@ import {
 } from "../components/MainForm/types";
 import { WEB_MERCATOR, WGS84 } from "../components/MapComponent/constants";
 import convertTimeToMilliseconds from "../util/convertTimeToMilliseconds";
+import { TOAST_ERRORS } from "../util/toastErrors";
 
 const orsUrl = "https://api.openrouteservice.org/";
 
@@ -87,8 +88,5 @@ export const useCalculateRoute = (
   useQuery(["route"], () => calculateRoute(start, end, stops), {
     enabled,
     staleTime: convertTimeToMilliseconds(4, "hours"),
-    onError: () =>
-      toast.error(
-        "Unable to create route. Please check your points and try again"
-      ),
+    onError: () => toast.error(TOAST_ERRORS.calculateRoute),
   });
