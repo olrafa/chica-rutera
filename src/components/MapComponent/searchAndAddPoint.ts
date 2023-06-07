@@ -6,6 +6,7 @@ import VectorSource from "ol/source/Vector";
 import { toast } from "react-toastify";
 
 import { addressSearch } from "../../api/geoapify/requests";
+import { TOAST_ERRORS } from "../../util/toastErrors";
 import { DestinationType } from "../MainForm/types";
 
 import { addPointToLayer, updateMapView } from "./util";
@@ -27,9 +28,7 @@ const searchForAddress = (
       updateMapView(map, [addressResult.lon, addressResult.lat]);
       callback();
     } else {
-      toast.error(
-        "No address found. Please check for typos and/or add details (city, region, country)"
-      );
+      toast.error(TOAST_ERRORS.noAddress);
     }
   });
 };
