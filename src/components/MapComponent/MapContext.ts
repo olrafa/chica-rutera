@@ -30,7 +30,10 @@ const createRouteVector = () =>
     }),
   });
 
-const createPointVector = (color: string, zIndex: number): VectorLayer =>
+const createPointVector = (
+  color: string,
+  zIndex: number
+): VectorLayer<VectorSource> =>
   new VectorLayer({
     source: new VectorSource(),
     style: createStyle(color),
@@ -60,12 +63,16 @@ const map = new Map({
   }),
 });
 
+// The return type of getSource() is VectorSource<Geometry> | null buy default
+// We just add a generic source here to keep TS happy and not cause compilation issues.
+const genericSource = new VectorSource();
+
 const mapData = {
   map,
-  startLayer: startVector.getSource(),
-  endLayer: endVector.getSource(),
-  stopsLayer: stopsVector.getSource(),
-  routeLayer: routeVector.getSource(),
+  startLayer: startVector.getSource() || genericSource,
+  endLayer: endVector.getSource() || genericSource,
+  stopsLayer: stopsVector.getSource() || genericSource,
+  routeLayer: routeVector.getSource() || genericSource,
 };
 
 // This context will create the map component to be used anywhere in the app.

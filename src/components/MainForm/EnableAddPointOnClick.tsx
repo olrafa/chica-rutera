@@ -29,7 +29,7 @@ const EnableAddPointOnClick = ({
 
   // Add points via click
   const addPointOnClick = useCallback(
-    (e: MapBrowserEvent) => {
+    (e: MapBrowserEvent<UIEvent>) => {
       if (!canAddMoreStops) {
         return;
       }
