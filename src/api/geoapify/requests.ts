@@ -1,5 +1,5 @@
 import { Coordinate } from "ol/coordinate";
-import { toast } from "react-toastify";
+import { toast, ToastContent } from "react-toastify";
 
 import { GeoapifyAPI } from "./constants";
 import { AddressResponse, AddressResult, AddressSearchParams } from "./types";
@@ -38,6 +38,6 @@ const geoApifyFetcher = async (
     const [address] = response.features;
     return address.properties;
   } catch (error) {
-    toast.error(error);
+    toast.error(error as ToastContent<unknown>);
   }
 };
