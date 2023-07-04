@@ -40,6 +40,11 @@
     "eject": "react-scripts eject",
     "prepare": "husky install"
   },
+  "overrides": {
+    "react-scripts": {
+      "typescript": "^5"
+    }
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
