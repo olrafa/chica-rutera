@@ -38,7 +38,7 @@ export const getRoutesAsLines = (routes: RouteDetail[]) =>
           dataProjection: WGS84,
           featureProjection: WEB_MERCATOR,
         }),
-      })
+      }),
   );
 
 export const createStyle = (color: string) =>
@@ -68,7 +68,7 @@ const createRoutePoint = ({ formatted, lon, lat }: AddressResult) => {
 export const addPointToLayer = (
   searchResult: AddressResult,
   layer: VectorSource,
-  clearLayer = true
+  clearLayer = true,
 ): void => {
   const point = createRoutePoint(searchResult);
   point.setId(Date.now());

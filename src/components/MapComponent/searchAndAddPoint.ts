@@ -19,7 +19,7 @@ const searchForAddress = (
   item: DestinationType,
   map: Map,
   layer: VectorSource<Geometry>,
-  callback: () => void
+  callback: () => void,
 ) => {
   const [lon, lat] = getViewPortCoordinates(map);
   addressSearch({ address: value, lon, lat }).then((addressResult) => {

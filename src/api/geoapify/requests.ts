@@ -9,7 +9,7 @@ import { createAddressParams, getFetcherUrl } from "./util";
  * Send the request to search for an address.
  */
 export const addressSearch = async (
-  params: AddressSearchParams
+  params: AddressSearchParams,
 ): Promise<AddressResult | undefined> => {
   const addressParams = createAddressParams(params);
   const url = getFetcherUrl(addressParams, GeoapifyAPI.SEARCH);
@@ -30,7 +30,7 @@ export const reverseGeocode = async ([lon, lat]: Coordinate): Promise<
  * @returns only the first result.
  */
 const geoApifyFetcher = async (
-  url: string
+  url: string,
 ): Promise<AddressResult | undefined> => {
   try {
     const data = await fetch(url, { method: "GET" });
