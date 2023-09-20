@@ -30,27 +30,15 @@ const EnableAddPointOnClick = ({
   // Add points via click
   const addPointOnClick = useCallback(
     (e: MapBrowserEvent<UIEvent>) => {
-      if (!canAddMoreStops) {
-        return;
-      }
+      if (!canAddMoreStops) return;
       const { coordinate } = e;
       reverseGeocode(toLonLat(coordinate)).then((searchResult) => {
-        if (!searchResult) {
-          return;
-        }
-        if (!start) {
-          addPointToLayer(searchResult, startLayer);
-          refreshLayerCallback();
-        }
+        if (!searchResult) return;
+        if (!start) addPointToLayer(searchResult, startLayer);
+        if (start && !end) addPointToLayer(searchResult, endLayer);
+        if (start && end) addPointToLayer(searchResult, stopsLayer, false);
 
-        if (start && !end) {
-          addPointToLayer(searchResult, endLayer);
-          refreshLayerCallback();
-        }
-        if (start && end) {
-          addPointToLayer(searchResult, stopsLayer, false);
-          refreshLayerCallback();
-        }
+        refreshLayerCallback();
       });
     },
     [
@@ -71,12 +59,8 @@ const EnableAddPointOnClick = ({
 
   const getText = () => {
     const clickText = "Click on the map to";
-    if (!start) {
-      return `${clickText} set a starting point`;
-    }
-    if (!end) {
-      return `${clickText} set an ending point`;
-    }
+    if (!start) return `${clickText} set a starting point`;
+    if (!end) return `${clickText} set an ending point`;
     return `${clickText} add a stop`;
   };
 
