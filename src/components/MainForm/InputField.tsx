@@ -44,7 +44,7 @@ const InputField = ({
           destination,
           map,
           destinationLayers[destination],
-          callback
+          callback,
         )
       : clearStartOrEnd(destinationLayers[destination]));
 

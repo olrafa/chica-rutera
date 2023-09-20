@@ -32,7 +32,7 @@ const createRouteVector = () =>
 
 const createPointVector = (
   color: string,
-  zIndex: number
+  zIndex: number,
 ): VectorLayer<VectorSource> =>
   new VectorLayer({
     source: new VectorSource(),

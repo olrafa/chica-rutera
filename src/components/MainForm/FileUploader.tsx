@@ -43,7 +43,7 @@ const FileUploader = ({ updateFunction }: FileUploaderProps): ReactElement => {
 
   const searchAddressesFromList = (addresses: string[]) =>
     addresses.map((address) =>
-      searchForAddress(address, "stops", map, stopsLayer, updateCallback)
+      searchForAddress(address, "stops", map, stopsLayer, updateCallback),
     );
 
   const updateCallback = () => {

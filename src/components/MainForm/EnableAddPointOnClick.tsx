@@ -61,7 +61,7 @@ const EnableAddPointOnClick = ({
       refreshLayerCallback,
       endLayer,
       stopsLayer,
-    ]
+    ],
   );
 
   useEffect(() => {

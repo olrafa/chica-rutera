@@ -44,7 +44,7 @@ const getWgs84Coordinates = (point: RoutePoint) => {
 const calculateRoute = async (
   start: RoutePoint,
   end: RoutePoint,
-  stops: RouteStops
+  stops: RouteStops,
 ): Promise<RouteResponse> => {
   const requestPoints = createStopsPoints(stops);
   const orsRequest = {
@@ -83,7 +83,7 @@ const calculateRoute = async (
 
 export const useCalculateRoute = (
   { start, end, stops }: Destinations,
-  enabled: boolean
+  enabled: boolean,
 ) =>
   useQuery(["route"], () => calculateRoute(start, end, stops), {
     enabled,

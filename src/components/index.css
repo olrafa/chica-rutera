@@ -200,7 +200,10 @@ input {
   border-radius: 50%;
   color: darkcyan;
   background: darkcyan;
-  box-shadow: 32px 0, -32px 0, 64px 0;
+  box-shadow:
+    32px 0,
+    -32px 0,
+    64px 0;
 }
 
 .loader::after {
