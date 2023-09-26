@@ -2,7 +2,7 @@
 
 > "Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city?"
 
-This app is meant as a study of the [Travelling Salesman Problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem) and the existing APIs meant to solve it.
+This app is meant as a study of the [Traveling Salesman Problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem) and the existing APIs meant to solve it.
 
 It uses the [Open Route Service](https://openrouteservice.org/) API to generate routes between multiple points.
 
