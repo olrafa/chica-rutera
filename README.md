@@ -12,7 +12,7 @@ You can see the app live [here](https://chicarutera.netlify.app/).
 
 At this moment it is possible to add one start, one finish and 48 points to a route. You can do so by either searching for an address, clicking on the map, or uploading a list of addresses from a text file.
 
-This is a React app created in 2021 with the `create-react-app` script, with the TypeScript template.
+This React app was created in 2021 with the `create-react-app` script, with the TypeScript template.
 
 The address search and the reverse geocoding, as well as the map positioning based on the user's IP address, are done using the [Geoapify](https://www.geoapify.com/) APIs. The map engine is [OpenLayers](https://openlayers.org/), and the map style is by [Carto](https://github.com/CartoDB/basemap-styles).
 
