@@ -20,7 +20,7 @@ export const updateMapView = (map: Map, coords: Coordinate): void => {
   map.getView().setZoom(MAP_ZOOM_TO_RESULT);
 };
 
-export const zoomToLayer = (map: Map, layer: VectorSource<Geometry>) =>
+export const zoomToLayer = (map: Map, layer: VectorSource<Feature<Geometry>>) =>
   map.getView().fit(layer.getExtent(), {
     size: map.getSize(),
     padding: [50, 50, 50, 500],
