@@ -1,4 +1,5 @@
 import { ReactElement, useContext, useEffect, useRef, useState } from "react";
+import { Feature } from "ol";
 import Geometry from "ol/geom/Geometry";
 import VectorSource from "ol/source/Vector";
 
@@ -49,7 +50,7 @@ const InputField = ({
       : clearStartOrEnd(destinationLayers[destination]));
 
   // Clear start or end input when field is cleared then "Enter"'d
-  const clearStartOrEnd = (layer: VectorSource<Geometry>) =>
+  const clearStartOrEnd = (layer: VectorSource<Feature<Geometry>>) =>
     (layer === startLayer || layer === endLayer) && layer.clear();
 
   useEffect(() => {

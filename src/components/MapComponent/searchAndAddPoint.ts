@@ -1,4 +1,4 @@
-import { Map } from "ol";
+import { Feature, Map } from "ol";
 import { Coordinate } from "ol/coordinate";
 import Geometry from "ol/geom/Geometry";
 import { toLonLat } from "ol/proj";
@@ -18,7 +18,7 @@ const searchForAddress = (
   value: string,
   item: DestinationType,
   map: Map,
-  layer: VectorSource<Geometry>,
+  layer: VectorSource<Feature<Geometry>>,
   callback: () => void,
 ) => {
   const [lon, lat] = getViewPortCoordinates(map);
