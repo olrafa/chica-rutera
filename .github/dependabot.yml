@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # Keep behavior the same as the previous zero-config setup: only
+    # security-alert PRs, no scheduled version-update noise.
+    open-pull-requests-limit: 0
+    ignore:
+      # eslint 9 requires eslint-config-react-app (react-scripts) to
+      # support it, which it doesn't. This PR is permanently unmergeable
+      # while the project is on Create React App.
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
